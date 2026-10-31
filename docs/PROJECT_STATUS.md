@@ -40,3 +40,6 @@ The CP04-era hosted run failed at its final push because multiple Actions builds
 
 ## CP07 measured native AOT status
 Real God Hand ELF `SLUS_215.03`; 9,231 generated C++ units; 2,963 translation warnings. GitHub-hosted CP05 compiler probe passed all 3 selected translation units (entry `sub_00100008`, `register_functions`, additional `entry_3b6990`). Full native `ps2EntryRunner` build failed before linking, so no game executable or GS frame has been confirmed. CP07 corrects shell `-e` failure-reporting so the next hosted workflow preserves the exact compiler/linker failure in `built/reports/native_link_status.txt`.
+
+## CP08 CI recovery
+Found CP04 GS capture host logging newline erroneously split a C++ string literal; confirmed as the same source of failures in hosted Linux GCC, Linux Clang and Windows MSVC CI. Fixed in source and covered by a syntax-only C++17 compile regression test; awaiting verification from new GitHub-hosted native builds.

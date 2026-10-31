@@ -11,3 +11,5 @@ CP05+: Hosted 2/3 actual AOT CPP compiled; identified SSE4.1 mismatch, fixed nat
 CP06: Fix hosted LFS artifact commit rebase collisions via atomic staging/reset+retry; serialized AOT uploads; preserving only built/ on main.
 
 CP07: AOT sample 3/3 C++ compile, full native build failed. Preserve all failed native build/configure/Xvfb logs despite Actions bash -e; add CI regression tests. No game frames.
+
+CP08: Fix CP04 GS capture literal raw-newline C++ compile regression seen in Linux GCC/Clang + Windows; C++17 syntax regression tested, 11 Python tests pass.

@@ -443,8 +443,7 @@ static void UploadFrame(Texture2D &tex, PS2Runtime *rt, uint32_t &outWidth, uint
                 if (s_capturedGuestFrame)
                 {
                     std::cout << "[godhand:gs] captured first nonuniform guest frame: "
-                              << target.string() << " (" << width << "x" << height << ")
-";
+                              << target.string() << " (" << width << "x" << height << ")\n";
                 }
             }
         }

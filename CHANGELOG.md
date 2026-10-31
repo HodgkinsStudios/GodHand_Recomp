@@ -58,3 +58,8 @@
 - CP05's hosted run confirmed **3/3** real generated entry/registration translation units compile with SSE4.1, then the full `ps2EntryRunner` build failed. No native game executable or GS frame has been demonstrated.
 - The `Attempt full native executable` step previously inherited the GitHub shell's `-e` flag and exited before recording the redirected `native-build.log`. Corrected to capture nonzero exit codes explicitly and publish the first compiler errors and the final log tail to `built/reports/native_link_status.txt`.
 - Applied the same exit-code preservation to native CMake configuration and Xvfb game execution. Added focused regression tests for inherited `bash -e` behavior.
+
+## CP08 — Restore cross-platform runtime compilation
+- Investigated GitHub-hosted `build` failure on Linux GCC, Linux Clang, Windows MSVC: all 3 failed to compile `ps2xRuntime/src/lib/ps2_runtime.cpp` due a literal containing a raw newline in the CP04 guest GS capture print statement.
+- Fixed to a C++ `\n` escape; a C++17 syntax-only regression test extracts and compiles the exact log statement. Eleven pipeline Python tests pass.
+- CP07 hosted full-game failure diagnostics still need to finish; **no God Hand game frames confirmed**.
