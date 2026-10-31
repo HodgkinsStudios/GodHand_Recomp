@@ -1,1 +1,130 @@
-{"selected_translation_units":0,"reason":"native CMake configure did not succeed"}
+{
+  "selected_translation_units": 24,
+  "successful_translation_units": 23,
+  "failed_translation_units": 1,
+  "selection_strategy": "entry, registration, suspected invalid regions, stratified code addresses",
+  "records": [
+    {
+      "source": "sub_00100008_0x100008.cpp",
+      "return_code": 0,
+      "diagnostic": "\n"
+    },
+    {
+      "source": "register_functions.cpp",
+      "return_code": 0,
+      "diagnostic": "\n"
+    },
+    {
+      "source": "entry_3b6990_0x3b6a00.cpp",
+      "return_code": 0,
+      "diagnostic": "\n"
+    },
+    {
+      "source": "sub_003C01D8_0x3c01d8.cpp",
+      "return_code": -1,
+      "diagnostic": "Command '['/usr/bin/c++', '-DAGRESSIVE_LOGS=1', '-DGRAPHICS_API_OPENGL_33', '-DPLATFORM_DESKTOP', '-DPS2X_ENABLE_IOP_RPC_TRACE=1', '-DPS2_FUNCTION_LOG_TRACKER=1', '-DPS2_RUNTIME_LOGS=1', '-I/home/runner/work/_temp/game/output', '-I/home/runner/work/GodHand_Recomp/GodHand_Recomp/ps2xRuntime/include', '-I/home/runner/work/GodHand_Recomp/GodHand_Recomp/ps2xRuntime/src/lib/Kernel', '-I/home/runner/work/GodHand_Recomp/GodHand_Recomp/build-game/_deps/raylib-src/src', '-I/home/runner/work/GodHand_Recomp/GodHand_Recomp/build-game/_deps/raylib-src/src/external/glfw/include', '-I/home/runner/work/GodHand_Recomp/GodHand_Recomp/ps2xIOP/include', '-msse4.1', '-O3', '-DNDEBUG', '-std=gnu++20', '-flto=auto', '-fno-fat-lto-objects', '-O0', '-g0', '-fno-lto', '-o', 'ps2xRuntime/CMakeFiles/ps2EntryRunner.dir/home/runner/work/_temp/game/output/sub_003C01D8_0x3c01d8.cpp.o', '-c', '/home/runner/work/_temp/game/output/sub_003C01D8_0x3c01d8.cpp']' timed out after 90 seconds"
+    },
+    {
+      "source": "sub_003FDD40_0x3fdd40.cpp",
+      "return_code": 0,
+      "diagnostic": "\n"
+    },
+    {
+      "source": "sub_003BC628_0x3bc628.cpp",
+      "return_code": 0,
+      "diagnostic": "\n"
+    },
+    {
+      "source": "sub_00138DB8_0x138db8.cpp",
+      "return_code": 0,
+      "diagnostic": "\n"
+    },
+    {
+      "source": "sub_001632A0_0x1632a0.cpp",
+      "return_code": 0,
+      "diagnostic": "\n"
+    },
+    {
+      "source": "sub_00187A78_0x187a78.cpp",
+      "return_code": 0,
+      "diagnostic": "\n"
+    },
+    {
+      "source": "sub_001A4F28_0x1a4f28.cpp",
+      "return_code": 0,
+      "diagnostic": "\n"
+    },
+    {
+      "source": "sub_001D4A90_0x1d4a90.cpp",
+      "return_code": 0,
+      "diagnostic": "\n"
+    },
+    {
+      "source": "sub_001FAEA0_0x1faea0.cpp",
+      "return_code": 0,
+      "diagnostic": "\n"
+    },
+    {
+      "source": "sub_0027DBF8_0x27dbf8.cpp",
+      "return_code": 0,
+      "diagnostic": "\n"
+    },
+    {
+      "source": "sub_002A4FD8_0x2a4fd8.cpp",
+      "return_code": 0,
+      "diagnostic": "\n"
+    },
+    {
+      "source": "sub_002BB258_0x2bb258.cpp",
+      "return_code": 0,
+      "diagnostic": "\n"
+    },
+    {
+      "source": "sub_002D40F8_0x2d40f8.cpp",
+      "return_code": 0,
+      "diagnostic": "\n"
+    },
+    {
+      "source": "sub_00302988_0x302988.cpp",
+      "return_code": 0,
+      "diagnostic": "\n"
+    },
+    {
+      "source": "sub_0031DD30_0x31dd30.cpp",
+      "return_code": 0,
+      "diagnostic": "\n"
+    },
+    {
+      "source": "sub_0032EF68_0x32ef68.cpp",
+      "return_code": 0,
+      "diagnostic": "\n"
+    },
+    {
+      "source": "sub_00344770_0x344770.cpp",
+      "return_code": 0,
+      "diagnostic": "\n"
+    },
+    {
+      "source": "sub_00354650_0x354650.cpp",
+      "return_code": 0,
+      "diagnostic": "\n"
+    },
+    {
+      "source": "sub_0036BFB0_0x36bfb0.cpp",
+      "return_code": 0,
+      "diagnostic": "\n"
+    },
+    {
+      "source": "sub_0038B348_0x38b348.cpp",
+      "return_code": 0,
+      "diagnostic": "\n"
+    },
+    {
+      "source": "sub_003B0388_0x3b0388.cpp",
+      "return_code": 0,
+      "diagnostic": "\n"
+    }
+  ],
+  "native_game_linked": false,
+  "real_game_frames_confirmed": false
+}
