@@ -189,3 +189,7 @@ The default ISO path is `/home/hodgkinsstudios/Desktop/Roms/PS2/God Hand (USA).i
 Successful output goes to `built/linux-x86_64/GodHand_Recomp_Game` beside the launcher. Errors and progress go to `built/reports/local_build.log`. Rerunning without deleting `build-game-local/` performs an incremental build rather than starting 9,231 guest C++ files from scratch.
 
 This is a development native build. Generating/linking guest code does **not** demonstrate that the game boots or produces frames.
+
+## CP14 — Hosted AOT compilation checkpoints and caching
+
+The native God Hand build now compiles all generated C++ in four deterministic Ninja batches using `tools/aot_batch_build.py`, with a GitHub Actions `ccache` checkpoint saved after each completed batch and restored on future runs. Batch commands show live compiler output rather than hiding it until the job exits. The full `ps2EntryRunner` link and genuine GS first-frame test remain mandatory. See `docs/CP14_NATIVE_AOT_COMPILE_CHECKPOINTS.md` for details, cache limitations and diagnostics. A fresh run must still compile previously uncached code; this does not imply the game is playable.

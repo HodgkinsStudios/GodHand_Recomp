@@ -85,3 +85,9 @@
 - Prebuilt installer copies game next to launcher in `~/.local/bin` when it is genuinely built.
 - Added separate hosted AOT link workflow using generated C++ LFS archive; ISO fetched only after game successfully links.
 - Added locator unit test. Play remains unavailable until an actual native game executable exists.
+
+## CP14 — Restartable AOT native compile
+- Split 9,231 generated guest C++ files across four deterministic Ninja object batches. No code omitted.
+- Added `ccache` restore/save checkpoints to retain completed compilation work across fresh hosted runners, including canceled runs after a checkpoint.
+- Enabled streaming compilation progress and downloadable logs; preserved full native link and GS validation gates.
+- Passed seven focused tests and Bash syntax checks for 13 workflow shell steps. Native build and game-frame result still unverified.

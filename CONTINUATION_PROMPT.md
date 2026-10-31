@@ -50,3 +50,6 @@ AOT compile is extremely large (9,231 guest C++ sources). The hosted workflow se
 
 ## CP12 continuation
 Check workflow `GodHand - Link AOT and test first frame` first, inspect `built/reports/link_ci_status.txt` and `link_ci_compile_probe.json`, fix the **first true compiler/linker error** and repeat. The native output `built/linux-x86_64/GodHand_Recomp_Game` is only published after successful full linking; launcher resolves sibling binary first. Do not claim real frames without captured guest GS data.
+
+## CP14 — Native AOT build optimization handoff
+Follow `docs/CP14_NATIVE_AOT_COMPILE_CHECKPOINTS.md`. Four batch steps stream progress and save caches. Check `built/reports/link_ci_batches.txt`, `link_ci_status.txt`, and `link_ci_frame.txt` after the fresh workflow. If any batch fails, inspect the archived `godhand-compiler-logs-<run id>` artifact and fix the first actual compiler failure. Never claim a game executable or real frame until verified.

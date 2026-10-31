@@ -7,6 +7,7 @@ on:
       - 'ps2xRuntime/**'
       - 'ps2xIOP/**'
       - 'tools/aot_compile_probe.py'
+      - 'tools/aot_batch_build.py'
       - 'tools/godhand_iso_pipeline.py'
       - '.github/workflows/godhand-link.yml'
   workflow_dispatch:
@@ -16,12 +17,19 @@ permissions:
 
 concurrency:
   group: godhand-native-link-${{ github.ref }}
-  cancel-in-progress: true
+  # Keep a running compile alive when another source-only commit is pushed.
+  cancel-in-progress: false
 
 jobs:
   native-game:
     runs-on: ubuntu-24.04
-    timeout-minutes: 120
+    timeout-minutes: 180
+    env:
+      CCACHE_DIR: ${{ github.workspace }}/.ccache
+      CCACHE_BASEDIR: ${{ github.workspace }}
+      CCACHE_MAXSIZE: 1200M
+      CCACHE_COMPILERCHECK: content
+      CCACHE_COMPRESS: 'true'
     steps:
       - name: Checkout source without downloading retail disc
         uses: actions/checkout@v6
@@ -46,9 +54,24 @@ jobs:
       - name: Install native runtime dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake ninja-build g++ pkg-config git \
+          sudo apt-get install -y cmake ninja-build g++ ccache pkg-config git \
             libgl-dev libx11-dev libxrandr-dev libxinerama-dev \
             libxcursor-dev libxi-dev xvfb xauth
+
+      - name: Restore incremental generated C++ compiler cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .ccache
+          key: godhand-aot-gcc13-v1-${{ hashFiles('built/aot/generated_cpp.tar.gz') }}-${{ github.run_id }}-restore
+          restore-keys: |
+            godhand-aot-gcc13-v1-${{ hashFiles('built/aot/generated_cpp.tar.gz') }}-
+            godhand-aot-gcc13-v1-
+
+      - name: Validate compilation batch planner
+        shell: bash
+        run: |
+          python3 -m unittest discover -s tools/tests -p 'test_aot_batch_build.py' -v
+          ccache --zero-stats
 
       - name: Configure all generated guest C++ into native runner
         shell: bash
@@ -57,7 +80,8 @@ jobs:
           mkdir -p built/reports
           code=0
           cmake -S . -B build-game -G Ninja \
-            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+            -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
             -DCMAKE_C_FLAGS=-msse4.1 -DCMAKE_CXX_FLAGS=-msse4.1 \
             -DPS2X_BUILD_RECOMP=OFF -DPS2X_BUILD_ANALYZER=OFF \
             -DPS2X_BUILD_RUNTIME=ON -DPS2X_BUILD_STUDIO=OFF -DPS2X_BUILD_TEST=OFF \
@@ -69,46 +93,144 @@ jobs:
           echo "native_configure_exit_code=$code" > built/reports/link_ci_configure.txt
           tail -n 65 "$RUNNER_TEMP/godhand-configure.log" >> built/reports/link_ci_configure.txt
 
-      - name: Check generated C++ compilation across executable
+      - name: Compile generated C++ batch 1 of 4
+        id: batch1
+        continue-on-error: true
         shell: bash
         run: |
-          set -uo pipefail
-          if test -s build-game/compile_commands.json; then
-            python3 tools/aot_compile_probe.py \
-              --compile-commands build-game/compile_commands.json \
-              --generated-dir "$RUNNER_TEMP/godhand_aot" \
-              --output built/reports/link_ci_compile_probe.json \
-              --limit 24 --timeout 90 --workers 4 || true
-          else
-            echo '{"selected_translation_units":0,"reason":"native CMake configure failed"}' \
-              > built/reports/link_ci_compile_probe.json
-          fi
+          python3 tools/aot_batch_build.py \
+            --compile-commands build-game/compile_commands.json \
+            --source-dir "$RUNNER_TEMP/godhand_aot" \
+            --build-dir build-game --batch 1 --batches 4 --jobs 4 \
+            --log "$RUNNER_TEMP/godhand-batch-1.log"
+
+      - name: Save compiled C++ cache after batch 1
+        if: always() && steps.batch1.outcome != 'skipped'
+        uses: actions/cache/save@v4
+        with:
+          path: .ccache
+          key: godhand-aot-gcc13-v1-${{ hashFiles('built/aot/generated_cpp.tar.gz') }}-${{ github.run_id }}-batch1
+
+      - name: Compile generated C++ batch 2 of 4
+        id: batch2
+        if: steps.batch1.outcome == 'success'
+        continue-on-error: true
+        shell: bash
+        run: |
+          python3 tools/aot_batch_build.py \
+            --compile-commands build-game/compile_commands.json \
+            --source-dir "$RUNNER_TEMP/godhand_aot" \
+            --build-dir build-game --batch 2 --batches 4 --jobs 4 \
+            --log "$RUNNER_TEMP/godhand-batch-2.log"
+
+      - name: Save compiled C++ cache after batch 2
+        if: always() && steps.batch2.outcome != 'skipped'
+        uses: actions/cache/save@v4
+        with:
+          path: .ccache
+          key: godhand-aot-gcc13-v1-${{ hashFiles('built/aot/generated_cpp.tar.gz') }}-${{ github.run_id }}-batch2
+
+      - name: Compile generated C++ batch 3 of 4
+        id: batch3
+        if: steps.batch2.outcome == 'success'
+        continue-on-error: true
+        shell: bash
+        run: |
+          python3 tools/aot_batch_build.py \
+            --compile-commands build-game/compile_commands.json \
+            --source-dir "$RUNNER_TEMP/godhand_aot" \
+            --build-dir build-game --batch 3 --batches 4 --jobs 4 \
+            --log "$RUNNER_TEMP/godhand-batch-3.log"
+
+      - name: Save compiled C++ cache after batch 3
+        if: always() && steps.batch3.outcome != 'skipped'
+        uses: actions/cache/save@v4
+        with:
+          path: .ccache
+          key: godhand-aot-gcc13-v1-${{ hashFiles('built/aot/generated_cpp.tar.gz') }}-${{ github.run_id }}-batch3
+
+      - name: Compile generated C++ batch 4 of 4
+        id: batch4
+        if: steps.batch3.outcome == 'success'
+        continue-on-error: true
+        shell: bash
+        run: |
+          python3 tools/aot_batch_build.py \
+            --compile-commands build-game/compile_commands.json \
+            --source-dir "$RUNNER_TEMP/godhand_aot" \
+            --build-dir build-game --batch 4 --batches 4 --jobs 4 \
+            --log "$RUNNER_TEMP/godhand-batch-4.log"
+
+      - name: Save compiled C++ cache after batch 4
+        if: always() && steps.batch4.outcome != 'skipped'
+        uses: actions/cache/save@v4
+        with:
+          path: .ccache
+          key: godhand-aot-gcc13-v1-${{ hashFiles('built/aot/generated_cpp.tar.gz') }}-${{ github.run_id }}-batch4
 
       - name: Attempt complete AOT game link
+        if: steps.batch4.outcome == 'success'
         shell: bash
         run: |
           set -uo pipefail
           mkdir -p built/reports built/linux-x86_64
-          if ! test -s build-game/build.ninja; then
-            echo 'native_link_exit_code=not_configured' > built/reports/link_ci_status.txt
-            exit 0
-          fi
           code=0
-          timeout --kill-after=5s 5500s \
+          # C++ translation units are already compiled in four persistent batches.
+          # Only host runtime objects and final linker work should remain.
+          timeout --kill-after=5s 3600s \
             cmake --build build-game --target ps2EntryRunner --parallel 4 \
-            > "$RUNNER_TEMP/godhand-build.log" 2>&1 || code=$?
+            2>&1 | tee "$RUNNER_TEMP/godhand-link.log" || code=${PIPESTATUS[0]}
           echo "native_link_exit_code=$code" > built/reports/link_ci_status.txt
           printf '\nFIRST ERRORS\n' >> built/reports/link_ci_status.txt
           grep -n -m 50 -E 'FAILED:|error:|fatal error:|undefined reference|collect2:|ninja: build stopped' \
-            "$RUNNER_TEMP/godhand-build.log" >> built/reports/link_ci_status.txt || true
+            "$RUNNER_TEMP/godhand-link.log" >> built/reports/link_ci_status.txt || true
           printf '\nBUILD TAIL\n' >> built/reports/link_ci_status.txt
-          tail -n 100 "$RUNNER_TEMP/godhand-build.log" >> built/reports/link_ci_status.txt
+          tail -n 100 "$RUNNER_TEMP/godhand-link.log" >> built/reports/link_ci_status.txt
           if test "$code" -eq 0 && test -x build-game/ps2xRuntime/ps2EntryRunner; then
             cp build-game/ps2xRuntime/ps2EntryRunner built/linux-x86_64/GodHand_Recomp_Game
             chmod +x built/linux-x86_64/GodHand_Recomp_Game
             (cd built/linux-x86_64 && sha256sum GodHand_Recomp_Game > GodHand_Recomp_Game.sha256)
           fi
           exit 0
+
+      - name: Report batch results and compiler cache stats
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p built/reports
+          {
+            echo 'AOT compilation batch outcomes:'
+            echo 'batch_1=${{ steps.batch1.outcome }}'
+            echo 'batch_2=${{ steps.batch2.outcome }}'
+            echo 'batch_3=${{ steps.batch3.outcome }}'
+            echo 'batch_4=${{ steps.batch4.outcome }}'
+            for n in 1 2 3 4; do
+              log="$RUNNER_TEMP/godhand-batch-$n.log"
+              if test -s "$log"; then
+                echo "--- batch $n first errors ---"
+                grep -m 12 -E 'FAILED:|error:|fatal error:|undefined reference|ninja: build stopped' "$log" || true
+                echo "--- batch $n last progress ---"
+                tail -n 4 "$log"
+              fi
+            done
+            echo '--- ccache summary ---'
+            ccache --show-stats || true
+          } | tee built/reports/link_ci_batches.txt
+          if test '${{ steps.batch4.outcome }}' != 'success' && ! test -f built/reports/link_ci_status.txt; then
+            echo 'native_link_exit_code=skipped_due_to_batch_compilation_failure' > built/reports/link_ci_status.txt
+          fi
+
+      - name: Upload full compiler logs for debugging
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: godhand-compiler-logs-${{ github.run_id }}
+          if-no-files-found: ignore
+          retention-days: 7
+          path: |
+            ${{ runner.temp }}/godhand-batch-*.log
+            ${{ runner.temp }}/godhand-link.log
+            ${{ runner.temp }}/godhand-configure.log
 
       - name: Attempt actual GS frame under Xvfb only after game links
         shell: bash
