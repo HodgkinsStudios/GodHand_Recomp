@@ -44,3 +44,7 @@ Before running the local Actions workflow, install `libgtk-3-dev` and `libarchiv
 ## CP02 Settings (development)
 
 The GTK3 launcher includes a Settings dialog with remappable keyboard and SDL2 controller actions, hotplug detection and persistent screen mode (Windowed, Fullscreen and Fullscreen stretched). Settings are stored at `~/.config/HodgkinsStudios/GodHand_Recomp/settings.ini`. Install GTK3, libarchive **and SDL2** development packages. Input helper functions are separate from the UI and intended for eventual AOT game integration. Esc cycling within actual gameplay requires wiring the native game loop, which does not yet exist.
+
+## Install from prebuilt development binary (no compilation)
+
+After pulling the latest `main`, run `bash godhandLauncher/install_prebuilt.sh`. This verifies `built/linux-x86_64/SHA256SUMS.txt`, copies the GitHub-hosted Actions-built launcher to `~/.local/bin/` and creates a desktop launcher. It also installs a native game binary automatically if a verified executable is later added to `built/linux-x86_64/GodHand_Recomp_Game` (not available yet). GTK3, SDL2 and libarchive runtime libraries must be present on Ubuntu.

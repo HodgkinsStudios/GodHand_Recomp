@@ -134,3 +134,5 @@ The `godhandLauncher/` GTK3 frontend now provides a keyboard/controller Settings
 GitHub-hosted Actions builds and tests the launcher, then commits the verified Linux executable under `built/linux-x86_64/`. The `godhand-aot.yml` workflow reconstructs the existing `iso/GodHand.iso.part-*` LFS files on an ephemeral runner, locates the ISO9660 `SYSTEM.CNF` boot ELF, checks its MIPS ELF header, and attempts upstream analysis/static recompilation. Reports and any generated C++ archive go in `built/`, not a pretend playable game. [Built outputs](built/README.md).
 
 This is experimental; the public ISO and any AOT derivatives are visible to anyone with repository access. Only distribute material you are authorized to share. Making the repository private later does not undo previous public exposure.
+
+**Prebuilt Ubuntu launcher:** After pulling `main` and installing the GTK3, SDL2 and libarchive runtime libraries, run `bash godhandLauncher/install_prebuilt.sh`. No compilation is needed. This is a launcher build, not a playable God Hand AOT game.

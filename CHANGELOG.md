@@ -21,3 +21,4 @@
 - Windowed, fullscreen, stretched mode setting persisted and conveyed to prospective native game host.
 - Python ISO9660 boot ELF inspector with synthetic MIPS ELF tests.
 - GitHub-hosted workflows for launcher binary in `built/` and ISO analysis/recompilation attempt. No gameplay claims.
+- Added checksum-verified `godhandLauncher/install_prebuilt.sh` for direct install of hosted launcher binary, without local compilation.
