@@ -1,0 +1,45 @@
+name: GodHand Local Build
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  local-build:
+    if: github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, linux, x64, godhand-local]
+    timeout-minutes: 45
+
+    env:
+      GODHAND_ISO_PATH: ${{ vars.GODHAND_ISO_PATH }}
+
+    steps:
+      - name: Verify local God Hand ISO
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$GODHAND_ISO_PATH"
+          test -r "$GODHAND_ISO_PATH"
+          7z l "$GODHAND_ISO_PATH" > /dev/null
+          echo "Local God Hand ISO verified."
+
+      - name: Checkout GodHand_Recomp
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Configure PS2Recomp
+        run: |
+          cmake -S . -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_C_FLAGS=-msse4.1 \
+            -DCMAKE_CXX_FLAGS=-msse4.1
+
+      - name: Build PS2Recomp
+        run: cmake --build build --parallel 2
+
+      - name: Run tests
+        run: ./build/ps2xTest/ps2x_tests
