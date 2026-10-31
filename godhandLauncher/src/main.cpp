@@ -1,6 +1,7 @@
 #include "installer.hpp"
 #include "settings.hpp"
 #include "input.hpp"
+#include "game_locator.hpp"
 
 #include <gtk/gtk.h>
 
@@ -53,9 +54,13 @@ void set_install_state(Launcher& app) {
     app.installed = godhand::is_installed(app.data_dir);
     gtk_button_set_label(GTK_BUTTON(app.button), app.installed ? "Play" : "Load God Hand ISO");
     if (!app.installing) {
-        gtk_label_set_text(GTK_LABEL(app.status), app.installed
-            ? "Installation complete. Ready for an AOT game build."
-            : "Select your own God Hand PS2 ISO to install locally.");
+        std::error_code ec;
+        const auto exe = godhand::find_game_executable(
+            godhand::launcher_executable_directory(), fs::current_path(ec), app.data_dir);
+        gtk_label_set_text(GTK_LABEL(app.status), !app.installed
+            ? "Select your own God Hand PS2 ISO to install locally."
+            : exe ? "ISO installed. Native AOT binary found (gameplay not yet verified)."
+                  : "ISO installed. Native AOT game build is not available yet.");
     }
 }
 
@@ -118,15 +123,20 @@ void choose_iso(Launcher& app) {
 }
 
 void play(Launcher& app) {
-    // This program is a launcher only. A God Hand AOT native binary is not yet generated.
-    const auto executable = app.data_dir / "bin/GodHand_Recomp_Game";
     std::error_code ec;
-    if (!fs::is_regular_file(executable, ec)) {
+    const auto found = godhand::find_game_executable(
+        godhand::launcher_executable_directory(), fs::current_path(ec), app.data_dir);
+    if (!found) {
         show_error(app, "AOT game executable not available",
-            "The ISO and assets are installed, but God Hand has not yet been recompiled into a playable native executable.\n\n"
-            "The future game executable belongs at:\n" + executable.string());
+            "Your God Hand ISO and assets are installed successfully.\n\n"
+            "The native game has not yet compiled and linked into an executable. "
+            "When a real AOT build passes, the cloud build will place it beside the launcher at:\n"
+            "built/linux-x86_64/GodHand_Recomp_Game\n\n"
+            "No ISO reinstall is needed. Pull the latest main and run "
+            "godhandLauncher/install_prebuilt.sh to install newly built binaries.");
         return;
     }
+    const fs::path executable = *found;
     if (access(executable.c_str(), X_OK) != 0) {
         show_error(app, "AOT game executable is not executable",
             "Check the permissions of:\n" + executable.string());

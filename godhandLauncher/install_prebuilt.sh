@@ -14,10 +14,12 @@ mkdir -p "$HOME/.local/bin" "$HOME/.local/share/applications"
 install -m755 "$BINARY" "$HOME/.local/bin/GodHand_Recomp_Launcher"
 GAME="$ROOT/built/linux-x86_64/GodHand_Recomp_Game"
 if [[ -f "$GAME" && -x "$GAME" ]]; then
-  mkdir -p "$HOME/.local/share/HodgkinsStudios/GodHand_Recomp/bin"
-  install -m755 "$GAME" "$HOME/.local/share/HodgkinsStudios/GodHand_Recomp/bin/GodHand_Recomp_Game"
+  # The launcher finds the native game next to its own executable. This also
+  # works when launching from the desktop menu instead of the repository root.
+  install -m755 "$GAME" "$HOME/.local/bin/GodHand_Recomp_Game"
+  echo 'Installed native AOT executable beside the launcher (gameplay not yet verified).'
 else
-  echo 'Playable AOT game binary not present yet (launcher will display a clear message).'
+  echo 'Native AOT game binary not built yet. ISO installation remains valid.'
 fi
 cat > "$HOME/.local/share/applications/godhand-recomp.desktop" <<EOF
 [Desktop Entry]

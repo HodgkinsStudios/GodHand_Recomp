@@ -1,0 +1,197 @@
+name: GodHand - Link AOT and test first frame
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ps2xRuntime/**'
+      - 'ps2xIOP/**'
+      - 'tools/aot_compile_probe.py'
+      - 'tools/godhand_iso_pipeline.py'
+      - '.github/workflows/godhand-link.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: godhand-native-link-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  native-game:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - name: Checkout source without downloading retail disc
+        uses: actions/checkout@v6
+        with:
+          lfs: false
+          persist-credentials: true
+
+      - name: Restore only previously generated AOT sources from LFS
+        shell: bash
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='built/aot/generated_cpp.tar.gz' --exclude=''
+          test "$(stat -c %s built/aot/generated_cpp.tar.gz)" -gt 1000000
+          mkdir -p "$RUNNER_TEMP/godhand_aot" built/reports
+          tar -xzf built/aot/generated_cpp.tar.gz -C "$RUNNER_TEMP/godhand_aot"
+          test -s "$RUNNER_TEMP/godhand_aot/register_functions.cpp"
+          test -s "$RUNNER_TEMP/godhand_aot/ps2_recompiled_functions.h"
+          test -s "$RUNNER_TEMP/godhand_aot/ps2_recompiled_stubs.h"
+          find "$RUNNER_TEMP/godhand_aot" -name '*.cpp' | wc -l
+
+      - name: Install native runtime dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build g++ pkg-config git \
+            libgl-dev libx11-dev libxrandr-dev libxinerama-dev \
+            libxcursor-dev libxi-dev xvfb xauth
+
+      - name: Configure all generated guest C++ into native runner
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p built/reports
+          code=0
+          cmake -S . -B build-game -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_C_FLAGS=-msse4.1 -DCMAKE_CXX_FLAGS=-msse4.1 \
+            -DPS2X_BUILD_RECOMP=OFF -DPS2X_BUILD_ANALYZER=OFF \
+            -DPS2X_BUILD_RUNTIME=ON -DPS2X_BUILD_STUDIO=OFF -DPS2X_BUILD_TEST=OFF \
+            -DPS2X_ENABLE_DEBUG_UI=OFF -DPS2X_ENABLE_FFMPEG=OFF \
+            -DPS2X_ENABLE_RUNNER_UNITY_BUILD=OFF -DPS2X_ENABLE_RUNNER_PCH=OFF \
+            -DPS2X_AOT_FAST_COMPILE=ON \
+            -DPS2X_AOT_SOURCE_DIR="$RUNNER_TEMP/godhand_aot" \
+            > "$RUNNER_TEMP/godhand-configure.log" 2>&1 || code=$?
+          echo "native_configure_exit_code=$code" > built/reports/link_ci_configure.txt
+          tail -n 65 "$RUNNER_TEMP/godhand-configure.log" >> built/reports/link_ci_configure.txt
+
+      - name: Check generated C++ compilation across executable
+        shell: bash
+        run: |
+          set -uo pipefail
+          if test -s build-game/compile_commands.json; then
+            python3 tools/aot_compile_probe.py \
+              --compile-commands build-game/compile_commands.json \
+              --generated-dir "$RUNNER_TEMP/godhand_aot" \
+              --output built/reports/link_ci_compile_probe.json \
+              --limit 24 --timeout 90 --workers 4 || true
+          else
+            echo '{"selected_translation_units":0,"reason":"native CMake configure failed"}' \
+              > built/reports/link_ci_compile_probe.json
+          fi
+
+      - name: Attempt complete AOT game link
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p built/reports built/linux-x86_64
+          if ! test -s build-game/build.ninja; then
+            echo 'native_link_exit_code=not_configured' > built/reports/link_ci_status.txt
+            exit 0
+          fi
+          code=0
+          timeout --kill-after=5s 5500s \
+            cmake --build build-game --target ps2EntryRunner --parallel 4 \
+            > "$RUNNER_TEMP/godhand-build.log" 2>&1 || code=$?
+          echo "native_link_exit_code=$code" > built/reports/link_ci_status.txt
+          printf '\nFIRST ERRORS\n' >> built/reports/link_ci_status.txt
+          grep -n -m 50 -E 'FAILED:|error:|fatal error:|undefined reference|collect2:|ninja: build stopped' \
+            "$RUNNER_TEMP/godhand-build.log" >> built/reports/link_ci_status.txt || true
+          printf '\nBUILD TAIL\n' >> built/reports/link_ci_status.txt
+          tail -n 100 "$RUNNER_TEMP/godhand-build.log" >> built/reports/link_ci_status.txt
+          if test "$code" -eq 0 && test -x build-game/ps2xRuntime/ps2EntryRunner; then
+            cp build-game/ps2xRuntime/ps2EntryRunner built/linux-x86_64/GodHand_Recomp_Game
+            chmod +x built/linux-x86_64/GodHand_Recomp_Game
+            (cd built/linux-x86_64 && sha256sum GodHand_Recomp_Game > GodHand_Recomp_Game.sha256)
+          fi
+          exit 0
+
+      - name: Attempt actual GS frame under Xvfb only after game links
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p built/reports built/frames
+          game=build-game/ps2xRuntime/ps2EntryRunner
+          if ! test -x "$game"; then
+            echo 'native_executable=not_built' > built/reports/link_ci_frame.txt
+            exit 0
+          fi
+          if ! git lfs pull --include='iso/GodHand.iso.part-*' --exclude=''; then
+            echo 'native_executable=built;iso_lfs_download=failed' > built/reports/link_ci_frame.txt
+            exit 0
+          fi
+          cat iso/GodHand.iso.part-* > "$RUNNER_TEMP/GodHand.iso"
+          mkdir -p "$RUNNER_TEMP/game"
+          if ! python3 tools/godhand_iso_pipeline.py --iso "$RUNNER_TEMP/GodHand.iso" \
+              --out "$RUNNER_TEMP/game" --extract-elf; then
+            echo 'native_executable=built;boot_elf_extraction=failed' > built/reports/link_ci_frame.txt
+            exit 0
+          fi
+          status=0
+          export GODHAND_GS_FRAME_PPM="$RUNNER_TEMP/godhand_first_frame.ppm"
+          export LIBGL_ALWAYS_SOFTWARE=1
+          timeout --kill-after=5s 90s xvfb-run -a -s '-screen 0 1280x720x24' \
+            "$game" "$RUNNER_TEMP/game/boot.elf" \
+            > "$RUNNER_TEMP/godhand-execution.log" 2>&1 || status=$?
+          printf 'native_executable=built\nexecution_exit_code=%s\n' "$status" > built/reports/link_ci_frame.txt
+          tail -n 100 "$RUNNER_TEMP/godhand-execution.log" >> built/reports/link_ci_frame.txt
+          if test -s "$GODHAND_GS_FRAME_PPM"; then
+            cp "$GODHAND_GS_FRAME_PPM" built/frames/first_real_gs_frame.ppm
+            echo 'nonuniform_guest_gs_frame=yes' >> built/reports/link_ci_frame.txt
+          else
+            echo 'nonuniform_guest_gs_frame=no' >> built/reports/link_ci_frame.txt
+          fi
+
+      - name: Publish compiler reports and genuine game binary to main
+        if: always() && github.ref == 'refs/heads/main'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          staging="$(mktemp -d)"
+          trap 'rm -rf "$staging"' EXIT
+          mkdir -p "$staging/reports" "$staging/linux-x86_64" "$staging/frames"
+          cp -f built/reports/link_ci_* "$staging/reports/" 2>/dev/null || true
+          for item in GodHand_Recomp_Game GodHand_Recomp_Game.sha256; do
+            if test -f "built/linux-x86_64/$item"; then
+              cp "built/linux-x86_64/$item" "$staging/linux-x86_64/"
+            fi
+          done
+          if test -s built/frames/first_real_gs_frame.ppm; then
+            cp built/frames/first_real_gs_frame.ppm "$staging/frames/"
+          fi
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            mkdir -p built/reports built/linux-x86_64 built/frames
+            cp -f "$staging/reports/"* built/reports/ 2>/dev/null || true
+            cp -f "$staging/linux-x86_64/"* built/linux-x86_64/ 2>/dev/null || true
+            cp -f "$staging/frames/"* built/frames/ 2>/dev/null || true
+            git add -f built/reports/link_ci_* 2>/dev/null || true
+            for item in GodHand_Recomp_Game GodHand_Recomp_Game.sha256; do
+              if test -f "built/linux-x86_64/$item"; then
+                git add -f "built/linux-x86_64/$item"
+              fi
+            done
+            if test -s built/frames/first_real_gs_frame.ppm; then
+              git add -f built/frames/first_real_gs_frame.ppm
+            fi
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m 'build: record God Hand native game link and frame test [skip ci]'
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          echo 'Failed to publish built files after 3 attempts' >&2
+          exit 1
+
+      - name: Fail job if native game has not linked yet
+        if: always()
+        run: |
+          test -x build-game/ps2xRuntime/ps2EntryRunner || {
+            echo 'Native game executable is not yet built. See built/reports/link_ci_status.txt.'
+            exit 1
+          }

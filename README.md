@@ -153,5 +153,13 @@ When the generated AOT C++ compiles correctly, start the hosted `GodHand - ISO b
 ### CP10 generated-code compiler triage
 The hosted AOT workflow tests 24 generated translation units (boot entry, function table, suspicious function regions and address-stratified samples) before attempting the full runtime link. Its `built/reports/native_compile_probe.json` is diagnostic only; a successful sample does **not** mean all 9,231 units compile, that God Hand boots, or that GS frames have rendered. See `docs/CP10_BUILD_PROBE.md`.
 
-### CP11 first-boot native compilation
-The cloud AOT build sets `PS2X_AOT_FAST_COMPILE=ON`, reducing optimization/LTO overhead on all generated guest C++ files without omitting any functions. Regular release/toolchain configurations remain unchanged. Compiler success is not evidence of real game frames.
+### CP11 native first-boot build mode
+The AOT-hosted workflow uses `PS2X_AOT_FAST_COMPILE=ON` to avoid expensive optimization and per-file LTO on thousands of generated guest translation units during first-frame debugging. It still compiles all generated functions, and keeps normal Release behavior for toolchain and launcher builds. The generated C++ is incomplete until all invalid guest code analysis and native runtime issues are resolved.
+
+## CP12 — Native game build and launcher layout
+
+The desktop launcher resolves `GodHand_Recomp_Game` **next to its own executable first**, then from the project checkout's `built/linux-x86_64/` folder, with a fallback for older `.local/share` installations. The ISO installation remains entirely separate and does not need to be repeated when installing updated binaries.
+
+`GodHand - Link AOT and test first frame` is a distinct GitHub-hosted workflow that restores only the existing LFS generated-C++ archive for the native build. It saves failures under `built/reports/link_ci_*.txt` and only pushes `built/linux-x86_64/GodHand_Recomp_Game` after the full host executable compiles and links. After successful linkage, it fetches the ISO for the real GS framebuffer probe. This pipeline does **not** claim playability until guest execution produces a real frame.
+
+Install the most recent prebuilt launcher and (when it exists) game with `bash godhandLauncher/install_prebuilt.sh` after `git pull origin main`.

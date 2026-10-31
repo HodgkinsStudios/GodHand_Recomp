@@ -74,6 +74,14 @@
 - Added unit tests for wide range sampling, suspect inclusion, deduplication, parallel status reporting; 14 local Python tests passed.
 - No gameplay or guest framebuffer confirmed in CP10; pending hosted workflow verification.
 
-## CP11 — First-boot AOT compile speed (2026-10-31)
-- Added opt-in `PS2X_AOT_FAST_COMPILE` to compile all generated guest functions at -O0/-g0/-fno-lto (MSVC /Od /GL-) in the hosted game workflow; default remains OFF.
-- Verified GCC flags order and successful miniature CMake/Ninja link; 16 local Python tests pass. Full God Hand native link and guest frames not yet verified.
+## CP11 — Faster first-boot AOT compilation (2026-10-31)
+- Added opt-in `PS2X_AOT_FAST_COMPILE=ON` for generated guest source files, leaving normal builds unmodified; preserves entire generated AOT source list.
+- GitHub-hosted native-game workflow enables fast compile while retaining SSE4.1 runtime flags and complete native linkage.
+- Verified in local isolated CMake/Ninja build that source `-O0 -g0 -fno-lto` overrides Release `-O3 -flto`, and binary links. Added regression tests.
+- No real frame demonstrated; pending hosted native recompilation.
+
+## CP12 — Launcher sibling binary lookup / native link retry
+- Resolve game executable next to launcher and in checkout `built/linux-x86_64`; legacy fallback retained.
+- Prebuilt installer copies game next to launcher in `~/.local/bin` when it is genuinely built.
+- Added separate hosted AOT link workflow using generated C++ LFS archive; ISO fetched only after game successfully links.
+- Added locator unit test. Play remains unavailable until an actual native game executable exists.
