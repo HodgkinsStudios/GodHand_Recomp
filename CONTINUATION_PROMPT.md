@@ -28,3 +28,7 @@ Optional real GS capture now exists (`ps2_frame_capture.cpp` called after GS cop
 
 ## Latest CP05 measured blockers
 Probe from CP03 hosted run: 2/3 C++ compile units pass, remaining entry_3b6990 failed due missing SSE4.1. CP05 workflow adds `-DCMAKE_C_FLAGS=-msse4.1 -DCMAKE_CXX_FLAGS=-msse4.1` and PCH off; read next `built/reports/native_compile_probe.json` to verify 3/3. If passed, CI attempts full native link automatically on workflow push; inspect built/reports/native_link_status.txt. Unhandled report: 2963 events, 1735 in sub_003C01D8 and 813 in sub_003FDD40; these appear to span non-code/data. Prioritize robust CFG/function-boundary analysis, not unsupported-opcode stubs. Once binary links, Xvfb test checks for real nonuniform GS frame. Do not claim frames from pipeline infrastructure.
+
+
+## CP06 GitHub CI race repair
+An earlier AOT job failed publishing reports due an add/add conflict while rebasing `built/aot/generated_cpp.tar.gz` and built/reports files. CP06 CI publish script stages only built outputs outside Git tree, resets to fresh origin/main, reapplies and retries push without rewriting source. Wait for current hosted work to complete, then read next reports. Never force push or revert current source to older CI snapshot.

@@ -34,3 +34,6 @@ The hosted Actions workflow has an optional (`attempt_full_native_build=true`) f
 
 ### CP05 real AOT compile results and fix
 GitHub-hosted CP03 compiler probe selected three real generated translation units: `sub_00100008_0x100008.cpp` and `register_functions.cpp` compiled, while `entry_3b6990_0x3b6a00.cpp` failed because `-msse4.1` was missing during native configure. Added SSE4.1 C/C++ compiler options to the native game configuration and disabled PCH for direct compiler probes. The structured AOT report counted **2,963 unhandled instruction events**, with **1,735** in `sub_003C01D8` and **813** in `sub_003FDD40`, strongly indicating some overly broad function boundaries/data decoded as code. Game not playable; no real frames verified. An automatic full native link attempt is gated on the real compile probe succeeding on push, and when linked it will attempt an Xvfb boot and real guest framebuffer capture.
+
+## CP06 CI artifact reliability
+The CP04-era hosted run failed at its final push because multiple Actions builds rebased overlapping LFS `built/` outputs. CP06 replaces binary rebase with safe staging+fresh-head commit and up to three retries; AOT jobs are serialized on the latest workflow. This is CI reliability work and does not prove an executable or rendered frames.

@@ -48,3 +48,8 @@
 - Serialized AOT workflow runs to avoid simultaneous source/archive update races.
 - This is future execution infrastructure; a native God Hand executable and real frame have **not** been verified yet.
 - The first real runtime compile probe passed 2/3 generated files; corrected missing `-msse4.1` for native builds. Added gated full native link attempt on push after the probe passes, followed by Xvfb frame capture if linked. AOT diagnostics identified 2,963 unsupported events, mostly in two likely overextended function spans.
+
+## CP06 — Reliable hosted AOT artifact publishing
+- Fixed Git LFS rebase conflicts when earlier hosted jobs concurrently updated `built/aot/generated_cpp.tar.gz` and diagnostic JSON: isolate only the new build outputs, fetch/reset clean latest main, copy staged outputs back, commit, and retry on a racing push.
+- Continued to serialize hosted AOT jobs to prevent concurrent writes to `main`.
+- Verified revised CI publishing shell syntax locally; no game frame confirmed.

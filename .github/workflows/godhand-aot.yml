@@ -215,14 +215,47 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git lfs install --local
-          git lfs track 'built/aot/*.tar.gz'
-          git add .gitattributes
-          git add -f built/reports/ built/aot/ built/frames/ built/linux-x86_64/GodHand_Recomp_Game 2>/dev/null || \
-            git add -f built/reports/ built/aot/ built/frames/ 2>/dev/null || \
-            git add -f built/reports/ built/aot/
-          if git diff --cached --quiet; then echo 'Nothing to commit'; exit 0; fi
-          git commit -m 'build: ISO analysis and AOT diagnostics [skip ci]'
-          git fetch origin main
-          git rebase origin/main
-          git push origin HEAD:main
+          # Keep CI products outside the working Git tree while fetching main.
+          # Rebasing large generated tarballs caused LFS add/add conflicts when
+          # multiple CI jobs were finishing together in CP04.
+          STAGING="$(mktemp -d)"
+          trap 'rm -rf "$STAGING"' EXIT
+          for name in reports aot frames; do
+            if test -d "built/$name"; then
+              mkdir -p "$STAGING/$name"
+              cp -a "built/$name/." "$STAGING/$name/"
+            fi
+          done
+          if test -f built/linux-x86_64/GodHand_Recomp_Game; then
+            mkdir -p "$STAGING/linux-x86_64"
+            cp -a built/linux-x86_64/GodHand_Recomp_Game "$STAGING/linux-x86_64/"
+          fi
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            for name in reports aot frames; do
+              if test -d "$STAGING/$name"; then
+                mkdir -p "built/$name"
+                cp -a "$STAGING/$name/." "built/$name/"
+              fi
+            done
+            if test -f "$STAGING/linux-x86_64/GodHand_Recomp_Game"; then
+              mkdir -p built/linux-x86_64
+              cp -a "$STAGING/linux-x86_64/GodHand_Recomp_Game" built/linux-x86_64/
+            fi
+            git lfs install --local
+            git lfs track 'built/aot/*.tar.gz'
+            git add .gitattributes
+            for name in reports aot frames; do
+              if test -d "built/$name"; then git add -f "built/$name/"; fi
+            done
+            if test -f built/linux-x86_64/GodHand_Recomp_Game; then
+              git add -f built/linux-x86_64/GodHand_Recomp_Game
+            fi
+            if git diff --cached --quiet; then echo 'No changed build outputs'; exit 0; fi
+            git commit -m 'build: refresh God Hand AOT diagnostics [skip ci]'
+            if git push origin HEAD:main; then exit 0; fi
+            echo "New main commit arrived; retrying artifact-only update ($attempt/3)"
+          done
+          echo 'Could not publish diagnostics after 3 attempts' >&2
+          exit 1
