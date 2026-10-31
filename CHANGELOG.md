@@ -53,3 +53,8 @@
 - Fixed Git LFS rebase conflicts when earlier hosted jobs concurrently updated `built/aot/generated_cpp.tar.gz` and diagnostic JSON: isolate only the new build outputs, fetch/reset clean latest main, copy staged outputs back, commit, and retry on a racing push.
 - Continued to serialize hosted AOT jobs to prevent concurrent writes to `main`.
 - Verified revised CI publishing shell syntax locally; no game frame confirmed.
+
+## CP07 — Preserve the first full native game build failure
+- CP05's hosted run confirmed **3/3** real generated entry/registration translation units compile with SSE4.1, then the full `ps2EntryRunner` build failed. No native game executable or GS frame has been demonstrated.
+- The `Attempt full native executable` step previously inherited the GitHub shell's `-e` flag and exited before recording the redirected `native-build.log`. Corrected to capture nonzero exit codes explicitly and publish the first compiler errors and the final log tail to `built/reports/native_link_status.txt`.
+- Applied the same exit-code preservation to native CMake configuration and Xvfb game execution. Added focused regression tests for inherited `bash -e` behavior.

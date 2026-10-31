@@ -116,6 +116,7 @@ jobs:
             echo 'Generated AOT headers or registration table unavailable' > built/reports/native_configure.txt
             exit 0
           fi
+          STATUS=0
           timeout 1200 cmake -S . -B build-game -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_C_FLAGS=-msse4.1 -DCMAKE_CXX_FLAGS=-msse4.1 \
@@ -124,8 +125,7 @@ jobs:
             -DPS2X_ENABLE_DEBUG_UI=OFF -DPS2X_ENABLE_FFMPEG=OFF \
             -DPS2X_ENABLE_RUNNER_UNITY_BUILD=OFF -DPS2X_ENABLE_RUNNER_PCH=OFF \
             -DPS2X_AOT_SOURCE_DIR="$OUTPUT" \
-            > "$RUNNER_TEMP/native-configure.log" 2>&1
-          STATUS=$?
+            > "$RUNNER_TEMP/native-configure.log" 2>&1 || STATUS=$?
           printf 'cmake_configure_exit_code=%s\n' "$STATUS" > built/reports/native_configure.txt
           tail -n 100 "$RUNNER_TEMP/native-configure.log" >> built/reports/native_configure.txt
           exit 0
@@ -167,11 +167,17 @@ jobs:
             echo 'native_link=skipped_until_compile_probe_passes' > built/reports/native_link_status.txt
             exit 0
           fi
+          STATUS=0
           timeout 3600 cmake --build build-game --target ps2EntryRunner --parallel 2 \
-            > "$RUNNER_TEMP/native-build.log" 2>&1
-          STATUS=$?
+            > "$RUNNER_TEMP/native-build.log" 2>&1 || STATUS=$?
           printf 'native_link_exit_code=%s\n' "$STATUS" > built/reports/native_link_status.txt
-          tail -n 100 "$RUNNER_TEMP/native-build.log" >> built/reports/native_link_status.txt
+          # Record both the first compiler error and the final build summary.
+          # The hosted runner is ephemeral; redirected logs vanish after this job.
+          printf '\nFIRST BUILD ERRORS\n' >> built/reports/native_link_status.txt
+          grep -n -m 35 -E 'FAILED:|error:|fatal error:|undefined reference|collect2:|ninja: build stopped' \
+            "$RUNNER_TEMP/native-build.log" >> built/reports/native_link_status.txt || true
+          printf '\nBUILD LOG TAIL\n' >> built/reports/native_link_status.txt
+          tail -n 160 "$RUNNER_TEMP/native-build.log" >> built/reports/native_link_status.txt
           if [ "$STATUS" -eq 0 ] && test -x build-game/ps2xRuntime/ps2EntryRunner; then
             mkdir -p built/linux-x86_64
             cp build-game/ps2xRuntime/ps2EntryRunner built/linux-x86_64/GodHand_Recomp_Game
@@ -192,11 +198,11 @@ jobs:
           # The capture hook accepts only nonuniform pixels returned from GS.
           # A window opening or a blank fallback frame is NOT a frame pass.
           OUTPUT="$RUNNER_TEMP/real-gs-frame.ppm"
+          STATUS=0
           GODHAND_GS_FRAME_PPM="$OUTPUT" LIBGL_ALWAYS_SOFTWARE=1 \
             timeout --kill-after=5s 75s xvfb-run -a \
             -s '-screen 0 1280x720x24' "$GAME" "$RUNNER_TEMP/game/boot.elf" \
-            > "$RUNNER_TEMP/native-execution.log" 2>&1
-          STATUS=$?
+            > "$RUNNER_TEMP/native-execution.log" 2>&1 || STATUS=$?
           printf 'native_executable=present\nexit_code=%s\n' "$STATUS" \
             > built/reports/native_frame_status.txt
           tail -n 100 "$RUNNER_TEMP/native-execution.log" \

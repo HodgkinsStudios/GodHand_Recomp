@@ -9,3 +9,5 @@ CP04: Optional true GS framebuffer single-shot PPM capture; synthetic C++ pixel 
 CP05: Hosted optional native boot under Xvfb; first nonuniform guest GS PPM capture and native execution status pushed to built; AOT workflow serialized. Game not yet proven playable.
 CP05+: Hosted 2/3 actual AOT CPP compiled; identified SSE4.1 mismatch, fixed native CMake flags; added gated full link on push; 2963 decode errors concentrated in 2 huge inferred functions.
 CP06: Fix hosted LFS artifact commit rebase collisions via atomic staging/reset+retry; serialized AOT uploads; preserving only built/ on main.
+
+CP07: AOT sample 3/3 C++ compile, full native build failed. Preserve all failed native build/configure/Xvfb logs despite Actions bash -e; add CI regression tests. No game frames.

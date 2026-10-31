@@ -32,3 +32,6 @@ Probe from CP03 hosted run: 2/3 C++ compile units pass, remaining entry_3b6990 f
 
 ## CP06 GitHub CI race repair
 An earlier AOT job failed publishing reports due an add/add conflict while rebasing `built/aot/generated_cpp.tar.gz` and built/reports files. CP06 CI publish script stages only built outputs outside Git tree, resets to fresh origin/main, reapplies and retries push without rewriting source. Wait for current hosted work to complete, then read next reports. Never force push or revert current source to older CI snapshot.
+
+## CP07 — Full native compiler error visibility
+CP05 Actions run `41241502970` compiled all three selected real AOT translation units (`native_compile_probe.json`: 3/3). The first full native `ps2EntryRunner` build step failed, **without** producing a game executable or any frames. The failure's redirected `native-build.log` was lost because GitHub's bash shell inherits `-e` and the nonzero build command aborted before writing `native_link_status.txt`. CP07 fixes the error-handling path, retains the exit status and compiler error lines, and checks the same pattern for configure/boot probes. After the latest AOT workflow completes, read `built/reports/native_link_status.txt`, fix the concrete first compiler errors, repeat until successfully linking. Do not infer boot success from `3/3` probes.

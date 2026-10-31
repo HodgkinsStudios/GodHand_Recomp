@@ -37,3 +37,6 @@ GitHub-hosted CP03 compiler probe selected three real generated translation unit
 
 ## CP06 CI artifact reliability
 The CP04-era hosted run failed at its final push because multiple Actions builds rebased overlapping LFS `built/` outputs. CP06 replaces binary rebase with safe staging+fresh-head commit and up to three retries; AOT jobs are serialized on the latest workflow. This is CI reliability work and does not prove an executable or rendered frames.
+
+## CP07 measured native AOT status
+Real God Hand ELF `SLUS_215.03`; 9,231 generated C++ units; 2,963 translation warnings. GitHub-hosted CP05 compiler probe passed all 3 selected translation units (entry `sub_00100008`, `register_functions`, additional `entry_3b6990`). Full native `ps2EntryRunner` build failed before linking, so no game executable or GS frame has been confirmed. CP07 corrects shell `-e` failure-reporting so the next hosted workflow preserves the exact compiler/linker failure in `built/reports/native_link_status.txt`.
