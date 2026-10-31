@@ -15,3 +15,4 @@ CP07: AOT sample 3/3 C++ compile, full native build failed. Preserve all failed 
 CP08: Fix CP04 GS capture literal raw-newline C++ compile regression seen in Linux GCC/Clang + Windows; C++17 syntax regression tested, 11 Python tests pass.
 
 CP09: Trigger AOT GitHub hosted tests on runtime/recompiler/analyzer/IOP/CMake changes; 12 local Python tests pass.
+CP10: Stratified AOT compiler probe (entry, registry, 3 worst decode regions, evenly sampled guest addresses); 24 probes, 2 workers, 90s per TU; 14 Python tests pass. Hosted game result pending.

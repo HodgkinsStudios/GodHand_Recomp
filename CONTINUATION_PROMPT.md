@@ -41,3 +41,6 @@ A GitHub-hosted `build` run 41241717761 failed all three jobs: Linux GCC, Clang,
 
 ## CP09 — Required AOT verification after core edits
 The GitHub AOT workflow previously only ran for changes to the analysis script/workflow, so CP08 C++ fixes were not automatically native-tested. CP09 widens push paths for runtime/recompiler/analyzer/IOP/CMake. Watch the new hosted AOT run and check `built/reports/native_link_status.txt` (new CP07 log-capture fix). Native game link and frame generation are unverified until new run demonstrates both.
+
+## CP10 — Stratified generated-code compiler triage
+`tools/aot_compile_probe.py` now checks 24 translation units spread across ELF addresses and 3 high-error suspects with bounded 2-worker compilation; run `python3 -m unittest discover -s tools/tests -v`. Compare `built/reports/native_compile_probe.json` and `native_link_status.txt`; do not assume game works from compiler success. Hosted CI re-downloads large ISO LFS parts and may take time. No confirmed game frames.

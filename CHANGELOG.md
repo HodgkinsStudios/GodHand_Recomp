@@ -67,3 +67,9 @@
 ## CP09 — Native rebuild triggers
 - Expanded AOT workflow push filters to cover changes in ps2xRuntime, ps2xRecomp, ps2xAnalyzer, ps2xIOP, root CMake and all pipeline tests. Previously a core runtime fix did not trigger ISO-native validation automatically.
 - Added workflow regression guard; 12 Python tests pass. Next hosted run must exercise the corrected GS capture C++ source against the full generated God Hand AOT code.
+
+## CP10 — Broader AOT compiler validation (2026-10-31)
+- Improved real-code compilation probe from 3 adjacent function files to up to 24 distributed samples, including entry, registry, generated entry, and three high-error inferred functions.
+- Added two-worker bounded parallel compilation and 90-second per-TU timeout to isolate generated-code compile errors before full 9,231-unit compilation.
+- Added unit tests for wide range sampling, suspect inclusion, deduplication, parallel status reporting; 14 local Python tests passed.
+- No gameplay or guest framebuffer confirmed in CP10; pending hosted workflow verification.
