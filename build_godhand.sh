@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # Incremental native God Hand AOT build. Run with: bash ./build_godhand.sh
 set -Eeuo pipefail
-ROOT="$(cd "$(dirname "\${BASH_SOURCE[0]}")" && pwd)"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT"
-ISO="\${GODHAND_ISO:-/home/hodgkinsstudios/Desktop/Roms/PS2/God Hand (USA).iso}"
-JOBS="\${GODHAND_JOBS:-2}"
+ISO="${GODHAND_ISO:-/home/hodgkinsstudios/Desktop/Roms/PS2/God Hand (USA).iso}"
+JOBS="${GODHAND_JOBS:-2}"
 WORK="$ROOT/.godhand-local"
 AOT="$WORK/aot"
 GAME_WORK="$WORK/game"
@@ -130,8 +130,8 @@ if ((RUN)); then
     mkdir -p "$GAME_WORK"
     python3 tools/godhand_iso_pipeline.py --iso "$ISO" --out "$GAME_WORK" --extract-elf
   fi
-  export GODHAND_DATA_DIR="\${GODHAND_DATA_DIR:-$HOME/.local/share/HodgkinsStudios/GodHand_Recomp}"
-  export GODHAND_GS_FRAME_PPM="\${GODHAND_GS_FRAME_PPM:-$GODHAND_DATA_DIR/first_real_gs_frame.ppm}"
+  export GODHAND_DATA_DIR="${GODHAND_DATA_DIR:-$HOME/.local/share/HodgkinsStudios/GodHand_Recomp}"
+  export GODHAND_GS_FRAME_PPM="${GODHAND_GS_FRAME_PPM:-$GODHAND_DATA_DIR/first_real_gs_frame.ppm}"
   mkdir -p "$(dirname "$GODHAND_GS_FRAME_PPM")"
   exec "$GAME" "$GAME_WORK/boot.elf"
 fi
