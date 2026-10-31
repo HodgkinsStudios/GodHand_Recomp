@@ -1,0 +1,100 @@
+  - Uses 64-bit operations
+Function sub_003BC5E0 signature analysis:
+  - Uses approximately 4 parameter(s)
+Function sub_003BC5F8 signature analysis:
+  - Uses approximately 21 parameter(s)
+  - Uses 64-bit operations
+Function sub_003BC610 signature analysis:
+  - Uses approximately 5 parameter(s)
+  - Uses 64-bit operations
+Function sub_003BC628 signature analysis:
+  - Uses approximately 28 parameter(s)
+  - Uses floating point operations
+  - Uses 64-bit operations
+  - Returns a value
+Function sub_003BF958 signature analysis:
+  - Uses approximately 4 parameter(s)
+Function sub_003BF970 signature analysis:
+  - Uses 64-bit operations
+Function sub_003BF988 signature analysis:
+  - Uses 64-bit operations
+Function sub_003BF9A0 signature analysis:
+  - Uses approximately 21 parameter(s)
+  - Uses 64-bit operations
+Function sub_003BFB48 signature analysis:
+  - Uses approximately 28 parameter(s)
+  - Uses 64-bit operations
+Function sub_003BFC98 signature analysis:
+  - Uses approximately 25 parameter(s)
+  - Uses 64-bit operations
+  - Returns a value
+Function sub_003BFFD0 signature analysis:
+  - Uses approximately 4 parameter(s)
+Function sub_003BFFE8 signature analysis:
+  - Uses 64-bit operations
+Function sub_003C0000 signature analysis:
+  - Uses 64-bit operations
+Function sub_003C0018 signature analysis:
+  - Uses approximately 21 parameter(s)
+  - Uses 64-bit operations
+Function sub_003C0138 signature analysis:
+  - Uses approximately 4 parameter(s)
+  - Returns a value
+Function sub_003C0160 signature analysis:
+  - Uses approximately 22 parameter(s)
+  - Uses 64-bit operations
+Function sub_003C0188 signature analysis:
+  - Uses approximately 5 parameter(s)
+  - Uses 64-bit operations
+Function sub_003C01B0 signature analysis:
+  - Uses 64-bit operations
+Function sub_003C01D8 signature analysis:
+  - Uses approximately 28 parameter(s)
+  - Uses floating point operations
+  - Uses 64-bit operations
+  - Returns a value
+Function sub_003FA1F8 signature analysis:
+  - Uses approximately 23 parameter(s)
+  - Uses 64-bit operations
+Function sub_003FAE3C signature analysis:
+  - Uses approximately 3 parameter(s)
+  - Uses 64-bit operations
+Function sub_003FAF20 signature analysis:
+  - Uses approximately 26 parameter(s)
+  - Uses 64-bit operations
+  - Returns a value
+Function sub_003FB6E8 signature analysis:
+  - Uses approximately 26 parameter(s)
+  - Uses 64-bit operations
+  - Returns a value
+Function sub_003FBEC0 signature analysis:
+  - Uses approximately 26 parameter(s)
+  - Uses 64-bit operations
+  - Returns a value
+Function sub_003FC7B8 signature analysis:
+  - Uses approximately 28 parameter(s)
+  - Uses 64-bit operations
+  - Returns a value
+Function sub_003FD280 signature analysis:
+  - Uses approximately 28 parameter(s)
+  - Uses 64-bit operations
+  - Returns a value
+Function sub_003FDD40 signature analysis:
+  - Uses approximately 28 parameter(s)
+  - Uses floating point operations
+  - Uses 64-bit operations
+  - Returns a value
+Optimizing patches...
+Analysis completed
+- 127 library functions to stub
+- 266 detected library functions without runtime handlers
+- skip output retained for compatibility; analyzer does not auto-skip functions
+- 26 potential patches identified
+- 7 jump tables detected
+Generated TOML configuration: /home/runner/work/_temp/game/godhand.toml
+
+Analysis complete
+TOML configuration has been written to: /home/runner/work/_temp/game/godhand.toml
+
+You can now use this configuration with PS2Recomp:
+  ps2recomp /home/runner/work/_temp/game/godhand.toml

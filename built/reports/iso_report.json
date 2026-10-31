@@ -1,0 +1,14 @@
+{
+  "iso_file_count": 7,
+  "boot_file": "SLUS_215.03",
+  "boot_elf": {
+    "class": "ELF32",
+    "endianness": "little",
+    "architecture": "MIPS",
+    "entry_point": "0x00100008",
+    "sha256": "1742f95bef65bdb2aa57b7a77df4ac7619a092e9646e1ea325bc32ec8a64f3cd",
+    "bytes": 3607008
+  },
+  "aot_ready": false,
+  "game_playable": false
+}
