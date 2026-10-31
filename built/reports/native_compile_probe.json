@@ -1,7 +1,7 @@
 {
   "selected_translation_units": 3,
-  "successful_translation_units": 2,
-  "failed_translation_units": 1,
+  "successful_translation_units": 3,
+  "failed_translation_units": 0,
   "records": [
     {
       "source": "sub_00100008_0x100008.cpp",
@@ -15,8 +15,8 @@
     },
     {
       "source": "entry_3b6990_0x3b6a00.cpp",
-      "return_code": 1,
-      "diagnostic": "In file included from /usr/lib/gcc/x86_64-linux-gnu/13/include/immintrin.h:39,\n                 from /home/runner/work/GodHand_Recomp/GodHand_Recomp/ps2xRuntime/include/ps2_runtime_macros.h:12,\n                 from /home/runner/work/GodHand_Recomp/GodHand_Recomp/build-game/ps2xRuntime/CMakeFiles/ps2EntryRunner.dir/cmake_pch.hxx:5,\n                 from <command-line>:\n/usr/lib/gcc/x86_64-linux-gnu/13/include/smmintrin.h: In function \u2018Ps2ExtractEpi32(long long __vector(2), int)\u2019:\n/usr/lib/gcc/x86_64-linux-gnu/13/include/smmintrin.h:448:1: error: inlining failed in call to \u2018always_inline\u2019 \u2018_mm_extract_epi32(long long __vector(2), int)\u2019: target specific option mismatch\n  448 | _mm_extract_epi32 (__m128i __X, const int __N)\n      | ^~~~~~~~~~~~~~~~~\n/home/runner/work/GodHand_Recomp/GodHand_Recomp/ps2xRuntime/include/ps2_runtime_macros.h:22:33: note: called from here\n   22 |         return _mm_extract_epi32(v, 0);\n      |                ~~~~~~~~~~~~~~~~~^~~~~~\n/usr/lib/gcc/x86_64-linux-gnu/13/include/smmintrin.h:448:1: error: inlining failed in call to \u2018always_inline\u2019 \u2018_mm_extract_epi32(long long __vector(2), int)\u2019: target specific option mismatch\n  448 | _mm_extract_epi32 (__m128i __X, const int __N)\n      | ^~~~~~~~~~~~~~~~~\n/home/runner/work/GodHand_Recomp/GodHand_Recomp/ps2xRuntime/include/ps2_runtime_macros.h:24:33: note: called from here\n   24 |         return _mm_extract_epi32(v, 1);\n      |                ~~~~~~~~~~~~~~~~~^~~~~~\n/usr/lib/gcc/x86_64-linux-gnu/13/include/smmintrin.h:448:1: error: inlining failed in call to \u2018always_inline\u2019 \u2018_mm_extract_epi32(long long __vector(2), int)\u2019: target specific option mismatch\n  448 | _mm_extract_epi32 (__m128i __X, const int __N)\n      | ^~~~~~~~~~~~~~~~~\n/home/runner/work/GodHand_Recomp/GodHand_Recomp/ps2xRuntime/include/ps2_runtime_macros.h:26:33: note: called from here\n   26 |         return _mm_extract_epi32(v, 2);\n      |                ~~~~~~~~~~~~~~~~~^~~~~~\n/usr/lib/gcc/x86_64-linux-gnu/13/include/smmintrin.h:448:1: error: inlining failed in call to \u2018always_inline\u2019 \u2018_mm_extract_epi32(long long __vector(2), int)\u2019: target specific option mismatch\n  448 | _mm_extract_epi32 (__m128i __X, const int __N)\n      | ^~~~~~~~~~~~~~~~~\n/home/runner/work/GodHand_Recomp/GodHand_Recomp/ps2xRuntime/include/ps2_runtime_macros.h:28:33: note: called from here\n   28 |         return _mm_extract_epi32(v, 3);\n      |                ~~~~~~~~~~~~~~~~~^~~~~~\n\n"
+      "return_code": 0,
+      "diagnostic": "\n"
     }
   ],
   "native_game_linked": false,

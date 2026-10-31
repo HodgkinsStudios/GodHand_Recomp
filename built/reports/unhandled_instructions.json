@@ -775,12 +775,6 @@
       "reason": "Unhandled COP0 instruction format: 0x1"
     },
     {
-      "function": "sub_003BC218",
-      "pc": "0x003BC21C",
-      "raw": "0x07FF0504",
-      "reason": "Unhandled REGIMM instruction: 0x1F"
-    },
-    {
       "function": "sub_003BBFF8",
       "pc": "0x003BC144",
       "raw": "0x40200000",
@@ -791,6 +785,12 @@
       "pc": "0x003BC148",
       "raw": "0x40200000",
       "reason": "Unhandled COP0 instruction format: 0x1"
+    },
+    {
+      "function": "sub_003BC218",
+      "pc": "0x003BC21C",
+      "raw": "0x07FF0504",
+      "reason": "Unhandled REGIMM instruction: 0x1F"
     },
     {
       "function": "sub_003BBFF8",
