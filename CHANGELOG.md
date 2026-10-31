@@ -73,3 +73,7 @@
 - Added two-worker bounded parallel compilation and 90-second per-TU timeout to isolate generated-code compile errors before full 9,231-unit compilation.
 - Added unit tests for wide range sampling, suspect inclusion, deduplication, parallel status reporting; 14 local Python tests passed.
 - No gameplay or guest framebuffer confirmed in CP10; pending hosted workflow verification.
+
+## CP11 — First-boot AOT compile speed (2026-10-31)
+- Added opt-in `PS2X_AOT_FAST_COMPILE` to compile all generated guest functions at -O0/-g0/-fno-lto (MSVC /Od /GL-) in the hosted game workflow; default remains OFF.
+- Verified GCC flags order and successful miniature CMake/Ninja link; 16 local Python tests pass. Full God Hand native link and guest frames not yet verified.

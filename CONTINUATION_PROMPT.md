@@ -44,3 +44,6 @@ The GitHub AOT workflow previously only ran for changes to the analysis script/w
 
 ## CP10 — Stratified generated-code compiler triage
 `tools/aot_compile_probe.py` now checks 24 translation units spread across ELF addresses and 3 high-error suspects with bounded 2-worker compilation; run `python3 -m unittest discover -s tools/tests -v`. Compare `built/reports/native_compile_probe.json` and `native_link_status.txt`; do not assume game works from compiler success. Hosted CI re-downloads large ISO LFS parts and may take time. No confirmed game frames.
+
+## CP11 — AOT first-boot compilation mode
+The game has 9,231 generated C++ files. `PS2X_AOT_FAST_COMPILE=ON` is enabled only in the hosted AOT workflow to avoid per-file optimization and LTO during first-boot triage while still linking every translation unit. Standard builds default OFF. Cross-check recent `built/reports/native_link_status.txt`; no real guest frames have been confirmed.

@@ -20,6 +20,7 @@ option(PS2X_ENABLE_DEBUG_UI "Build the desktop runtime debug UI" ON)
 # Optional AOT translation units from a game ELF. Keep all game-derived sources
 # outside the tracked runtime library, and link into the executable runner only.
 set(PS2X_AOT_SOURCE_DIR "" CACHE PATH "Directory containing PS2Recomp generated C++ and headers")
+option(PS2X_AOT_FAST_COMPILE "Compile generated guest C++ quickly while diagnosing native first boot" OFF)
 
 if(PS2X_ENABLE_SCCACHE)
     find_program(PS2X_SCCACHE_PROGRAM sccache)
@@ -494,6 +495,19 @@ if(PS2X_AOT_SOURCE_DIR)
     # Generated files can each contain private symbols with identical names;
     # they must not be merged into unity translation units.
     set_source_files_properties(${PS2X_AOT_SOURCE_FILES} PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
+    # First-boot triage: the game has thousands of generated C++ files. Preserve
+    # every source, but defer per-file optimization and LTO until game execution
+    # has been proven. This is opt-in, not a game-specific guest-code shortcut.
+    if(PS2X_AOT_FAST_COMPILE)
+        if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+            set_source_files_properties(${PS2X_AOT_SOURCE_FILES} PROPERTIES
+                COMPILE_OPTIONS "-O0;-g0;-fno-lto")
+        elseif(MSVC)
+            set_source_files_properties(${PS2X_AOT_SOURCE_FILES} PROPERTIES
+                COMPILE_OPTIONS "/Od;/GL-")
+        endif()
+        message(STATUS "AOT development mode: ${PS2X_AOT_SOURCE_COUNT} generated TUs compile without per-file optimization")
+    endif()
 endif()
 
 if(PS2X_ENABLE_RUNNER_UNITY_BUILD)

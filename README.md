@@ -152,3 +152,6 @@ When the generated AOT C++ compiles correctly, start the hosted `GodHand - ISO b
 
 ### CP10 generated-code compiler triage
 The hosted AOT workflow tests 24 generated translation units (boot entry, function table, suspicious function regions and address-stratified samples) before attempting the full runtime link. Its `built/reports/native_compile_probe.json` is diagnostic only; a successful sample does **not** mean all 9,231 units compile, that God Hand boots, or that GS frames have rendered. See `docs/CP10_BUILD_PROBE.md`.
+
+### CP11 first-boot native compilation
+The cloud AOT build sets `PS2X_AOT_FAST_COMPILE=ON`, reducing optimization/LTO overhead on all generated guest C++ files without omitting any functions. Regular release/toolchain configurations remain unchanged. Compiler success is not evidence of real game frames.
