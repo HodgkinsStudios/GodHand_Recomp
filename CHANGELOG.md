@@ -41,3 +41,10 @@
 - Added standalone native C++ synthetic-frame test to hosted launcher workflow.
 - Disabled runner PCH during the AOT native-compile probe (compiler commands run individually before a complete native build).
 - Frame capture is diagnostic plumbing, **not evidence that God Hand has rendered a frame yet**.
+
+## CP05 — Hosted native boot/frame probe
+- Added a guarded Xvfb runtime-execution step for fully linked native builds. Launches the original user-supplied boot ELF, records guest runtime logs and checks for first non-uniform GS pixels.
+- If an actual frame is generated, stores it under `built/frames/` and records its status in `built/reports/native_frame_status.txt`.
+- Serialized AOT workflow runs to avoid simultaneous source/archive update races.
+- This is future execution infrastructure; a native God Hand executable and real frame have **not** been verified yet.
+- The first real runtime compile probe passed 2/3 generated files; corrected missing `-msse4.1` for native builds. Added gated full native link attempt on push after the probe passes, followed by Xvfb frame capture if linked. AOT diagnostics identified 2,963 unsupported events, mostly in two likely overextended function spans.

@@ -14,6 +14,9 @@ on:
         default: false
 permissions:
   contents: write
+concurrency:
+  group: godhand-aot-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
   inspect-and-recompile:
     runs-on: ubuntu-24.04
@@ -115,6 +118,7 @@ jobs:
           fi
           timeout 1200 cmake -S . -B build-game -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_C_FLAGS=-msse4.1 -DCMAKE_CXX_FLAGS=-msse4.1 \
             -DPS2X_BUILD_RECOMP=OFF -DPS2X_BUILD_ANALYZER=OFF \
             -DPS2X_BUILD_RUNTIME=ON -DPS2X_BUILD_STUDIO=OFF -DPS2X_BUILD_TEST=OFF \
             -DPS2X_ENABLE_DEBUG_UI=OFF -DPS2X_ENABLE_FFMPEG=OFF \
@@ -142,12 +146,25 @@ jobs:
           fi
           exit 0
       - name: Attempt full native executable
-        if: inputs.attempt_full_native_build == true
+        if: inputs.attempt_full_native_build == true || github.event_name == 'push' 
         shell: bash
         run: |
           set -uo pipefail
           if ! test -s build-game/build.ninja; then
             echo 'native build not configured' > built/reports/native_link_status.txt
+            exit 0
+          fi
+          if ! python3 - <<'PYCODE'
+          import json
+          from pathlib import Path
+          p = Path('built/reports/native_compile_probe.json')
+          if not p.exists():
+              raise SystemExit(1)
+          d = json.loads(p.read_text())
+          raise SystemExit(0 if d.get('selected_translation_units', 0) >= 2 and d.get('failed_translation_units', 1) == 0 else 1)
+          PYCODE
+          then
+            echo 'native_link=skipped_until_compile_probe_passes' > built/reports/native_link_status.txt
             exit 0
           fi
           timeout 3600 cmake --build build-game --target ps2EntryRunner --parallel 2 \
@@ -160,6 +177,37 @@ jobs:
             cp build-game/ps2xRuntime/ps2EntryRunner built/linux-x86_64/GodHand_Recomp_Game
           fi
           exit 0
+      - name: Boot linked native game under Xvfb and check real GS frame
+        if: inputs.attempt_full_native_build == true || github.event_name == 'push' 
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p built/reports built/frames
+          GAME=build-game/ps2xRuntime/ps2EntryRunner
+          if ! test -x "$GAME"; then
+            echo 'native_executable=not_built' > built/reports/native_frame_status.txt
+            exit 0
+          fi
+          sudo apt-get install -y xvfb xauth >/dev/null 2>&1 || true
+          # The capture hook accepts only nonuniform pixels returned from GS.
+          # A window opening or a blank fallback frame is NOT a frame pass.
+          OUTPUT="$RUNNER_TEMP/real-gs-frame.ppm"
+          GODHAND_GS_FRAME_PPM="$OUTPUT" LIBGL_ALWAYS_SOFTWARE=1 \
+            timeout --kill-after=5s 75s xvfb-run -a \
+            -s '-screen 0 1280x720x24' "$GAME" "$RUNNER_TEMP/game/boot.elf" \
+            > "$RUNNER_TEMP/native-execution.log" 2>&1
+          STATUS=$?
+          printf 'native_executable=present\nexit_code=%s\n' "$STATUS" \
+            > built/reports/native_frame_status.txt
+          tail -n 100 "$RUNNER_TEMP/native-execution.log" \
+            >> built/reports/native_frame_status.txt
+          if test -s "$OUTPUT"; then
+            cp "$OUTPUT" built/frames/first_real_gs_frame.ppm
+            echo 'nonuniform_guest_gs_frame=yes' >> built/reports/native_frame_status.txt
+          else
+            echo 'nonuniform_guest_gs_frame=no' >> built/reports/native_frame_status.txt
+          fi
+          exit 0
       - name: Commit diagnostic built outputs to main
         if: always() && github.ref == 'refs/heads/main'
         shell: bash
@@ -170,7 +218,8 @@ jobs:
           git lfs install --local
           git lfs track 'built/aot/*.tar.gz'
           git add .gitattributes
-          git add -f built/reports/ built/aot/ built/linux-x86_64/GodHand_Recomp_Game 2>/dev/null || \
+          git add -f built/reports/ built/aot/ built/frames/ built/linux-x86_64/GodHand_Recomp_Game 2>/dev/null || \
+            git add -f built/reports/ built/aot/ built/frames/ 2>/dev/null || \
             git add -f built/reports/ built/aot/
           if git diff --cached --quiet; then echo 'Nothing to commit'; exit 0; fi
           git commit -m 'build: ISO analysis and AOT diagnostics [skip ci]'

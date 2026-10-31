@@ -28,3 +28,9 @@ The updated AOT workflow now archives generated headers and C++, reports unsuppo
 
 ## CP04 frame evidence tracking
 The runtime now supports a one-shot capture from actual GS presentation pixel buffers, enabled only by `GODHAND_GS_FRAME_PPM`. It waits for a non-uniform frame and ignores the magenta fallback. A compiled synthetic C++ test confirms the image writer; **real game pixels have not yet been captured or displayed**. Native execution, full AOT compilation and runtime correctness remain blocking work.
+
+## CP05 native boot attempt infrastructure
+The hosted Actions workflow has an optional (`attempt_full_native_build=true`) full native compile and virtual-display execution step. Only a successful link triggers the game runner. Any genuine guest GS capture will be retained in `built/frames/`, and diagnostic statuses in `built/reports/`. No frame or gameplay is claimed by adding this step. The first required milestone remains clean compilation of `register_functions.cpp` and boot-entry C++ using real runtime headers.
+
+### CP05 real AOT compile results and fix
+GitHub-hosted CP03 compiler probe selected three real generated translation units: `sub_00100008_0x100008.cpp` and `register_functions.cpp` compiled, while `entry_3b6990_0x3b6a00.cpp` failed because `-msse4.1` was missing during native configure. Added SSE4.1 C/C++ compiler options to the native game configuration and disabled PCH for direct compiler probes. The structured AOT report counted **2,963 unhandled instruction events**, with **1,735** in `sub_003C01D8` and **813** in `sub_003FDD40`, strongly indicating some overly broad function boundaries/data decoded as code. Game not playable; no real frames verified. An automatic full native link attempt is gated on the real compile probe succeeding on push, and when linked it will attempt an Xvfb boot and real guest framebuffer capture.

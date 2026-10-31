@@ -21,3 +21,10 @@ CP03 adds ps2xRuntime/CMakeLists.txt `PS2X_AOT_SOURCE_DIR` to compile generated 
 
 ## CP04 frame evidence
 Optional real GS capture now exists (`ps2_frame_capture.cpp` called after GS copy succeeded, from `UploadFrame`); launcher env `GODHAND_GS_FRAME_PPM` points at the local install folder. Synthetic sample test passes, but no God Hand frame has been observed. Continue prioritizing the hosted `built/reports/native_configure.txt` and `native_compile_probe.json` errors; do not confuse this capture feature with actual guest rendering. CP04 also turned runner PCH off for a compiler probe that runs individual commands.
+
+
+## CP05 native boot loop
+`godhand-aot.yml` now has a guarded Xvfb native boot step following an optional full compile (`workflow_dispatch` input `attempt_full_native_build=true`). If full link succeeds, it runs the real boot ELF for <=75 seconds and logs runtime output, saving the first non-uniform actual guest GS PPM at built/frames/ and `built/reports/native_frame_status.txt`. A missing frame means no verified game drawing; check runtime logs/PC and unsupported ops. AOT workflow concurrency avoids overlapping writes to main.
+
+## Latest CP05 measured blockers
+Probe from CP03 hosted run: 2/3 C++ compile units pass, remaining entry_3b6990 failed due missing SSE4.1. CP05 workflow adds `-DCMAKE_C_FLAGS=-msse4.1 -DCMAKE_CXX_FLAGS=-msse4.1` and PCH off; read next `built/reports/native_compile_probe.json` to verify 3/3. If passed, CI attempts full native link automatically on workflow push; inspect built/reports/native_link_status.txt. Unhandled report: 2963 events, 1735 in sub_003C01D8 and 813 in sub_003FDD40; these appear to span non-code/data. Prioritize robust CFG/function-boundary analysis, not unsupported-opcode stubs. Once binary links, Xvfb test checks for real nonuniform GS frame. Do not claim frames from pipeline infrastructure.
