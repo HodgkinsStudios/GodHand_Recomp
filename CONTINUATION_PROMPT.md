@@ -7,3 +7,9 @@ Latest work: CP01 launcher installed user-supplied ISO into ~/.local/share/Hodgk
 The ISO is tracked as Git LFS chunks `iso/GodHand.iso.part-000` and `part-001`; cloud Actions checkout must set `lfs: true` to get actual bytes. Run the workflow `.github/workflows/godhand-aot.yml` on hosted Ubuntu only, inspect `built/reports/` results, and continue analysis and runtime implementation. Do not claim playability from generated C++ alone.
 
 Important: temporary repository is public and contains retail-game-derived data. User says they have permissions and plans a clean repo at release. Do not introduce extra proprietary files without considering exposure; do not commit the uncompressed ISO. Push changes to `main` when verified, maintain handoff notes, checkpoint.num and implementation history.
+
+## CP02 verified first-run results
+
+GitHub-hosted AOT workflow 41239765051 completed. Detected ISO boot file `SLUS_215.03`, MIPS ELF32, entry 0x00100008, 3,607,008 bytes. Analyzer 127 library stubs, 266 unresolved library-like functions, 26 patches, 7 jump tables. Recompiler exit 0 generated 9,231 .cpp files, archived under `built/aot/` LFS. Recompiler diagnostics contain unhandled instruction spans in `sub_003C01D8` and elsewhere: **do not confuse exit 0 with code correctness**. See `docs/CP02_REAL_ISO_REPORT.md`; next analyze function boundaries (prefer authoritative Ghidra export), then C++ compile/runtime linking.
+
+Hosted Linux launcher and SDL input/display diagnostic both compile and pass CI, binaries tracked at `built/linux-x86_64/`, see `godhandLauncher/install_prebuilt.sh`.

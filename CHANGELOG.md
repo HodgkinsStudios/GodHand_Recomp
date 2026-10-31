@@ -23,3 +23,6 @@
 - GitHub-hosted workflows for launcher binary in `built/` and ISO analysis/recompilation attempt. No gameplay claims.
 - Added checksum-verified `godhandLauncher/install_prebuilt.sh` for direct install of hosted launcher binary, without local compilation.
 - Added independent SDL2 input/display diagnostic with Esc mode cycling and gamepad hotplug verification; hosted build publishes it under `built/`.
+
+- First GitHub-hosted real ISO boot ELF scan and recompilation attempt passed: `SLUS_215.03`, ELF32 entry 0x00100008, 9,231 generated C++ files. Documented unsupported instructions/function-boundary risks.
+- Linux launcher and SDL input diagnostic compiled in GitHub-hosted Actions and pushed to `built/linux-x86_64/`.

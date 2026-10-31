@@ -136,3 +136,5 @@ GitHub-hosted Actions builds and tests the launcher, then commits the verified L
 This is experimental; the public ISO and any AOT derivatives are visible to anyone with repository access. Only distribute material you are authorized to share. Making the repository private later does not undo previous public exposure.
 
 **Prebuilt Ubuntu launcher:** After pulling `main` and installing the GTK3, SDL2 and libarchive runtime libraries, run `bash godhandLauncher/install_prebuilt.sh`. No compilation is needed. This is a launcher build, not a playable God Hand AOT game.
+
+**Verified CP02 ISO analysis:** The GitHub-hosted ISO workflow found `SLUS_215.03` (MIPS ELF32, entry `0x00100008`) and emitted 9,231 C++ files. Recompiler logs contain unsupported-instruction diagnostics and **no game executable has been linked**. Full report: [CP02 real-disc results](docs/CP02_REAL_ISO_REPORT.md).

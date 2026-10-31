@@ -1,6 +1,6 @@
 # GodHand_Recomp — CP02 system status (2026-10-31)
 
-PS2Recomp toolchain foundation and game ISO LFS parts present in GitHub (two LFS pointers verified from repository metadata). The game image was not directly accessible in the editing environment; **real God Hand ELF analysis, generated code, and game boot have not yet been verified**. A successful existing hosted toolchain build does not imply gameplay.
+PS2Recomp toolchain foundation and game ISO LFS parts present in GitHub (two LFS pointers verified from repository metadata). The ISO was inaccessible directly in the editing environment but **the GitHub-hosted AOT workflow has now verified the real boot ELF and generated C++**. It identified `SLUS_215.03` (MIPS ELF32, entry `0x00100008`), generated 9,231 C++ files, and returned recompiler code 0. This is **not** a linked game executable: the logs include numerous unhandled-instruction diagnostics and the game has not booted. See [real ISO report](CP02_REAL_ISO_REPORT.md).
 
 ## Implemented in CP01/CP02 source
 - GTK3 GodHand:Recomp launcher, local ISO copy and `Extracted_Iso` extraction, Load ISO → Play transition (Play requires an actual AOT game executable).
@@ -13,7 +13,7 @@ PS2Recomp toolchain foundation and game ISO LFS parts present in GitHub (two LFS
 - Native God Hand executable is not yet assembled or linked; no gameplay/rendering/audio fidelity.
 - PS2 runtime integration, VU/GS/IOP, assets, gameplay and controller binding parity not verified.
 - C++ GTK/SDL2 UI compile awaits GitHub-hosted runner with appropriate development packages; local execution environment lacks these headers. Installer and settings libraries were compiled and their tests passed locally.
-- GitHub-hosted jobs must run and produce reports to identify the actual ISO's boot ELF; not invented.
+- The first ISO/AOT workflow has completed and reports are now in `built/reports/`; verify function boundaries and unsupported instructions before any claims of a native build.
 
 ## Next checkpoint tasks
 1. Review cloud CI results in Actions, correct launcher compiler errors, verify Linux binary in `built/`.
