@@ -9,7 +9,7 @@ if [[ ! -f "$BINARY" || ! -f "$CHECKSUM" ]]; then
   echo 'Pull the latest GitHub main branch or run the cloud launcher workflow.' >&2
   exit 1
 fi
-(cd "$ROOT" && sha256sum -c built/linux-x86_64/SHA256SUMS.txt)
+(cd "$ROOT/built/linux-x86_64" && sha256sum -c SHA256SUMS.txt)
 mkdir -p "$HOME/.local/bin" "$HOME/.local/share/applications"
 install -m755 "$BINARY" "$HOME/.local/bin/GodHand_Recomp_Launcher"
 GAME="$ROOT/built/linux-x86_64/GodHand_Recomp_Game"

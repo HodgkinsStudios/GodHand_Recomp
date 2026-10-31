@@ -9,3 +9,7 @@ Display modes: `Windowed` (default), `Fullscreen` (preserve aspect ratio) and `F
 Launcher binary must be built with GTK3, SDL2 and libarchive development libraries. Run `bash godhandLauncher/install_launcher.sh` from the source root, or retrieve a tested GitHub Actions binary from `built/linux-x86_64/`.
 
 No PS2 guest game is currently running. The game execution and graphics wiring remains incomplete; Play reports a missing native executable rather than starting an emulator or a simulated game.
+
+## SDL input and display diagnostic
+
+`GodHand_Input_Diagnostic` is an original SDL2 test executable (not the game). It reads the saved remappings, shows which actions are active as rectangles, supports controller hotplug, and cycles Windowed → Fullscreen (aspect preserving) → Fullscreen stretched with Esc. F10 exits. This verifies the supporting input/display functions independently while God Hand's AOT native runtime remains unfinished. The GitHub cloud launcher workflow builds and commits this test executable under `built/linux-x86_64/`.

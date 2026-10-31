@@ -22,3 +22,4 @@
 - Python ISO9660 boot ELF inspector with synthetic MIPS ELF tests.
 - GitHub-hosted workflows for launcher binary in `built/` and ISO analysis/recompilation attempt. No gameplay claims.
 - Added checksum-verified `godhandLauncher/install_prebuilt.sh` for direct install of hosted launcher binary, without local compilation.
+- Added independent SDL2 input/display diagnostic with Esc mode cycling and gamepad hotplug verification; hosted build publishes it under `built/`.

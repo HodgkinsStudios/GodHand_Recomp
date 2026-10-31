@@ -9,3 +9,5 @@ This temporary development repository tracks tested native launcher binaries and
 The launcher only runs a real `GodHand_Recomp_Game` executable once one is actually built and present at `~/.local/share/HodgkinsStudios/GodHand_Recomp/bin/GodHand_Recomp_Game`. The runtime integration is not complete.
 
 The existing game ISO remains under `iso/` in Git LFS. Never treat generated source as equivalent to a complete native game.
+
+- `linux-x86_64/GodHand_Input_Diagnostic`: SDL2 input and screen-mode diagnostic, not gameplay. Press Esc to cycle display modes and F10 to exit.

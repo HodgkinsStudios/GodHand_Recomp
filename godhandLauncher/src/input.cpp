@@ -52,6 +52,7 @@ void InputManager::pump() {
             last_was_pad_ = true;
         }
         if (e.type == SDL_KEYDOWN && !e.key.repeat) {
+            if (e.key.keysym.scancode == SDL_SCANCODE_ESCAPE) escape_requested_ = true;
             key_capture_ = SDL_GetScancodeName(e.key.keysym.scancode);
             last_was_pad_ = false;
         }
@@ -85,6 +86,11 @@ bool InputManager::action_down(int index, const Settings& cfg) const {
     }
     return keyboard_down || pad_down;
 }
+bool InputManager::consume_escape_toggle() {
+    bool result = escape_requested_;
+    escape_requested_ = false;
+    return result;
+}
 bool InputManager::poll_capture_key(std::string& key) {
     if (key_capture_.empty()) return false;
     key.swap(key_capture_); key_capture_.clear(); return true;
@@ -101,7 +107,22 @@ void apply_window_mode(SDL_Window* window, ScreenMode mode, int logical_width, i
     } else {
         SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
     }
-    // A game renderer should set SDL_RenderSetLogicalSize(960,540) when letterboxed;
-    // stretched mode uses the full display destination. See docs/INPUT_AND_DISPLAY.md.
+}
+void configure_renderer(SDL_Renderer* renderer, ScreenMode mode,
+                        int logical_width, int logical_height) {
+    if (!renderer || logical_width <= 0 || logical_height <= 0) return;
+    if (mode != ScreenMode::Stretched) {
+        // SDL handles non-stretched letterboxing when the window ratio differs.
+        SDL_RenderSetScale(renderer, 1.0f, 1.0f);
+        SDL_RenderSetLogicalSize(renderer, logical_width, logical_height);
+    } else {
+        SDL_RenderSetLogicalSize(renderer, 0, 0);
+        SDL_RenderSetViewport(renderer, nullptr);
+        int output_width = 0, output_height = 0;
+        SDL_GetRendererOutputSize(renderer, &output_width, &output_height);
+        SDL_RenderSetScale(renderer,
+            static_cast<float>(output_width) / logical_width,
+            static_cast<float>(output_height) / logical_height);
+    }
 }
 }
