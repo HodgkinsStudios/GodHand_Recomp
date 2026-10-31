@@ -163,3 +163,29 @@ The desktop launcher resolves `GodHand_Recomp_Game` **next to its own executable
 `GodHand - Link AOT and test first frame` is a distinct GitHub-hosted workflow that restores only the existing LFS generated-C++ archive for the native build. It saves failures under `built/reports/link_ci_*.txt` and only pushes `built/linux-x86_64/GodHand_Recomp_Game` after the full host executable compiles and links. After successful linkage, it fetches the ISO for the real GS framebuffer probe. This pipeline does **not** claim playability until guest execution produces a real frame.
 
 Install the most recent prebuilt launcher and (when it exists) game with `bash godhandLauncher/install_prebuilt.sh` after `git pull origin main`.
+
+## CP13 — Build the native AOT game on your own Ubuntu PC
+
+From the project root, install build dependencies (once):
+
+```bash
+sudo apt update && sudo apt install -y build-essential cmake ninja-build git git-lfs python3 pkg-config libgl-dev libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
+```
+
+For normal incremental compilation using the already-generated 25 MB AOT C++ archive in `built/aot/`:
+
+```bash
+bash ./build_godhand.sh
+```
+
+The script fetches the AOT archive via Git LFS if necessary. Source ZIP downloads may only contain a Git LFS pointer; use a real `git clone`, or regenerate directly from your local ISO:
+
+```bash
+bash ./build_godhand.sh --regenerate
+```
+
+The default ISO path is `/home/hodgkinsstudios/Desktop/Roms/PS2/God Hand (USA).iso`; override with `--iso "/path/to/game.iso"`. The default is 2 parallel compiler jobs to keep RAM use manageable; set `--jobs 4` on faster computers. `--run` starts the built game with a locally extracted boot ELF (not necessarily playable yet). `--push` commits only a successfully linked binary and its checksum to GitHub main; do not publish game-derived binaries publicly without appropriate distribution rights.
+
+Successful output goes to `built/linux-x86_64/GodHand_Recomp_Game` beside the launcher. Errors and progress go to `built/reports/local_build.log`. Rerunning without deleting `build-game-local/` performs an incremental build rather than starting 9,231 guest C++ files from scratch.
+
+This is a development native build. Generating/linking guest code does **not** demonstrate that the game boots or produces frames.

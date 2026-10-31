@@ -74,3 +74,8 @@ install.complete
 /.build-launcher/
 /__pycache__/
 *.pyc
+
+# CP13 local native AOT builds; keep built/ versioned separately.
+/.godhand-local/
+/build-game-local/
+/build-aot-local/

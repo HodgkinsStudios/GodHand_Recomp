@@ -18,3 +18,4 @@ CP09: Trigger AOT GitHub hosted tests on runtime/recompiler/analyzer/IOP/CMake c
 CP10: Stratified AOT compiler probe (entry, registry, 3 worst decode regions, evenly sampled guest addresses); 24 probes, 2 workers, 90s per TU; 14 Python tests pass. Hosted game result pending.
 CP11: opt-in generated-AOT fast compile (-O0 -g0 -fno-lto, MSVC /Od /GL-), ALL 9231 functions still linked; enabled in hosted first-boot runner; no real frames yet.
 CP12: launcher sibling/built AOT binary lookup+tests; prebuilt copies binaries together; independent GitHub hosted native-link/frame workflow reuses generated AOT archive.
+CP13: local build_godhand.sh with cached LFS AOT or ISO regeneration; incremental CMake/Ninja; diagnostics, sibling game binary, optional run/push.
