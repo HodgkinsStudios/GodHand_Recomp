@@ -20,3 +20,8 @@ PS2Recomp toolchain foundation and game ISO LFS parts present in GitHub (two LFS
 2. Inspect `built/reports/iso_report.json`, analyzer/recompiler logs and generated C++ size.
 3. Use Ghidra function maps where analyzer heuristics are insufficient; identify overlays and runtime blockers.
 4. Implement a real AOT game entry point, load-time asset mapping, video/input/audio, and integrate Esc display cycling into the game loop.
+
+## CP03: native AOT integration pass
+The previous runtime did not include generated function code when building `ps2EntryRunner`. This checkpoint wires a configurable generated source tree into the native runner (`-DPS2X_AOT_SOURCE_DIR=/absolute/path/to/generated/output`), including the required guest registration function table. The launcher now passes the installed boot ELF (`SLUS_215.03`) when the future executable is launched. Game code is not built from the raw ISO at launcher startup; this is a compile-time integration step on hosted CI.
+
+The updated AOT workflow now archives generated headers and C++, reports unsupported instruction counts/functions, configures the native runtime and probes actual compiler commands. For a full native attempt, manually run `godhand-aot.yml` with `attempt_full_native_build=true`. The workflow can only publish a game executable if compilation and linking actually succeed. No real game frames are confirmed by this checkpoint.

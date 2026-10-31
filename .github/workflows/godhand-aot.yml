@@ -7,6 +7,11 @@ on:
       - 'tools/tests/test_iso_pipeline.py'
       - '.github/workflows/godhand-aot.yml'
   workflow_dispatch:
+    inputs:
+      attempt_full_native_build:
+        description: 'Try full native game link only after compiler probe passes (expensive)'
+        type: boolean
+        default: false
 permissions:
   contents: write
 jobs:
@@ -44,7 +49,8 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake ninja-build pkg-config build-essential git
+          sudo apt-get install -y cmake ninja-build pkg-config build-essential git \
+            libgl-dev libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
       - name: Build upstream analyzer and recompiler
         shell: bash
         run: |
@@ -77,9 +83,82 @@ jobs:
           find "$RUNNER_TEMP/game" -type f -name '*.cpp' -print > "$RUNNER_TEMP/generated-files.txt"
           if [ -s "$RUNNER_TEMP/generated-files.txt" ]; then
             find "$RUNNER_TEMP/game" -type f -name '*.cpp' -printf '%P\n' | sort > built/reports/generated_files.txt
-            (cd "$RUNNER_TEMP/game" && find . -type f -name '*.cpp' -print0 | tar -czf "$GITHUB_WORKSPACE/built/aot/generated_cpp.tar.gz" --null -T -)
+            # Include generated headers as well as translation units. The previous
+            # archive omitted headers and could not be compiled independently.
+            (cd "$RUNNER_TEMP/game/output" && tar -czf "$GITHUB_WORKSPACE/built/aot/generated_cpp.tar.gz" .)
           fi
           echo "AOT diagnostic stage exit status: $status"
+          exit 0
+      - name: Summarize unhandled translation errors
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p built/reports
+          if test -f "$RUNNER_TEMP/recomp.log"; then
+            python3 tools/aot_diagnostics.py \
+              --log "$RUNNER_TEMP/recomp.log" \
+              --generated-list built/reports/generated_files.txt \
+              --output built/reports/unhandled_instructions.json
+          fi
+      - name: Configure native runtime against generated AOT functions
+        if: always()
+        shell: bash
+        run: |
+          set -uo pipefail
+          OUTPUT="$RUNNER_TEMP/game/output"
+          if ! test -s "$OUTPUT/register_functions.cpp" || \
+             ! test -s "$OUTPUT/ps2_recompiled_functions.h" || \
+             ! test -s "$OUTPUT/ps2_recompiled_stubs.h"; then
+            echo 'Generated AOT headers or registration table unavailable' > built/reports/native_configure.txt
+            exit 0
+          fi
+          timeout 1200 cmake -S . -B build-game -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DPS2X_BUILD_RECOMP=OFF -DPS2X_BUILD_ANALYZER=OFF \
+            -DPS2X_BUILD_RUNTIME=ON -DPS2X_BUILD_STUDIO=OFF -DPS2X_BUILD_TEST=OFF \
+            -DPS2X_ENABLE_DEBUG_UI=OFF -DPS2X_ENABLE_FFMPEG=OFF \
+            -DPS2X_ENABLE_RUNNER_UNITY_BUILD=OFF \
+            -DPS2X_AOT_SOURCE_DIR="$OUTPUT" \
+            > "$RUNNER_TEMP/native-configure.log" 2>&1
+          STATUS=$?
+          printf 'cmake_configure_exit_code=%s\n' "$STATUS" > built/reports/native_configure.txt
+          tail -n 100 "$RUNNER_TEMP/native-configure.log" >> built/reports/native_configure.txt
+          exit 0
+      - name: Compile boot entry and function table with real runtime headers
+        if: always()
+        shell: bash
+        run: |
+          set -uo pipefail
+          if test -s build-game/compile_commands.json; then
+            python3 tools/aot_compile_probe.py \
+              --compile-commands build-game/compile_commands.json \
+              --generated-dir "$RUNNER_TEMP/game/output" \
+              --output built/reports/native_compile_probe.json \
+              --limit 3
+          else
+            echo '{"selected_translation_units":0,"reason":"native CMake configure did not succeed"}' \
+              > built/reports/native_compile_probe.json
+          fi
+          exit 0
+      - name: Attempt full native executable
+        if: inputs.attempt_full_native_build == true
+        shell: bash
+        run: |
+          set -uo pipefail
+          if ! test -s build-game/build.ninja; then
+            echo 'native build not configured' > built/reports/native_link_status.txt
+            exit 0
+          fi
+          timeout 3600 cmake --build build-game --target ps2EntryRunner --parallel 2 \
+            > "$RUNNER_TEMP/native-build.log" 2>&1
+          STATUS=$?
+          printf 'native_link_exit_code=%s\n' "$STATUS" > built/reports/native_link_status.txt
+          tail -n 100 "$RUNNER_TEMP/native-build.log" >> built/reports/native_link_status.txt
+          if [ "$STATUS" -eq 0 ] && test -x build-game/ps2xRuntime/ps2EntryRunner; then
+            mkdir -p built/linux-x86_64
+            cp build-game/ps2xRuntime/ps2EntryRunner built/linux-x86_64/GodHand_Recomp_Game
+          fi
           exit 0
       - name: Commit diagnostic built outputs to main
         if: always() && github.ref == 'refs/heads/main'
@@ -91,7 +170,8 @@ jobs:
           git lfs install --local
           git lfs track 'built/aot/*.tar.gz'
           git add .gitattributes
-          git add -f built/reports/ built/aot/ 2>/dev/null || true
+          git add -f built/reports/ built/aot/ built/linux-x86_64/GodHand_Recomp_Game 2>/dev/null || \
+            git add -f built/reports/ built/aot/
           if git diff --cached --quiet; then echo 'Nothing to commit'; exit 0; fi
           git commit -m 'build: ISO analysis and AOT diagnostics [skip ci]'
           git fetch origin main

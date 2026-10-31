@@ -4,3 +4,4 @@ CP02: GTK3 settings+SDL2 input hotplug; screen modes config; ISO boot ELF parser
 CP02+: Prebuilt Linux launcher installation script with SHA-256 verification.
 CP02+: SDL input/display diagnostic; Esc cycle, gamepad availability, stretched/preserved-aspect renderer helper.
 CP02 verification: real SLUS_215.03 ELF entry 0x100008; 9231 generated C++ files; unhandled ops remain; compiled launcher+input diagnostic passed hosted CI.
+CP03: Link generated God Hand functions to native runtime via CMake option; real entry & registration compile probe; unhandled-ISA report; launcher passes extracted boot ELF; hosted workflow updated.

@@ -133,9 +133,24 @@ void play(Launcher& app) {
         return;
     }
 
-    // Explicit absolute path, no shell interpolation or command-line injection.
+    // The PS2Recomp runner currently expects the original boot ELF as argv[1].
+    // It is read from the user's completed local ISO installation, not GitHub.
+    fs::path boot = app.data_dir / "Extracted_Iso/SLUS_215.03";
+    if (!fs::is_regular_file(boot, ec)) {
+        boot = app.data_dir / "Extracted_Iso/SLUS_215.03;1";
+    }
+    if (!fs::is_regular_file(boot, ec)) {
+        show_error(app, "God Hand boot ELF is missing",
+            "Could not locate SLUS_215.03 in the locally extracted disc. "
+            "Verify the ISO installation before starting the native runtime.");
+        return;
+    }
+
+    // Explicit absolute paths, no shell interpolation or command-line injection.
     const std::string program = executable.string();
-    gchar* argv[] = {const_cast<gchar*>(program.c_str()), nullptr};
+    const std::string bootPath = boot.string();
+    gchar* argv[] = {const_cast<gchar*>(program.c_str()),
+                     const_cast<gchar*>(bootPath.c_str()), nullptr};
     gchar** environment = g_get_environ();
     gchar** with_data = g_environ_setenv(environment, "GODHAND_DATA_DIR", app.data_dir.c_str(), TRUE);
     g_strfreev(environment);

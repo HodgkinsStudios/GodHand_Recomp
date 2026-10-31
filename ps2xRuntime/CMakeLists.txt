@@ -17,6 +17,10 @@ option(PS2X_STRICT_RETURN_DIAGNOSTICS "Route generated JR $ra returns through ru
 option(PS2X_SHOW_WINDOWS_CONSOLE "Show a console window for ps2EntryRunner on Windows release builds" ON)
 option(PS2X_ENABLE_DEBUG_UI "Build the desktop runtime debug UI" ON)
 
+# Optional AOT translation units from a game ELF. Keep all game-derived sources
+# outside the tracked runtime library, and link into the executable runner only.
+set(PS2X_AOT_SOURCE_DIR "" CACHE PATH "Directory containing PS2Recomp generated C++ and headers")
+
 if(PS2X_ENABLE_SCCACHE)
     find_program(PS2X_SCCACHE_PROGRAM sccache)
 
@@ -460,6 +464,35 @@ else()
     add_executable(ps2EntryRunner
         ${RUNNER_SRC_FILES}
     )
+endif()
+
+# AOT game integration: generated files contain the guest function table and
+# function implementations, not host/runtime library implementations.
+if(PS2X_AOT_SOURCE_DIR)
+    if(NOT IS_DIRECTORY "${PS2X_AOT_SOURCE_DIR}")
+        message(FATAL_ERROR "PS2X_AOT_SOURCE_DIR does not exist: ${PS2X_AOT_SOURCE_DIR}")
+    endif()
+    foreach(PS2X_AOT_REQUIRED_HEADER IN ITEMS
+            ps2_recompiled_functions.h ps2_recompiled_stubs.h)
+        if(NOT EXISTS "${PS2X_AOT_SOURCE_DIR}/${PS2X_AOT_REQUIRED_HEADER}")
+            message(FATAL_ERROR "Missing generated AOT header ${PS2X_AOT_REQUIRED_HEADER}")
+        endif()
+    endforeach()
+    if(NOT EXISTS "${PS2X_AOT_SOURCE_DIR}/register_functions.cpp")
+        message(FATAL_ERROR "Missing generated AOT registration table register_functions.cpp")
+    endif()
+    file(GLOB_RECURSE PS2X_AOT_SOURCE_FILES CONFIGURE_DEPENDS
+        "${PS2X_AOT_SOURCE_DIR}/*.cpp")
+    list(LENGTH PS2X_AOT_SOURCE_FILES PS2X_AOT_SOURCE_COUNT)
+    if(PS2X_AOT_SOURCE_COUNT LESS 2)
+        message(FATAL_ERROR "AOT source directory has no function implementations")
+    endif()
+    message(STATUS "Linking ${PS2X_AOT_SOURCE_COUNT} generated guest translation units into ps2EntryRunner")
+    target_sources(ps2EntryRunner PRIVATE ${PS2X_AOT_SOURCE_FILES})
+    target_include_directories(ps2EntryRunner BEFORE PRIVATE "${PS2X_AOT_SOURCE_DIR}")
+    # Generated files can each contain private symbols with identical names;
+    # they must not be merged into unity translation units.
+    set_source_files_properties(${PS2X_AOT_SOURCE_FILES} PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
 endif()
 
 if(PS2X_ENABLE_RUNNER_UNITY_BUILD)

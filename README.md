@@ -138,3 +138,6 @@ This is experimental; the public ISO and any AOT derivatives are visible to anyo
 **Prebuilt Ubuntu launcher:** After pulling `main` and installing the GTK3, SDL2 and libarchive runtime libraries, run `bash godhandLauncher/install_prebuilt.sh`. No compilation is needed. This is a launcher build, not a playable God Hand AOT game.
 
 **Verified CP02 ISO analysis:** The GitHub-hosted ISO workflow found `SLUS_215.03` (MIPS ELF32, entry `0x00100008`) and emitted 9,231 C++ files. Recompiler logs contain unsupported-instruction diagnostics and **no game executable has been linked**. Full report: [CP02 real-disc results](docs/CP02_REAL_ISO_REPORT.md).
+
+## CP03 native AOT integration
+After the hosted ISO recompiler generates its `output/` directory, `ps2EntryRunner` can now include the generated translation units and registration table through `-DPS2X_AOT_SOURCE_DIR=/absolute/path/to/output`. The hosted AOT workflow attempts runtime configuration and a compiler probe and writes reports under `built/reports/`. A full native build is opt-in through the `attempt_full_native_build` workflow-dispatch input. Successful C++ generation does **not** mean the game is booting or rendering frames; unsupported R5900 instructions and function-boundary problems are still under investigation.

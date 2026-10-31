@@ -26,3 +26,11 @@
 
 - First GitHub-hosted real ISO boot ELF scan and recompilation attempt passed: `SLUS_215.03`, ELF32 entry 0x00100008, 9,231 generated C++ files. Documented unsupported instructions/function-boundary risks.
 - Linux launcher and SDL input diagnostic compiled in GitHub-hosted Actions and pushed to `built/linux-x86_64/`.
+
+## CP03 — Native AOT runtime integration (2026-10-31)
+- Added `PS2X_AOT_SOURCE_DIR` to link generated C++ function implementations and registration table into `ps2EntryRunner` without modifying tracked runtime headers.
+- Added AOT compiler probe on actual generated boot-entry and function-table translation units; full native compile is available as an opt-in manual Actions input.
+- Fixed AOT artifact packaging to include required generated headers (prior archive contained only `.cpp` files).
+- Added structured unhandled instruction diagnostics to report translation blockers instead of treating process exit 0 as full correctness.
+- Launcher now passes the actual installed `SLUS_215.03` ELF to the native runtime as an argument.
+- Added six Python diagnostics tests (total eight ISO/diagnostic tests). Native game executable and real frame rendering not yet verified.
