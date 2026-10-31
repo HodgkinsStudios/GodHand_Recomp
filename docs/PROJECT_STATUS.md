@@ -1,34 +1,22 @@
-# GodHand_Recomp — Project status
+# GodHand_Recomp — CP02 system status (2026-10-31)
 
-**Checkpoint:** Initial project documentation / baseline import (2026-10-31)  
-**Phase:** Foundation, prior to God Hand-specific implementation  
-**Verification:** Source archive inspected; no compiler build or game execution carried out for this checkpoint.
+PS2Recomp toolchain foundation and game ISO LFS parts present in GitHub (two LFS pointers verified from repository metadata). The game image was not directly accessible in the editing environment; **real God Hand ELF analysis, generated code, and game boot have not yet been verified**. A successful existing hosted toolchain build does not imply gameplay.
 
-## What exists now
+## Implemented in CP01/CP02 source
+- GTK3 GodHand:Recomp launcher, local ISO copy and `Extracted_Iso` extraction, Load ISO → Play transition (Play requires an actual AOT game executable).
+- GTK Settings page with keyboard/gamepad remap, SDL2 hot-plug polling and persisted window mode selection. Native game Esc cycling still needs wiring into the future game renderer.
+- ISO9660 `SYSTEM.CNF` and MIPS ELF32 scanner, test coverage with generated synthetic disc data.
+- GitHub-hosted Linux launcher build/test workflow, compiled executable committed under `built/linux-x86_64/` when CI succeeds.
+- GitHub-hosted ISO AOT investigation pipeline that reconstructs LFS ISO, reports boot ELF, builds analyzer/recompiler and attempts static source generation. Diagnostic `built/reports/` and generated source tarball `built/aot/` are committed when available.
 
-The supplied source archive was the PS2Recomp toolchain snapshot (`PS2Recomp-main.zip`), including the upstream analyzer, R5900 recompiler, runtime, IOP subsystem, studio, tests, and existing CI workflow. It has been copied as the **working baseline** and wrapped in project-specific documentation. This checkpoint also adds Git ignore rules for common game-disc and private output files.
+## Limitations
+- Native God Hand executable is not yet assembled or linked; no gameplay/rendering/audio fidelity.
+- PS2 runtime integration, VU/GS/IOP, assets, gameplay and controller binding parity not verified.
+- C++ GTK/SDL2 UI compile awaits GitHub-hosted runner with appropriate development packages; local execution environment lacks these headers. Installer and settings libraries were compiled and their tests passed locally.
+- GitHub-hosted jobs must run and produce reports to identify the actual ISO's boot ELF; not invented.
 
-No God Hand-specific source files, local disc image, extracted ELF, per-game recompiler configuration, generated game code, or runtime implementation are claimed to exist in this archive.
-
-## Status by area
-
-| Area | Baseline | God Hand-specific progress |
-| --- | --- | --- |
-| Source repository | PS2Recomp-derived source included | Project documentation established |
-| Analyzer / recompiler | Upstream components present | No God Hand analysis verified |
-| EE code / overlays | Game input not provided in this archive | Not started |
-| Host runtime (GS/VU/IOP/audio/input) | Upstream implementation present | No game-specific readiness verified |
-| Builds / automated tests | Upstream CI workflow and tests present | Not run in this pass |
-| Game boot, visuals, audio, controls | No game integrated | Not tested |
-| Local-only game file workflow | Documented and ignore rules added | Runner not configured |
-
-## Planned next development stages
-
-1. Initialize the dedicated `GodHand_Recomp` Git repository and push this source baseline.
-2. Record a successful baseline local toolchain build and full existing test result (or failures) without game data.
-3. Configure a dedicated, restricted **self-hosted** GitHub Actions runner, requiring manual approval/dispatch for jobs that need the local ISO.
-4. Verify a locally stored, user-supplied disc and identify the exact game build/ELF, recording hashes **locally**.
-5. Generate function maps/configuration, recompile the game executable, and identify overlay and runtime blockers.
-6. Implement and test genuine runtime compatibility improvements; save reproducible status logs with no game asset leakage.
-
-Use status descriptions supported by actual test data. Do not mark the game playable or complete based only on a successful compiler build. For project policy and ISO isolation, see [LOCAL_ISO_WORKFLOW.md](LOCAL_ISO_WORKFLOW.md).
+## Next checkpoint tasks
+1. Review cloud CI results in Actions, correct launcher compiler errors, verify Linux binary in `built/`.
+2. Inspect `built/reports/iso_report.json`, analyzer/recompiler logs and generated C++ size.
+3. Use Ghidra function maps where analyzer heuristics are insufficient; identify overlays and runtime blockers.
+4. Implement a real AOT game entry point, load-time asset mapping, video/input/audio, and integrate Esc display cycling into the game loop.

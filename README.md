@@ -77,6 +77,28 @@ These commands describe the upstream build path, **not a build verified during t
 
 For tools/configuration and the Ghidra function export workflow, consult the retained upstream docs: [PS2 ELF Analyzer](ps2xAnalyzer/Readme.md), [IOP subsystem](ps2xIOP/README.md), and [Runtime library](ps2xRuntime/Readme.md). See upstream's [wiki](https://github.com/ran-j/PS2Recomp/wiki) for broader usage reference.
 
+## GodHand:Recomp launcher — first implementation pass
+
+The new [`godhandLauncher/`](godhandLauncher/README.md) component is a standalone C++17/GTK3 Ubuntu launcher developed for this project (the inherited PS2Recomp toolchain itself still uses C++20).
+
+- Displays **GodHand:Recomp** with **HodgkinsStudios** branding.
+- **Load God Hand ISO** opens the Linux native file picker.
+- Copies the selected ISO to `~/.local/share/HodgkinsStudios/GodHand_Recomp/GodHand.iso` and extracts its ISO9660 contents to the sibling `Extracted_Iso/` directory. Both remain outside the repository.
+- Shows **Play** after installation and searches for a future `bin/GodHand_Recomp_Game` under the install root. Until an AOT native game executable has been generated, Play displays an explicit error; it **does not** run the retail ISO in an emulator.
+- The installer is tested using a generated *synthetic* ISO; no retail game data is bundled or used in CI.
+
+For a single-command local install (including an application-menu entry), run `bash godhandLauncher/install_launcher.sh`. To compile the standalone launcher manually on Ubuntu:
+
+```bash
+sudo apt install -y cmake g++ pkg-config libgtk-3-dev libarchive-dev
+cmake -S godhandLauncher -B build-godhand-launcher -DCMAKE_BUILD_TYPE=Release
+cmake --build build-godhand-launcher --parallel 2
+ctest --test-dir build-godhand-launcher --output-on-failure
+./build-godhand-launcher/GodHand_Recomp_Launcher
+```
+
+This first-pass launcher does not imply game compatibility or completion. See the [launcher technical notes](godhandLauncher/README.md).
+
 ## Local game files, not on GitHub
 
 The goal is to keep your own God Hand ISO on your PC. It should **never** be committed to this repository or included in GitHub Actions artifacts.
@@ -92,7 +114,7 @@ For example, keep game data in a separate path **outside this repository**:
 
 Avoid copying ISO contents, game executables, generated proprietary code or media into tracked source folders. `.gitignore` covers common accidental file extensions and private directories, but **does not replace checking `git status` before every push**.
 
-Instructions for safe local paths, checks and the planned self-hosted Actions runner are in [docs/LOCAL_ISO_WORKFLOW.md](docs/LOCAL_ISO_WORKFLOW.md). **No self-hosted runner has been configured by this checkpoint.**
+Instructions for safe local paths, checks and the planned self-hosted Actions runner are in [docs/LOCAL_ISO_WORKFLOW.md](docs/LOCAL_ISO_WORKFLOW.md). **The local-runner workflow exists, but runner availability and the local ISO have not been verified in this development environment.**
 
 ## Development documentation
 
@@ -104,3 +126,11 @@ Instructions for safe local paths, checks and the planned self-hosted Actions ru
 ## License and legal notes
 
 This repository retains the upstream **GPL-3.0** [LICENSE](LICENSE) and the required source-level notices. Separate dependencies can have their own licenses; review them before distributing builds. This repository does **not** grant rights to the *God Hand* game, its assets or PS2 firmware. Users are responsible for obtaining and using their own game files lawfully. No copyrighted game data is distributed here.
+
+## CP02: launcher Settings and GitHub-hosted AOT bring-up
+
+The `godhandLauncher/` GTK3 frontend now provides a keyboard/controller Settings dialog with SDL2 hotplug enumeration and persistent screen mode settings. The launcher copies/extracts the selected ISO to the local user data directory and changes Load ISO to Play; Play continues to require a real native game binary. See [input and display status](docs/INPUT_AND_DISPLAY.md).
+
+GitHub-hosted Actions builds and tests the launcher, then commits the verified Linux executable under `built/linux-x86_64/`. The `godhand-aot.yml` workflow reconstructs the existing `iso/GodHand.iso.part-*` LFS files on an ephemeral runner, locates the ISO9660 `SYSTEM.CNF` boot ELF, checks its MIPS ELF header, and attempts upstream analysis/static recompilation. Reports and any generated C++ archive go in `built/`, not a pretend playable game. [Built outputs](built/README.md).
+
+This is experimental; the public ISO and any AOT derivatives are visible to anyone with repository access. Only distribute material you are authorized to share. Making the repository private later does not undo previous public exposure.

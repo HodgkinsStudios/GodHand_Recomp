@@ -99,3 +99,10 @@ endif()
 if(PS2X_BUILD_STUDIO)
     add_subdirectory("ps2xStudio")
 endif()
+
+# GodHand-specific GTK3 launcher. Separate from the upstream toolchain by default.
+option(GODHAND_BUILD_LAUNCHER "Build GodHand:Recomp desktop launcher" OFF)
+if(GODHAND_BUILD_LAUNCHER AND UNIX AND NOT ANDROID AND NOT DEFINED ENV{VITASDK})
+    include(CTest)
+    add_subdirectory(godhandLauncher)
+endif()

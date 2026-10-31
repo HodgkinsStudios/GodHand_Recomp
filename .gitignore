@@ -62,8 +62,15 @@ android/.gradle/
 .env.*
 !.env.example
 
-# Local game disc images
-*.iso
-*.ISO
-*.chd
-*.CHD
+# GodHand launcher CMake build outside the upstream /build directory
+/build-godhand-launcher/
+/GodHand.iso
+/Extracted_Iso/
+*.partial
+install.complete
+
+# CP02 build work dirs; built/ is intentionally versioned.
+/build-aot/
+/.build-launcher/
+/__pycache__/
+*.pyc

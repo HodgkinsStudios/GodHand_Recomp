@@ -1,0 +1,3 @@
+CP00 2026-10-31: PS2Recomp upstream-derived source, GodHand_Recomp README, credit and local ISO policy.
+CP01 2026-10-31: Added GTK3 launcher; C++17 libarchive ISO copy/extraction, secure paths, install status and Play AOT binary gate. Added CMake/tests, CI hooks, project docs. 1/1 synthetic ISO integration tests pass. GUI build and real ISO runner not verified.
+CP02: GTK3 settings+SDL2 input hotplug; screen modes config; ISO boot ELF parser/tests; hosted launcher/AOT workflows; built/ outputs. Game not booting yet.

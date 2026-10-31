@@ -1,0 +1,99 @@
+name: GodHand - ISO boot ELF and AOT analysis
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/godhand_iso_pipeline.py'
+      - 'tools/tests/test_iso_pipeline.py'
+      - '.github/workflows/godhand-aot.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  inspect-and-recompile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - name: Checkout source and ISO LFS parts
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+          submodules: recursive
+          persist-credentials: true
+      - name: Verify LFS and parser unit tests
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s tools/tests -v
+          git lfs ls-files
+          test -s iso/GodHand.iso.part-000
+          test -s iso/GodHand.iso.part-001
+          # A Git LFS pointer is ~130 bytes, not a valid disc payload.
+          test "$(stat -c %s iso/GodHand.iso.part-000)" -gt 1000000
+      - name: Reassemble ISO on ephemeral hosted runner
+        run: |
+          set -euo pipefail
+          cat iso/GodHand.iso.part-* > "$RUNNER_TEMP/GodHand.iso"
+          test "$(stat -c %s "$RUNNER_TEMP/GodHand.iso")" -gt 1000000000
+      - name: Read boot configuration and validate MIPS ELF
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/game" built/reports
+          python3 tools/godhand_iso_pipeline.py \
+            --iso "$RUNNER_TEMP/GodHand.iso" --out "$RUNNER_TEMP/game" --extract-elf
+          cp "$RUNNER_TEMP/game/iso_report.json" built/reports/iso_report.json
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build pkg-config build-essential git
+      - name: Build upstream analyzer and recompiler
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmake -S . -B build-aot -G Ninja -DCMAKE_BUILD_TYPE=Release \
+            -DPS2X_BUILD_RECOMP=ON -DPS2X_BUILD_ANALYZER=ON \
+            -DPS2X_BUILD_RUNTIME=OFF -DPS2X_BUILD_STUDIO=OFF -DPS2X_BUILD_TEST=OFF \
+            -DCMAKE_C_FLAGS=-msse4.1 -DCMAKE_CXX_FLAGS=-msse4.1
+          cmake --build build-aot --parallel 2
+      - name: Analyze boot ELF and attempt static recompilation
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p built/aot built/reports
+          ANALYZER="$(find build-aot -type f -name ps2_analyzer -executable -print -quit)"
+          RECOMP="$(find build-aot -type f -name ps2_recomp -executable -print -quit)"
+          if [ -z "$ANALYZER" ] || [ -z "$RECOMP" ]; then echo 'Analyzer/recompiler binary not found'; exit 1; fi
+          status=0
+          timeout 1800 "$ANALYZER" "$RUNNER_TEMP/game/boot.elf" "$RUNNER_TEMP/game/godhand.toml" \
+            > "$RUNNER_TEMP/analyzer.log" 2>&1 || status=$?
+          if [ "$status" -eq 0 ]; then
+            # The analyzer's generated paths remain in ephemeral runner storage.
+            timeout 2400 "$RECOMP" "$RUNNER_TEMP/game/godhand.toml" \
+              > "$RUNNER_TEMP/recomp.log" 2>&1 || status=$?
+          fi
+          printf 'analyzer_and_recompiler_exit_status=%s\n' "$status" > built/reports/aot_status.txt
+          if [ -f "$RUNNER_TEMP/analyzer.log" ]; then tail -n 100 "$RUNNER_TEMP/analyzer.log" > built/reports/analyzer_tail.txt; fi
+          if [ -f "$RUNNER_TEMP/recomp.log" ]; then tail -n 100 "$RUNNER_TEMP/recomp.log" > built/reports/recompiler_tail.txt; fi
+          # Generated C++ is not automatically an executable or proof of booting.
+          find "$RUNNER_TEMP/game" -type f -name '*.cpp' -print > "$RUNNER_TEMP/generated-files.txt"
+          if [ -s "$RUNNER_TEMP/generated-files.txt" ]; then
+            find "$RUNNER_TEMP/game" -type f -name '*.cpp' -printf '%P\n' | sort > built/reports/generated_files.txt
+            (cd "$RUNNER_TEMP/game" && find . -type f -name '*.cpp' -print0 | tar -czf "$GITHUB_WORKSPACE/built/aot/generated_cpp.tar.gz" --null -T -)
+          fi
+          echo "AOT diagnostic stage exit status: $status"
+          exit 0
+      - name: Commit diagnostic built outputs to main
+        if: always() && github.ref == 'refs/heads/main'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git lfs install --local
+          git lfs track 'built/aot/*.tar.gz'
+          git add .gitattributes
+          git add -f built/reports/ built/aot/ 2>/dev/null || true
+          if git diff --cached --quiet; then echo 'Nothing to commit'; exit 0; fi
+          git commit -m 'build: ISO analysis and AOT diagnostics [skip ci]'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
