@@ -34,3 +34,10 @@
 - Added structured unhandled instruction diagnostics to report translation blockers instead of treating process exit 0 as full correctness.
 - Launcher now passes the actual installed `SLUS_215.03` ELF to the native runtime as an argument.
 - Added six Python diagnostics tests (total eight ISO/diagnostic tests). Native game executable and real frame rendering not yet verified.
+
+## CP04 — Real-frame capture plumbing (2026-10-31)
+- Added optional host capture path `GODHAND_GS_FRAME_PPM`, saving the first non-uniform RGBA image returned from the PS2 GS presentation backend as PPM. Blank fallback images are explicitly rejected.
+- GodHand launcher passes a location for this capture in the locally installed game directory.
+- Added standalone native C++ synthetic-frame test to hosted launcher workflow.
+- Disabled runner PCH during the AOT native-compile probe (compiler commands run individually before a complete native build).
+- Frame capture is diagnostic plumbing, **not evidence that God Hand has rendered a frame yet**.

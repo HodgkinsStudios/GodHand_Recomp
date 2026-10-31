@@ -4,6 +4,7 @@
 #include "ps2_syscalls.h"
 #include "game_overrides.h"
 #include "ps2_runtime_macros.h"
+#include "ps2_frame_capture.h"
 #include "runtime/gs/gs_frontend.h"
 #include "runtime/ee_scheduler.h"
 #include "ThreadNaming.h"
@@ -15,6 +16,7 @@
 #include "ps2x/iop/iop_subsystem.h"
 
 #include <iostream>
+#include <cstdlib>
 #include <stdexcept>
 #include <fstream>
 #include <algorithm>
@@ -423,6 +425,29 @@ static void UploadFrame(Texture2D &tex, PS2Runtime *rt, uint32_t &outWidth, uint
         s_lastHeight = outHeight;
         s_hasUploadedFrame = true;
         return;
+    }
+
+    // Optional one-shot capture of real guest GS pixels. It is only attempted
+    // after a successful GS presentation read, never from the blank fallback.
+    // GODHAND_GS_FRAME_PPM must be an absolute writable .ppm file path.
+    static bool s_capturedGuestFrame = false;
+    if (!s_capturedGuestFrame)
+    {
+        if (const char *capturePath = std::getenv("GODHAND_GS_FRAME_PPM"))
+        {
+            const std::filesystem::path target(capturePath);
+            if (target.is_absolute() && !s_scratch.empty())
+            {
+                s_capturedGuestFrame = ps2x::captureNonUniformGuestFrame(
+                    s_scratch, width, height, target);
+                if (s_capturedGuestFrame)
+                {
+                    std::cout << "[godhand:gs] captured first nonuniform guest frame: "
+                              << target.string() << " (" << width << "x" << height << ")
+";
+                }
+            }
+        }
     }
 
     PS2_IF_AGRESSIVE_LOGS({

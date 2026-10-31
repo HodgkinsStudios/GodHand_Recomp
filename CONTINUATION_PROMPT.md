@@ -17,3 +17,7 @@ Hosted Linux launcher and SDL input/display diagnostic both compile and pass CI,
 
 ## CP03 work and next actions
 CP03 adds ps2xRuntime/CMakeLists.txt `PS2X_AOT_SOURCE_DIR` to compile generated .cpp plus function registry into native ps2EntryRunner; updates launcher Play to pass `Extracted_Iso/SLUS_215.03` as guest ELF argv[1]; fixes AOT tar to contain generated headers; adds `aot_diagnostics.py` for detailed opcode errors and `aot_compile_probe.py` for real compiler experiments, plus tests. GitHub-hosted AOT workflow on push reruns analysis, native runtime configure and entry/registration compilation probes. Read `built/reports/native_configure.txt`, `native_compile_probe.json` and `unhandled_instructions.json` and FIX the actual blockers. When feasible trigger `workflow_dispatch` `attempt_full_native_build=true`; build full AOT game under built/linux-x86_64 only if linked successfully. Do not claim real frames until captured and inspected.
+
+
+## CP04 frame evidence
+Optional real GS capture now exists (`ps2_frame_capture.cpp` called after GS copy succeeded, from `UploadFrame`); launcher env `GODHAND_GS_FRAME_PPM` points at the local install folder. Synthetic sample test passes, but no God Hand frame has been observed. Continue prioritizing the hosted `built/reports/native_configure.txt` and `native_compile_probe.json` errors; do not confuse this capture feature with actual guest rendering. CP04 also turned runner PCH off for a compiler probe that runs individual commands.

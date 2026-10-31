@@ -141,3 +141,6 @@ This is experimental; the public ISO and any AOT derivatives are visible to anyo
 
 ## CP03 native AOT integration
 After the hosted ISO recompiler generates its `output/` directory, `ps2EntryRunner` can now include the generated translation units and registration table through `-DPS2X_AOT_SOURCE_DIR=/absolute/path/to/output`. The hosted AOT workflow attempts runtime configuration and a compiler probe and writes reports under `built/reports/`. A full native build is opt-in through the `attempt_full_native_build` workflow-dispatch input. Successful C++ generation does **not** mean the game is booting or rendering frames; unsupported R5900 instructions and function-boundary problems are still under investigation.
+
+## Real guest frame verification (CP04)
+The native runtime optionally writes a first **non-uniform guest GS framebuffer** (not a launcher/host placeholder) as a PPM image when `GODHAND_GS_FRAME_PPM` is set to an absolute writable path. The launcher sets it to `~/.local/share/HodgkinsStudios/GodHand_Recomp/first_real_gs_frame.ppm`. The capture will not be produced unless native execution reaches the GS presentation backend and yields varied pixels. It does not imply accurate graphics or a successful game boot. No such frame is verified yet.

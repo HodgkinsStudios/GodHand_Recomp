@@ -158,6 +158,10 @@ void play(Launcher& app) {
     g_strfreev(with_data);
     with_data = g_environ_setenv(with_settings, "GODHAND_SCREEN_MODE", godhand::screen_mode_name(app.configuration.mode), TRUE);
     g_strfreev(with_settings);
+    const std::string firstFrame = (app.data_dir / "first_real_gs_frame.ppm").string();
+    with_settings = g_environ_setenv(with_data, "GODHAND_GS_FRAME_PPM", firstFrame.c_str(), TRUE);
+    g_strfreev(with_data);
+    with_data = with_settings;
     GError* error = nullptr;
     gboolean launched = g_spawn_async(app.data_dir.c_str(), argv, with_data,
         G_SPAWN_DEFAULT, nullptr, nullptr, nullptr, &error);

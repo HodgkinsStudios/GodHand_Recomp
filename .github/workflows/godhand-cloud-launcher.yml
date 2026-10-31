@@ -32,6 +32,12 @@ jobs:
           test -x build-godhand-launcher/GodHand_Input_Diagnostic
           ctest --test-dir build-godhand-launcher --output-on-failure
           python3 -m unittest discover -s tools/tests -v
+          g++ -std=c++17 -O2 -Wall -Wextra \
+            -Ips2xRuntime/include \
+            ps2xRuntime/src/lib/ps2_frame_capture.cpp \
+            tools/tests/frame_capture_smoke.cpp \
+            -o build-godhand-launcher/frame_capture_smoke
+          build-godhand-launcher/frame_capture_smoke
       - name: Stage AOT-ready launcher binary in built/
         if: github.ref == 'refs/heads/main'
         run: |
