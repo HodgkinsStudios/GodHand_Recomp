@@ -13,3 +13,5 @@ CP06: Fix hosted LFS artifact commit rebase collisions via atomic staging/reset+
 CP07: AOT sample 3/3 C++ compile, full native build failed. Preserve all failed native build/configure/Xvfb logs despite Actions bash -e; add CI regression tests. No game frames.
 
 CP08: Fix CP04 GS capture literal raw-newline C++ compile regression seen in Linux GCC/Clang + Windows; C++17 syntax regression tested, 11 Python tests pass.
+
+CP09: Trigger AOT GitHub hosted tests on runtime/recompiler/analyzer/IOP/CMake changes; 12 local Python tests pass.

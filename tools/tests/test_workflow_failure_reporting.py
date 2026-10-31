@@ -17,6 +17,11 @@ class WorkflowFailureReportingTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(result.stdout.strip(), '1')
 
+    def test_runtime_and_recompiler_changes_trigger_aot(self):
+        for glob in ('ps2xRuntime/**', 'ps2xRecomp/**', 'ps2xAnalyzer/**',
+                     'ps2xIOP/**', 'CMakeLists.txt'):
+            self.assertIn("- '" + glob + "'", self.workflow)
+
     def test_record_failure_status_and_errors(self):
         self.assertIn('> "$RUNNER_TEMP/native-build.log" 2>&1 || STATUS=$?', self.workflow)
         self.assertIn('> "$RUNNER_TEMP/native-configure.log" 2>&1 || STATUS=$?', self.workflow)

@@ -3,8 +3,14 @@ on:
   push:
     branches: [main]
     paths:
+      - 'CMakeLists.txt'
+      - 'ps2xRuntime/**'
+      - 'ps2xIOP/**'
+      - 'ps2xAnalyzer/**'
+      - 'ps2xRecomp/**'
       - 'tools/godhand_iso_pipeline.py'
-      - 'tools/tests/test_iso_pipeline.py'
+      - 'tools/aot_*.py'
+      - 'tools/tests/**'
       - '.github/workflows/godhand-aot.yml'
   workflow_dispatch:
     inputs:

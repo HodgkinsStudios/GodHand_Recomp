@@ -38,3 +38,6 @@ CP05 Actions run `41241502970` compiled all three selected real AOT translation 
 
 ## CP08 — Cross-platform build blocker
 A GitHub-hosted `build` run 41241717761 failed all three jobs: Linux GCC, Clang, and Windows MSVC. Root cause was malformed raw newline in CP04's new frame-capture `std::cout` string literal in `ps2xRuntime/src/lib/ps2_runtime.cpp` at line 446. CP08 fixes this syntax error and adds `test_frame_capture_build_syntax.py` running a C++17 syntax-only check on the exact statement. Verify fresh hosted `build` CI passes before diagnosing further native AOT failures. CP07 collects redirected full native compiler errors under `built/reports/native_link_status.txt` on its next run. **Do not claim frames without evidence.**
+
+## CP09 — Required AOT verification after core edits
+The GitHub AOT workflow previously only ran for changes to the analysis script/workflow, so CP08 C++ fixes were not automatically native-tested. CP09 widens push paths for runtime/recompiler/analyzer/IOP/CMake. Watch the new hosted AOT run and check `built/reports/native_link_status.txt` (new CP07 log-capture fix). Native game link and frame generation are unverified until new run demonstrates both.

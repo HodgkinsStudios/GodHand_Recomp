@@ -63,3 +63,7 @@
 - Investigated GitHub-hosted `build` failure on Linux GCC, Linux Clang, Windows MSVC: all 3 failed to compile `ps2xRuntime/src/lib/ps2_runtime.cpp` due a literal containing a raw newline in the CP04 guest GS capture print statement.
 - Fixed to a C++ `\n` escape; a C++17 syntax-only regression test extracts and compiles the exact log statement. Eleven pipeline Python tests pass.
 - CP07 hosted full-game failure diagnostics still need to finish; **no God Hand game frames confirmed**.
+
+## CP09 — Native rebuild triggers
+- Expanded AOT workflow push filters to cover changes in ps2xRuntime, ps2xRecomp, ps2xAnalyzer, ps2xIOP, root CMake and all pipeline tests. Previously a core runtime fix did not trigger ISO-native validation automatically.
+- Added workflow regression guard; 12 Python tests pass. Next hosted run must exercise the corrected GS capture C++ source against the full generated God Hand AOT code.
