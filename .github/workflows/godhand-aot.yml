@@ -94,10 +94,10 @@ jobs:
           find "$RUNNER_TEMP/game" -type f -name '*.cpp' -print > "$RUNNER_TEMP/generated-files.txt"
           if [ "$status" -eq 0 ]; then
             # Never publish an archive missing the real callable entry.
-            if ! find "$RUNNER_TEMP/game/output" -name '*3bafb8*.cpp' -print -quit | grep -q .; then
-              echo 'ERROR: no generated MIPS entry at 0x003BAFB8' >&2
-              status=1
-            fi
+            # A validated entry inside an existing decoded owner may be
+            # registered as a resume entry in the owner's generated function,
+            # rather than as a separate entry_*.cpp translation unit.
+            # Only the generated dispatch table is authoritative here.
             if ! grep -Eiq '0x0*3bafb8' "$RUNNER_TEMP/game/output/register_functions.cpp"; then
               echo 'ERROR: generated registry excludes MIPS address 0x003BAFB8' >&2
               status=1
