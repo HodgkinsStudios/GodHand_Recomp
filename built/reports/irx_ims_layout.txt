@@ -1,0 +1,22 @@
+container_size= 314304
+header32_hex= 494d530000000000090000000000000073696f326d616e2e6972780000000000
+header_words_le= ['0x534d49', '0x0', '0x9', '0x0', '0x326f6973', '0x2e6e616d', '0x787269', '0x0', '0x140', '0x1480', '0x0', '0x0', '0x6d646170', '0x692e6e61', '0x7872', '0x0']
+literal= SDRDRV occurrences_first15= [176]
+literal= sdrdrv occurrences_first15= [197484, 198409, 198580]
+literal= LIBSD occurrences_first15= []
+literal= libsd occurrences_first15= [144, 163132, 184772, 197548, 232744, 287212]
+literal= CDVD occurrences_first15= []
+literal= cdvd occurrences_first15= [130868, 232860]
+literal= IRX occurrences_first15= [183]
+literal= ROMDIR occurrences_first15= []
+visible_irx_filenames= ['SDRDRV.IRX', 'cri_adxi.irx', 'libsd.irx', 'mcman.irx', 'mcserv.irx', 'padman.irx', 'sdhd.irx', 'sio2man.irx', 'snddrv.irx']
+valid_elf_candidates= 9
+ELF_offset,type,machine,entry,phoff,phentsize,phnum,shoff,shentsize,shnum= (320, '0xff80', 8, '0x3c4', 52, 32, 2, 3376, 40, 11)
+ELF_offset,type,machine,entry,phoff,phentsize,phnum,shoff,shentsize,shnum= (5568, '0xff80', 8, '0x3448', 52, 32, 2, 33828, 40, 13)
+ELF_offset,type,machine,entry,phoff,phentsize,phnum,shoff,shentsize,shnum= (51520, '0xff80', 8, '0x198', 52, 32, 2, 80284, 40, 12)
+ELF_offset,type,machine,entry,phoff,phentsize,phnum,shoff,shentsize,shnum= (155200, '0xff80', 8, '0x40', 52, 32, 2, 5232, 40, 11)
+ELF_offset,type,machine,entry,phoff,phentsize,phnum,shoff,shentsize,shnum= (162944, '0xff80', 8, '0xb0', 52, 32, 2, 22412, 40, 12)
+ELF_offset,type,machine,entry,phoff,phentsize,phnum,shoff,shentsize,shnum= (193088, '0xff80', 8, '0x3a0', 52, 32, 2, 5600, 40, 11)
+ELF_offset,type,machine,entry,phoff,phentsize,phnum,shoff,shentsize,shnum= (202304, '0xff80', 8, '0x2c70', 52, 32, 2, 11980, 40, 12)
+ELF_offset,type,machine,entry,phoff,phentsize,phnum,shoff,shentsize,shnum= (217024, '0xff80', 8, '0xd94', 52, 32, 2, 19988, 40, 9)
+ELF_offset,type,machine,entry,phoff,phentsize,phnum,shoff,shentsize,shnum= (237376, '0xff80', 8, '0x57c', 52, 32, 2, 56532, 40, 13)
