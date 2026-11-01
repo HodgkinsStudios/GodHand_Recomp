@@ -211,54 +211,55 @@ jobs:
             echo 'nonuniform_guest_gs_frame=no' >> built/reports/native_frame_status.txt
           fi
           exit 0
-      - name: Commit diagnostic built outputs to main
+
+      - name: Publish only analyzer-owned outputs to main
         if: always() && github.ref == 'refs/heads/main'
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          # Keep CI products outside the working Git tree while fetching main.
-          # Rebasing large generated tarballs caused LFS add/add conflicts when
-          # multiple CI jobs were finishing together in CP04.
           STAGING="$(mktemp -d)"
           trap 'rm -rf "$STAGING"' EXIT
-          for name in reports aot frames; do
-            if test -d "built/$name"; then
-              mkdir -p "$STAGING/$name"
-              cp -a "built/$name/." "$STAGING/$name/"
-            fi
+          mkdir -p "$STAGING/reports" "$STAGING/aot" "$STAGING/linux-x86_64"
+          # Never republish link_ci_* reports captured by an older checkout.
+          # The dedicated link/smoke workflows own their own reports.
+          for report in aot_status.txt analyzer_tail.txt recompiler_tail.txt \
+                        generated_files.txt unhandled_instructions.json iso_report.json \
+                        native_configure.txt native_compile_probe.json \
+                        native_link_status.txt native_frame_status.txt; do
+            test -f "built/reports/$report" && cp "built/reports/$report" "$STAGING/reports/" || true
           done
-          if test -f built/linux-x86_64/GodHand_Recomp_Game; then
-            mkdir -p "$STAGING/linux-x86_64"
-            cp -a built/linux-x86_64/GodHand_Recomp_Game "$STAGING/linux-x86_64/"
+          test -s built/aot/generated_cpp.tar.gz && \
+            cp built/aot/generated_cpp.tar.gz "$STAGING/aot/" || true
+          if grep -qx 'native_link_exit_code=0' built/reports/native_link_status.txt 2>/dev/null &&
+             test -f built/linux-x86_64/GodHand_Recomp_Game &&
+             test "$(stat -c %s built/linux-x86_64/GodHand_Recomp_Game)" -gt 1000000; then
+            cp built/linux-x86_64/GodHand_Recomp_Game "$STAGING/linux-x86_64/"
           fi
           for attempt in 1 2 3; do
             git fetch origin main
             git reset --hard origin/main
-            for name in reports aot frames; do
-              if test -d "$STAGING/$name"; then
-                mkdir -p "built/$name"
-                cp -a "$STAGING/$name/." "built/$name/"
+            mkdir -p built/reports built/aot built/linux-x86_64
+            for report in "$STAGING/reports/"*; do
+              if test -f "$report"; then
+                cp "$report" built/reports/
+                git add -f "built/reports/$(basename "$report")"
               fi
             done
-            if test -f "$STAGING/linux-x86_64/GodHand_Recomp_Game"; then
-              mkdir -p built/linux-x86_64
-              cp -a "$STAGING/linux-x86_64/GodHand_Recomp_Game" built/linux-x86_64/
+            if test -s "$STAGING/aot/generated_cpp.tar.gz"; then
+              cp "$STAGING/aot/generated_cpp.tar.gz" built/aot/
+              git lfs install --local
+              git add -f built/aot/generated_cpp.tar.gz
             fi
-            git lfs install --local
-            git lfs track 'built/aot/*.tar.gz'
-            git add .gitattributes
-            for name in reports aot frames; do
-              if test -d "built/$name"; then git add -f "built/$name/"; fi
-            done
-            if test -f built/linux-x86_64/GodHand_Recomp_Game; then
+            if test -s "$STAGING/linux-x86_64/GodHand_Recomp_Game"; then
+              cp "$STAGING/linux-x86_64/GodHand_Recomp_Game" built/linux-x86_64/
+              git lfs install --local
               git add -f built/linux-x86_64/GodHand_Recomp_Game
             fi
-            if git diff --cached --quiet; then echo 'No changed build outputs'; exit 0; fi
-            git commit -m 'build: refresh God Hand AOT diagnostics [skip ci]'
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m 'build: refresh analyzer-only diagnostics [skip ci]'
             if git push origin HEAD:main; then exit 0; fi
-            echo "New main commit arrived; retrying artifact-only update ($attempt/3)"
           done
-          echo 'Could not publish diagnostics after 3 attempts' >&2
+          echo 'Failed to publish analyzer outputs after 3 tries' >&2
           exit 1
