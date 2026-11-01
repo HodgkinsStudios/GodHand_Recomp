@@ -1,27 +1,5 @@
 native_executable=built
 execution_exit_code=124
-[gs:reg] idx=65 reg=0x51 value=0x0
-[gs:reg] idx=66 reg=0x52 value=0x1000000010
-[gs:reg] idx=67 reg=0x53 value=0x0
-[gs:reg] idx=68 reg=0x50 value=0x4022000010000
-[gs:reg] idx=69 reg=0x51 value=0x0
-[gs:reg] idx=70 reg=0x52 value=0x1000000010
-[gs:reg] idx=71 reg=0x53 value=0x0
-[gs:reg] idx=72 reg=0x50 value=0x4024000010000
-[gs:reg] idx=73 reg=0x51 value=0x0
-[gs:reg] idx=74 reg=0x52 value=0x1000000010
-[gs:reg] idx=75 reg=0x53 value=0x0
-[gs:reg] idx=76 reg=0x50 value=0x4026000010000
-[gs:reg] idx=77 reg=0x51 value=0x0
-[gs:reg] idx=78 reg=0x52 value=0x1000000010
-[gs:reg] idx=79 reg=0x53 value=0x0
-[gs:reg] idx=80 reg=0x50 value=0x4028000010000
-[gs:reg] idx=81 reg=0x51 value=0x0
-[gs:reg] idx=82 reg=0x52 value=0x1000000010
-[gs:reg] idx=83 reg=0x53 value=0x0
-[gs:reg] idx=84 reg=0x50 value=0x402a000010000
-[gs:reg] idx=85 reg=0x51 value=0x0
-[gs:reg] idx=86 reg=0x52 value=0x1000000010
 [gs:reg] idx=87 reg=0x53 value=0x0
 [gs:reg] idx=88 reg=0x50 value=0x402c000010000
 [gs:reg] idx=89 reg=0x51 value=0x0
@@ -63,70 +41,92 @@ execution_exit_code=124
 [gs:reg] idx=125 reg=0x51 value=0x0
 [gs:reg] idx=126 reg=0x52 value=0x1000000010
 [gs:reg] idx=127 reg=0x53 value=0x0
-[SifInitRpc] Initialized[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SIO2MAN.IRX;1'
-[ps2xIOP] [IOP:HLE] fallback module='cdrom0:\MODULES\SIO2MAN.IRX;1' physical IRX unavailable; using registered HLE provider
-[SIF module] load-emulated id=1073741825 ref=1 path="cdrom0:\MODULES\SIO2MAN.IRX;1"
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\PADMAN.IRX;1'
-[ps2xIOP] [IOP:HLE] fallback module='cdrom0:\MODULES\PADMAN.IRX;1' physical IRX unavailable; using registered HLE provider
-[SIF module] load-emulated id=1073741826 ref=1 path="cdrom0:\MODULES\PADMAN.IRX;1"
+[SifInitRpc] Initialized[ps2xIOP] [IOP] loaded IRX id=1 entry=0x103c4 base=0x10000 start=0
+[SIF module] load-emulated id=1 ref=1 path="cdrom0:\MODULES\SIO2MAN.IRX;1"
+[ps2xIOP] [IOP] loaded IRX id=2 entry=0x14148 base=0x10d00 start=0
+[SIF module] load-emulated id=2 ref=1 path="cdrom0:\MODULES\PADMAN.IRX;1"
 [gs:gif] idx=0 size=128 nloop=7 flg=0 nreg=1 ctx0fbp=0 ctx1fbp=0
 [gs:copy-reg] reg=0x41 value=0x8005 primCtxt=0 ctx0fbp=0 ctx1fbp=0
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\LIBSD.IRX;1'
-[ps2xIOP] [IOP:HLE] fallback module='cdrom0:\MODULES\LIBSD.IRX;1' physical IRX unavailable; using registered HLE provider
-[SIF module] load-emulated id=1073741827 ref=1 path="cdrom0:\MODULES\LIBSD.IRX;1"
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP:load-failed] module='cdrom0:\MODULES\SDRDRV.IRX;1' no HLE provider accepted the module; physical IRX was not loaded
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[run:tick] tick=120 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=240 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=360 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=480 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=600 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=720 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=840 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=960 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=1080 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=1200 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=1320 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=1440 pc=0x2c9de0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=1560 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=1680 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=1800 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=1920 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=2040 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=2160 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=2280 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=2400 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=2520 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=2640 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=2760 pc=0x2c9dd0 r--- last EE guest ticks and IOP module activity ---
-[run:tick] tick=120 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=240 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=360 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=480 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=600 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=720 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=840 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=960 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=1080 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=1200 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=1320 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=1440 pc=0x2c9de0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=1560 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=1680 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=1800 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=1920 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=2040 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=2160 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=2280 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=2400 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=2520 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=2640 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
-[run:tick] tick=2760 pc=0x2c9dd0 r
+[ps2xIOP] [IOP printf] yet sif hasn't been init
+
+[ps2xIOP] [IOP] loaded IRX id=3 entry=0x1acb0 base=0x1ac00 start=0
+[SIF module] load-emulated id=3 ref=1 path="cdrom0:\MODULES\LIBSD.IRX;1"
+[ps2xIOP] [IOP Kprintf] SDR driver version 4.0.1 (C) SCEI
+
+[ps2xIOP] [IOP Kprintf]  Exit rsd_main 
+
+[ps2xIOP] [IOP] loaded IRX id=4 entry=0x20ca0 base=0x20900 start=2
+[SIF module] load-emulated id=4 ref=1 path="cdrom0:\MODULES\SDRDRV.IRX;1"
+[ps2xIOP] [IOP] loaded IRX id=5 entry=0x25270 base=0x22600 start=2
+[SIF module] load-emulated id=5 ref=1 path="cdrom0:\MODULES\SDHD.IRX;1"
+[ps2xIOP] [IOP] loaded IRX id=6 entry=0x26194 base=0x25400 start=0
+[SIF module] load-emulated id=6 ref=1 path="cdrom0:\MODULES\SNDDRV.IRX;1"
+[ps2xIOP] [IOP printf] CRI ADX Driver Ver.9.67(%s %s)
+
+[ps2xIOP] [IOP printf] CRI ADX Driver : Main Thread Priority = %d
+
+[ps2xIOP] [IOP printf] CRI ADX Driver : PSM Thread Priority  = %d
+
+[ps2xIOP] [IOP printf] CRI ADX Driver : DTX Thread Priority  = %d
+
+[ps2xIOP] [IOP printf] CRI ADX Driver : SPU CORE Number = %d
+
+[ps2xIOP] [IOP] loaded IRX id=7 entry=0x2cd7c base=0x2c800 start=2
+[SIF module] load-emulated id=7 ref=1 path="cdrom0:\MODULES\CRI_ADXI.IRX;1"
+[ps2xIOP] [IOP printf] CRI ADX Driver : sceSdInit(SD_INIT_COLD) call.
+
+[guest-branch:missing-target] kind=IndirectCall op=JALR source=0x330394 target=0x3364f8 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 a0=0x3302b0 a1=0x0 a2=0xffffffff a3=0x451f50 s0=0x3292c0 s1=0x1fffe10 v0=0x3364f8 v1=0x755e88 a0Readable=yes a0[0]=0x3c02003e a0[4]=0x27bdfff0 a0[8]=0x8c438404 a0[c]=0x10600004 s0Readable=yes s0[0]=0x27bdfff0 s0[4]=0xa0202d s0[8]=0xffbf0000 s0[c]=0xdfbf0000 recordReadable=yes record[0]=0x0 record[4]=0x0 record[8]=0x0 record[c]=0x0 vtableReadable=no vtbl[0]=0x0 vtbl[4]=0x0 vtbl[8]=0x0 vtbl[c]=0x0 codeRegion=yes policy=1 trace=0x3a58dc -> 0x3a7d08 -> 0x3a58dc -> 0x3a7d08 -> 0x3a58dc -> 0x3a7d08 -> 0x3a58dc -> 0x3a7d08 -> 0x3a58dc -> 0x3a7d08 -> 0x3a58dc -> 0x3a7d08 -> 0x3a58dc -> 0x3a7d08 -> 0x3a58dc -> 0x3a7d08 -> 0x3a58dc -> 0x3ab050 -> 0x3ab050 -> 0x3b0268 -> 0x3a52f0 -> 0x3292d8 -> 0x330e70 -> 0x330318 -> 0x3303a8 -> 0x330518 -> 0x3a58dc -> 0x336318 -> 0x330480 -> 0x3a58dc -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a58dc -> 0x3a5148
+[run:tick] tick=120 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=240 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=360 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=480 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=600 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=720 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=840 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=960 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1080 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1200 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1320 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1440 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1560 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1680 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1800 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1920 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2040 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2160 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2280 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2400 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2520 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2640 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2760 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick]--- last EE guest ticks and IOP module activity ---
+[ps2xIOP] [IOP] loaded IRX id=5 entry=0x25270 base=0x22600 start=2
+[ps2xIOP] [IOP] loaded IRX id=6 entry=0x26194 base=0x25400 start=0
+[ps2xIOP] [IOP] loaded IRX id=7 entry=0x2cd7c base=0x2c800 start=2
+[guest-branch:missing-target] kind=IndirectCall op=JALR source=0x330394 target=0x3364f8 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 a0=0x3302b0 a1=0x0 a2=0xffffffff a3=0x451f50 s0=0x3292c0 s1=0x1fffe10 v0=0x3364f8 v1=0x755e88 a0Readable=yes a0[0]=0x3c02003e a0[4]=0x27bdfff0 a0[8]=0x8c438404 a0[c]=0x10600004 s0Readable=yes s0[0]=0x27bdfff0 s0[4]=0xa0202d s0[8]=0xffbf0000 s0[c]=0xdfbf0000 recordReadable=yes record[0]=0x0 record[4]=0x0 record[8]=0x0 record[c]=0x0 vtableReadable=no vtbl[0]=0x0 vtbl[4]=0x0 vtbl[8]=0x0 vtbl[c]=0x0 codeRegion=yes policy=1 trace=0x3a58dc -> 0x3a7d08 -> 0x3a58dc -> 0x3a7d08 -> 0x3a58dc -> 0x3a7d08 -> 0x3a58dc -> 0x3a7d08 -> 0x3a58dc -> 0x3a7d08 -> 0x3a58dc -> 0x3a7d08 -> 0x3a58dc -> 0x3a7d08 -> 0x3a58dc -> 0x3a7d08 -> 0x3a58dc -> 0x3ab050 -> 0x3ab050 -> 0x3b0268 -> 0x3a52f0 -> 0x3292d8 -> 0x330e70 -> 0x330318 -> 0x3303a8 -> 0x330518 -> 0x3a58dc -> 0x336318 -> 0x330480 -> 0x3a58dc -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a58dc -> 0x3a5148
+[run:tick] tick=120 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=240 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=360 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=480 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=600 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=720 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=840 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=960 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1080 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1200 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1320 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1440 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1560 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1680 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1800 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1920 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2040 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2160 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2280 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2400 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2520 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2640 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2760 pc=0x3364f8 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick]
 --- first module load failures ---
-[SifInitRpc] Initialized[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SIO2MAN.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\PADMAN.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\LIBSD.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
 nonuniform_guest_gs_frame=no
