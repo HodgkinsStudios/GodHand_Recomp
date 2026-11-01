@@ -359,3 +359,43 @@ Source is generated from original MIPS; no instruction injection.
    353:     ctx->pc = 0x398988u;
    354:     SET_GPR_S32(ctx, 3, (int32_t)ADD32(GPR_U32(ctx, 0), 4294967295));
    355:     // 0x39898c: 0x0  nop
+---- companion=sub_003B2900_0x3b2900.cpp lines=14 ----
+     1: #include "ps2_runtime.h"
+     2: #include "ps2_syscalls.h"
+     3: #include "ps2_stubs.h"
+     4: #ifdef _DEBUG
+     5: #include "ps2_log.h"
+     6: #endif
+     7: 
+     8: void sub_003B2900_0x3b2900(uint8_t* rdram, R5900Context* ctx, PS2Runtime *runtime) {
+     9: #ifdef _DEBUG
+    10:     PS_LOG_ENTRY("sub_003B2900_0x3b2900");
+    11: #endif
+    12:     ctx->pc = getRegU32(ctx, 31);
+    13:     ps2_stubs::sceSifInitRpc(rdram, ctx, runtime); 
+    14: }
+---- companion=sub_00398DA0_0x398da0.cpp lines=14 ----
+     1: #include "ps2_runtime.h"
+     2: #include "ps2_syscalls.h"
+     3: #include "ps2_stubs.h"
+     4: #ifdef _DEBUG
+     5: #include "ps2_log.h"
+     6: #endif
+     7: 
+     8: void sub_00398DA0_0x398da0(uint8_t* rdram, R5900Context* ctx, PS2Runtime *runtime) {
+     9: #ifdef _DEBUG
+    10:     PS_LOG_ENTRY("sub_00398DA0_0x398da0");
+    11: #endif
+    12:     ctx->pc = getRegU32(ctx, 31);
+    13:     ps2_stubs::sceCdSync(rdram, ctx, runtime); 
+    14: }
+---- companion=sub_003B2F48_0x3b2f48.cpp lines=14 ----
+     6: #endif
+     7: 
+     8: void sub_003B2F48_0x3b2f48(uint8_t* rdram, R5900Context* ctx, PS2Runtime *runtime) {
+     9: #ifdef _DEBUG
+    10:     PS_LOG_ENTRY("sub_003B2F48_0x3b2f48");
+    11: #endif
+    12:     ctx->pc = getRegU32(ctx, 31);
+    13:     ps2_stubs::sceSifBindRpc(rdram, ctx, runtime); 
+    14: }
