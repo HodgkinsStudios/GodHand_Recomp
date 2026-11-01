@@ -26,3 +26,11 @@ The short prebuilt-only smoke and AOT-source inspection workflows are retained. 
 ## Next exact test
 
 Review the new `built/reports/link_ci_frame.txt`, inspect the two register values, estimate the true remaining countdown iterations, and then determine whether the loaded global is expected by the original program or should be updated by a correctly implemented PS2 subsystem. Do NOT skip the loop, inject fake guest results, or advertise a rendered frame without nonuniform guest GS capture.
+
+## CP24 follow-up — CDVDFSV SearchFile binding evidence
+
+The original generated function at `0x00398890` calls `sceSifInitRpc` and later `sceSifBindRpc` for SID `0x80000597`, PS2's **CDVDFSV SearchFile** RPC service (see PS2SDK `ee/rpc/cdvd/src/libcdvd.c` and the PS2tek IOP RPC server list). The original guest global at `0x003F868C` is loaded before the delay/retry loop and is written with zero at `0x003989C0` in a branch delay slot. A raw `0xFFFFFFFF` at this address was also discovered in the generated source; that memory lies in an executable ELF load segment but appears to be initialized data, not an actual EE function. This may explain why decoding code and data indiscriminately creates spurious AOT functions.
+
+The current IOP routing source `ps2xIOP/src/iop_subsystem.cpp` registers only `MCSERV`, `DBCMAN`, and `LIBSD` built-in services; `IopModuleManager` knows `cdvdfsv` as a module key, but does not itself create a CDVD server. `canBindRpc()` additionally asks whether the physical IOP emulator registered the SID. Thus a physically registered CDVDFSV server could still work, but merely claiming an HLE module loaded is **not sufficient** to make SID `0x80000597` bindable. Diagnose the actual IOP module and RPC server state before making any behavioral change. A correct fix must implement genuine CDVD/IOP RPC semantics or execute the real physical IRX where available; do not create a dummy successful server or fabricate file results.
+
+CI reference artifact: `built/reports/guest_countdown_global_references.txt`; generated code inspection: `built/reports/guest_stall_aot_inspection.txt`. The new CP24 native-link job records `$v0/$v1` at scheduler checkpoints once compiled.
