@@ -251,7 +251,7 @@ jobs:
           mkdir -p "$STAGING/reports" "$STAGING/aot" "$STAGING/linux-x86_64"
           # Never republish link_ci_* reports captured by an older checkout.
           # The dedicated link/smoke workflows own their own reports.
-          for report in aot_status.txt analyzer_tail.txt recompiler_tail.txt \
+          for report in aot_status.txt aot_validated_entry.json analyzer_tail.txt recompiler_tail.txt \
                         generated_files.txt unhandled_instructions.json iso_report.json \
                         native_configure.txt native_compile_probe.json \
                         native_link_status.txt native_frame_status.txt; do
