@@ -456,6 +456,15 @@ elseif(EXISTS "${ROOT_MAIN_CPP}")
     list(APPEND RUNNER_SRC_FILES "${ROOT_MAIN_CPP}")
 endif()
 
+# The fallback register_functions.cpp owns g_ps2RecompiledFunctionTable when
+# no guest AOT has been provided. AOT's generated register_functions.cpp owns
+# that same table; compiling both causes multiple-definition link failures.
+# Select exactly one, keeping the generic non-AOT runner unchanged.
+if(PS2X_AOT_SOURCE_DIR)
+    list(REMOVE_ITEM RUNNER_SRC_FILES
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/runner/register_functions.cpp")
+endif()
+
 if(PS2X_IS_ANDROID)
     add_library(ps2EntryRunner SHARED
         ${RUNNER_SRC_FILES}
