@@ -27,6 +27,20 @@
       "first_instruction_lui": false,
       "entry_hint_added": true,
       "guest_instruction_bytes_patched": false
+    },
+    {
+      "entry_address": "0x0038B6E0",
+      "executable_segment_start": "0x00100000",
+      "executable_segment_end": "0x007867B4",
+      "first_four_mips_words": [
+        "0x03E00008",
+        "0x00000000",
+        "0x27BDFFD0",
+        "0x3C020046"
+      ],
+      "first_instruction_lui": false,
+      "entry_hint_added": true,
+      "guest_instruction_bytes_patched": false
     }
   ],
   "guest_instruction_bytes_patched": false
