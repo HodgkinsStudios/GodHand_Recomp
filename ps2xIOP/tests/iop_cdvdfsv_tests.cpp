@@ -111,6 +111,46 @@ void readDiscIrxDirectly() {
     require(!ps2x::iop::detail::IopModuleLoader::readWholeHostFile(
                 host, "cdrom0:\\README.TXT;1", contents), "truncated disc extent read accepted");
 }
+void imsArchiveProvidesOriginalModules() {
+    Host host;
+    iso(host);
+    Irx first;
+    Irx second;
+    first.bytes[0x110u] = 0xA1u;
+    second.bytes[0x110u] = 0xB2u;
+    const uint32_t archiveOffset = 23u * 2048u;
+    const uint32_t firstOffset = 96u;
+    const uint32_t secondOffset = firstOffset + static_cast<uint32_t>(first.bytes.size());
+    const uint32_t archiveLength = secondOffset + static_cast<uint32_t>(second.bytes.size());
+    host.file.resize(27u * 2048u);
+    // The directory is an ISO9660 tree; IRX.IMS owns the real ELF payloads.
+    rec(host.file, 20u*2048u + 46u, 22u, 2048u, "MODULES", true);
+    rec(host.file, 22u*2048u, 23u, archiveLength, "IRX.IMS;1", false);
+    auto& bytes = host.file;
+    std::memcpy(bytes.data()+archiveOffset, "IMS\0", 4u);
+    le32(bytes, archiveOffset+8u, 2u);
+    std::memcpy(bytes.data()+archiveOffset+16u, "padman.irx", 10u);
+    le32(bytes, archiveOffset+32u, firstOffset);
+    le32(bytes, archiveOffset+36u, static_cast<uint32_t>(first.bytes.size()));
+    std::memcpy(bytes.data()+archiveOffset+48u, "SDRDRV.IRX", 10u);
+    le32(bytes, archiveOffset+64u, secondOffset);
+    le32(bytes, archiveOffset+68u, static_cast<uint32_t>(second.bytes.size()));
+    std::copy(first.bytes.begin(), first.bytes.end(), bytes.begin()+archiveOffset+firstOffset);
+    std::copy(second.bytes.begin(), second.bytes.end(), bytes.begin()+archiveOffset+secondOffset);
+
+    std::vector<uint8_t> out;
+    require(ps2x::iop::detail::IopModuleLoader::readWholeHostFile(
+        host, "cdrom0:\\MODULES\\SDRDRV.IRX;1", out), "real IMS module not found");
+    require(out == second.bytes, "IMS module bytes differ from the original embedded ELF");
+    require(ps2x::iop::detail::IopModuleLoader::readWholeHostFile(
+        host, "cdrom0:\\MODULES\\PADMAN.IRX;1", out), "second IMS entry not found");
+    require(out == first.bytes, "IMS entry offset/size selection incorrect");
+    require(!ps2x::iop::detail::IopModuleLoader::readWholeHostFile(
+        host, "cdrom0:\\MODULES\\MISSING.IRX;1", out), "missing IMS module invented");
+    le32(bytes, archiveOffset+68u, 0x7fffffffu);
+    require(!ps2x::iop::detail::IopModuleLoader::readWholeHostFile(
+        host, "cdrom0:\\MODULES\\SDRDRV.IRX;1", out), "invalid IMS extent accepted");
+}
 void bounds() {
     Host host;
     iso(host);
@@ -129,6 +169,7 @@ int main() {
         {"Short SearchFile requests are rejected",bounds},
         {"IOP cdvdman SearchFile uses physical ISO LSN",nativeCdvdImportUsesOriginalLsn},
         {"IOP IRX loader reads original ISO bytes and rejects missing/truncated modules",readDiscIrxDirectly},
+        {"IMS archive loads the exact embedded MIPS IRX and validates extents",imsArchiveProvidesOriginalModules},
     };
     return run(tests);
 }

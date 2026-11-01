@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cctype>
 #include <cstring>
 #include <limits>
 #include <string>
@@ -314,9 +315,9 @@ namespace ps2x::iop::detail
             if (sizeOk)
             {
                 bytes.resize(static_cast<size_t>(size));
-                size_t bytesRead = 0u;
-                const bool ok = host.readHostFile(handle, 0u, bytes.data(), bytes.size(), bytesRead) &&
-                                bytesRead == bytes.size();
+                size_t received = 0u;
+                const bool ok = host.readHostFile(handle, 0u, bytes.data(), bytes.size(), received) &&
+                                received == bytes.size();
                 host.closeHostFile(handle);
                 if (ok) return true;
                 bytes.clear();
@@ -327,15 +328,12 @@ namespace ps2x::iop::detail
             }
         }
 
-        // CDROM IRX modules often live solely in the mounted original ISO.
-        // Resolve their actual ISO9660 extent; never substitute fabricated
-        // filenames, IRX images or synthetic sector mappings.
         const ParsedPs2Path parsed = parsePs2Path(guestPath);
         if (!parsed || parsed.device != Ps2PathDevice::Cdrom)
             return false;
-        std::array<uint8_t, 32u> file{};
-        if (!lookupIso9660CdvdFile(host, guestPath, file))
-            return false;
+        const std::string isoPath = host.hostPath(HostPathKind::CdImage);
+        if (isoPath.empty()) return false;
+
         const auto le32 = [](const uint8_t *p) -> uint32_t
         {
             return static_cast<uint32_t>(p[0]) |
@@ -343,30 +341,87 @@ namespace ps2x::iop::detail
                    (static_cast<uint32_t>(p[2]) << 16u) |
                    (static_cast<uint32_t>(p[3]) << 24u);
         };
-        const uint32_t sector = le32(file.data());
-        const uint32_t imageSize = le32(file.data() + 4u);
-        if (imageSize == 0u || imageSize > kMaxImageSize)
-            return false;
-        const std::string isoPath = host.hostPath(HostPathKind::CdImage);
-        if (isoPath.empty()) return false;
-        const uint64_t isoHandle = host.openHostFile(isoPath);
-        if (isoHandle == 0u) return false;
-
-        uint64_t discSize = 0u;
-        const uint64_t offset = static_cast<uint64_t>(sector) * 2048u;
-        const bool inRange = host.hostFileSize(isoHandle, discSize) &&
-                             offset <= discSize && imageSize <= discSize - offset;
-        bool readOk = false;
-        if (inRange)
+        const auto readExtent = [&](const std::array<uint8_t, 32u> &entry,
+                                    std::vector<uint8_t> &out) -> bool
         {
-            bytes.resize(imageSize);
-            size_t received = 0u;
-            readOk = host.readHostFile(isoHandle, offset, bytes.data(), imageSize, received) &&
-                     received == imageSize;
+            const uint32_t lsn = le32(entry.data());
+            const uint32_t size = le32(entry.data() + 4u);
+            if (!size || size > kMaxImageSize) return false;
+            const uint64_t handle = host.openHostFile(isoPath);
+            if (!handle) return false;
+            uint64_t total = 0u;
+            const uint64_t offset = static_cast<uint64_t>(lsn) * 2048u;
+            const bool inBounds = host.hostFileSize(handle, total) &&
+                                  offset <= total && size <= total - offset;
+            bool success = false;
+            if (inBounds)
+            {
+                out.resize(size);
+                size_t received = 0u;
+                success = host.readHostFile(handle, offset, out.data(), size, received) &&
+                          received == size;
+            }
+            host.closeHostFile(handle);
+            if (!success) out.clear();
+            return success;
+        };
+
+        std::array<uint8_t, 32u> entry{};
+        if (lookupIso9660CdvdFile(host, guestPath, entry))
+            return readExtent(entry, bytes);
+
+        // Some PS2 disc mastering layouts store original physical IRX modules
+        // in an IMS directory container, rather than individual ISO9660 files.
+        // The format has a 16-byte header followed by count 32-byte records:
+        // filename[16], absolute byte offset (u32 LE), byte size (u32 LE),
+        // reserved[8]. Each payload must be a real independently loaded IRX.
+        if (!lookupIso9660CdvdFile(host, "cdrom0:\\MODULES\\IRX.IMS;1", entry))
+            return false;
+        std::vector<uint8_t> ims;
+        if (!readExtent(entry, ims) || ims.size() < 16u ||
+            std::memcmp(ims.data(), "IMS\0", 4u) != 0)
+            return false;
+        const uint32_t count = le32(ims.data() + 8u);
+        if (count == 0u || count > 4096u ||
+            16ull + 32ull * count > ims.size())
+            return false;
+
+        std::string requested(guestPath);
+        const auto lastSep = requested.find_last_of("/\\:");
+        if (lastSep != std::string::npos) requested.erase(0, lastSep + 1u);
+        const auto version = requested.find(';');
+        if (version != std::string::npos) requested.erase(version);
+        const auto normalize = [](std::string &name)
+        {
+            for (char &c : name)
+                c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+        };
+        normalize(requested);
+        if (requested.empty()) return false;
+
+        for (uint32_t index = 0u; index < count; ++index)
+        {
+            const uint8_t *record = ims.data() + 16u + static_cast<size_t>(index) * 32u;
+            size_t nameSize = 0u;
+            while (nameSize < 16u && record[nameSize] != 0u) ++nameSize;
+            if (!nameSize) continue;
+            std::string name(reinterpret_cast<const char *>(record), nameSize);
+            normalize(name);
+            if (name != requested) continue;
+            const uint32_t offset = le32(record + 16u);
+            const uint32_t size = le32(record + 20u);
+            if (size == 0u || size > kMaxImageSize ||
+                offset > ims.size() || size > ims.size() - offset)
+                return false;
+            bytes.assign(ims.begin() + offset, ims.begin() + offset + size);
+            // Do not accept non-ELF data as an IRX. The normal IopModuleLoader
+            // also checks the full MIPS ELF structure and relocation metadata.
+            return bytes.size() >= 52u &&
+                   bytes[0] == 0x7Fu && bytes[1] == 'E' &&
+                   bytes[2] == 'L' && bytes[3] == 'F' &&
+                   bytes[4] == 1u && bytes[5] == 1u;
         }
-        host.closeHostFile(isoHandle);
-        if (!readOk) bytes.clear();
-        return readOk;
+        return false;
     }
 
     bool IopModuleLoader::readElfFromGuest(IopHost &host, uint32_t guestAddress, std::vector<uint8_t> &bytes)
