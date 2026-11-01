@@ -2,6 +2,9 @@ name: GodHand - ISO boot ELF and AOT analysis
 # Full ISO reanalysis is explicit: boot smoke tests reuse the existing AOT.
 # A push to the PS2 runtime must not trigger hours of recompilation.
 on:
+  push:
+    branches: [main]
+    paths: ['tools/seed_aot_entry.py']
   workflow_dispatch:
     inputs:
       attempt_full_native_build:
@@ -71,6 +74,15 @@ jobs:
           timeout 1800 "$ANALYZER" "$RUNNER_TEMP/game/boot.elf" "$RUNNER_TEMP/game/godhand.toml" \
             > "$RUNNER_TEMP/analyzer.log" 2>&1 || status=$?
           if [ "$status" -eq 0 ]; then
+            # The address was recovered from actual execution of the original ELF.
+            # Reject data/unmapped addresses before requesting a callable entry.
+            python3 tools/seed_aot_entry.py \
+              --elf "$RUNNER_TEMP/game/boot.elf" \
+              --config "$RUNNER_TEMP/game/godhand.toml" \
+              --entry 0x003BAFB8 \
+              --report built/reports/aot_validated_entry.json || status=$?
+          fi
+          if [ "$status" -eq 0 ]; then
             # The analyzer's generated paths remain in ephemeral runner storage.
             timeout 2400 "$RECOMP" "$RUNNER_TEMP/game/godhand.toml" \
               > "$RUNNER_TEMP/recomp.log" 2>&1 || status=$?
@@ -80,7 +92,18 @@ jobs:
           if [ -f "$RUNNER_TEMP/recomp.log" ]; then tail -n 100 "$RUNNER_TEMP/recomp.log" > built/reports/recompiler_tail.txt; fi
           # Generated C++ is not automatically an executable or proof of booting.
           find "$RUNNER_TEMP/game" -type f -name '*.cpp' -print > "$RUNNER_TEMP/generated-files.txt"
-          if [ -s "$RUNNER_TEMP/generated-files.txt" ]; then
+          if [ "$status" -eq 0 ]; then
+            # Never publish an archive missing the real callable entry.
+            if ! find "$RUNNER_TEMP/game/output" -name '*3bafb8*.cpp' -print -quit | grep -q .; then
+              echo 'ERROR: no generated MIPS entry at 0x003BAFB8' >&2
+              status=1
+            fi
+            if ! grep -Eiq '0x0*3bafb8' "$RUNNER_TEMP/game/output/register_functions.cpp"; then
+              echo 'ERROR: generated registry excludes MIPS address 0x003BAFB8' >&2
+              status=1
+            fi
+          fi
+          if [ "$status" -eq 0 ] && [ -s "$RUNNER_TEMP/generated-files.txt" ]; then
             find "$RUNNER_TEMP/game" -type f -name '*.cpp' -printf '%P\n' | sort > built/reports/generated_files.txt
             # Include generated headers as well as translation units. The previous
             # archive omitted headers and could not be compiled independently.
@@ -143,7 +166,7 @@ jobs:
           fi
           exit 0
       - name: Attempt full native executable
-        if: inputs.attempt_full_native_build == true || github.event_name == 'push' 
+        if: inputs.attempt_full_native_build == true 
         shell: bash
         run: |
           set -uo pipefail
@@ -181,7 +204,7 @@ jobs:
           fi
           exit 0
       - name: Boot linked native game under Xvfb and check real GS frame
-        if: inputs.attempt_full_native_build == true || github.event_name == 'push' 
+        if: inputs.attempt_full_native_build == true 
         shell: bash
         run: |
           set -uo pipefail

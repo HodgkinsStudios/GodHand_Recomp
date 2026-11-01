@@ -2,6 +2,9 @@ name: GodHand - Link AOT and test first frame
 # Full native recompile is deliberately manual-only. Use the prebuilt smoke
 # workflow for fast boot regressions; never auto-build 9,231 guest C++ files.
 on:
+  push:
+    branches: [main]
+    paths: ['built/aot/generated_cpp.tar.gz']
   workflow_dispatch:
 
 permissions:
