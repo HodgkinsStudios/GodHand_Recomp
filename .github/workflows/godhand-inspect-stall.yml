@@ -74,6 +74,29 @@ jobs:
                   windows = [(0,min(len(other),150))]
               for a,b in windows:
                   result.extend(f'{j+1:6d}: {other[j]}' for j in range(a,b))
+          # The observed countdown loads its seed from guest RAM near
+          # 0x003F868C. Find every genuine guest instruction that touches the
+          # offset, not merely the one that reads it.
+          ref_pattern = re.compile(r'0x(?:3f868c|868c|7974)(?![0-9a-f])', re.I)
+          refs = []
+          scanned = 0
+          for entry in root.rglob('*.cpp'):
+              scanned += 1
+              for j, source_line in enumerate(entry.read_text(errors='replace').splitlines()):
+                  if ref_pattern.search(source_line):
+                      refs.append(f'{entry.name}:{j+1}: {source_line.strip()}')
+                      if len(refs) >= 300:
+                          break
+              if len(refs) >= 300:
+                  break
+          ref_report = pathlib.Path('built/reports/guest_countdown_global_references.txt')
+          ref_report.parent.mkdir(parents=True,exist_ok=True)
+          ref_report.write_text(
+              f'guest_ram_seed=0x003F868C\\ncpp_scanned={scanned}\\n'
+              f'matches={len(refs)} (limit 300)\\n'
+              + '\\n'.join(refs) + '\\n'
+          )
+          print(f'Wrote {len(refs)} original-guest counter references')
           out.write_text('\n'.join(result)+'\n')
           print('\n'.join(result))
           PY
@@ -84,6 +107,7 @@ jobs:
           staging="$(mktemp -d)"
           trap 'rm -rf "$staging"' EXIT
           cp built/reports/guest_stall_aot_inspection.txt "$staging/"
+          cp built/reports/guest_countdown_global_references.txt "$staging/"
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           for i in 1 2 3; do
@@ -92,6 +116,8 @@ jobs:
             mkdir -p built/reports
             cp "$staging/guest_stall_aot_inspection.txt" built/reports/
             git add -f built/reports/guest_stall_aot_inspection.txt
+            cp "$staging/guest_countdown_global_references.txt" built/reports/
+            git add -f built/reports/guest_countdown_global_references.txt
             if git diff --cached --quiet; then exit 0; fi
             git commit -m 'test: preserve generated AOT guest stall source inspection [skip ci]'
             if git push origin HEAD:main; then exit 0; fi
