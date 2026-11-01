@@ -4,7 +4,7 @@ name: GodHand - ISO boot ELF and AOT analysis
 on:
   push:
     branches: [main]
-    paths: ['tools/seed_aot_entry.py', '.github/workflows/godhand-aot.yml']
+    paths: ['tools/seed_aot_entry.py', '.github/workflows/godhand-aot.yml', 'ps2xRecomp/src/lib/elf_parser.cpp']
   workflow_dispatch:
     inputs:
       attempt_full_native_build:
@@ -105,7 +105,7 @@ jobs:
             # registered as a resume entry in the owner's generated function,
             # rather than as a separate entry_*.cpp translation unit.
             # Only the generated dispatch table is authoritative here.
-            for address in 3bafb8 38f200 38b6e0 31da28 375840; do
+            for address in 3bafb8 38f200 38b6e0 31da28 375840 31ce98; do
               if ! grep -Eiq "0x0*${address}" "$RUNNER_TEMP/game/output/register_functions.cpp"; then
                 echo "ERROR: generated registry excludes validated MIPS address 0x${address}" >&2
                 status=1

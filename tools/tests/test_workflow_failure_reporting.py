@@ -21,7 +21,7 @@ class WorkflowFailureReportingTests(unittest.TestCase):
         # CP16 deliberately removed broad push triggers; they caused hours of
         # unnecessary recompilation and interrupted first-boot investigations.
         self.assertIn('workflow_dispatch:', self.workflow)
-        self.assertIn("paths: ['tools/seed_aot_entry.py', '.github/workflows/godhand-aot.yml']", self.workflow)
+        self.assertIn("paths: ['tools/seed_aot_entry.py', '.github/workflows/godhand-aot.yml', 'ps2xRecomp/src/lib/elf_parser.cpp']", self.workflow)
         for glob in ('ps2xRuntime/**', 'ps2xRecomp/**', 'ps2xAnalyzer/**',
                      'ps2xIOP/**', 'CMakeLists.txt'):
             self.assertNotIn("- '" + glob + "'", self.workflow)

@@ -62,7 +62,7 @@ jobs:
           if test "${{ github.event_name }}" = workflow_run; then
             # Prove that the freshly published archive actually has a
             # non-stub callable entry at the observed guest JALR target.
-            for address in 3bafb8 38f200 38b6e0 31da28 375840; do
+            for address in 3bafb8 38f200 38b6e0 31da28 375840 31ce98; do
               grep -Eiq "0x0*${address}" "$RUNNER_TEMP/godhand_aot/register_functions.cpp"
             done
           fi
