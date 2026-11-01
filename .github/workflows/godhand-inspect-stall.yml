@@ -52,6 +52,28 @@ jobs:
           for a,b in ranges:
               result.append(f'---- generated source lines {a+1}..{b} ----')
               result.extend(f'{j+1:6d}: {lines[j]}' for j in range(a,b))
+          # Inspect the original routines used just before the spin loop.
+          for stem in ('sub_003B2900_', 'sub_00398DA0_', 'sub_003B2F48_'):
+              companion = next((p for p in root.rglob(stem+'*.cpp')), None)
+              if companion is None:
+                  result.append('missing_companion=' + stem)
+                  continue
+              other = companion.read_text(errors='replace').splitlines()
+              result.append(f'---- companion={companion.name} lines={len(other)} ----')
+              picks = [i for i, v in enumerate(other) if
+                       re.search(r'3[fF]868[cC]|398930|Sif|Rpc|3910|B2900', v)]
+              if picks:
+                  windows = []
+                  for i in picks[:12]:
+                      a,b = max(0,i-7),min(len(other),i+11)
+                      if windows and a <= windows[-1][1]:
+                          windows[-1] = (windows[-1][0],max(b,windows[-1][1]))
+                      else:
+                          windows.append((a,b))
+              else:
+                  windows = [(0,min(len(other),150))]
+              for a,b in windows:
+                  result.extend(f'{j+1:6d}: {other[j]}' for j in range(a,b))
           out.write_text('\n'.join(result)+'\n')
           print('\n'.join(result))
           PY
