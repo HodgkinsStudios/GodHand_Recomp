@@ -1,0 +1,149 @@
+name: GodHand - Prebuilt runtime smoke (no recompilation)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/godhand-prebuilt-smoke.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: godhand-prebuilt-smoke-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - name: Checkout without heavy LFS objects
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+          persist-credentials: true
+
+      - name: Restore checksum-verified EXISTING AOT executable
+        shell: bash
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='built/linux-x86_64/GodHand_Recomp_Game' --exclude=''
+          game=built/linux-x86_64/GodHand_Recomp_Game
+          test "$(stat -c %s "$game")" -gt 1000000
+          chmod +x "$game"
+          (cd built/linux-x86_64 && sha256sum -c GodHand_Recomp_Game.sha256)
+          file "$game"
+          mkdir -p built/reports built/frames
+          rm -f built/frames/first_real_gs_frame.ppm
+
+      - name: Restore ISO only to extract the original boot ELF
+        shell: bash
+        run: |
+          set -euo pipefail
+          git lfs pull --include='iso/GodHand.iso.part-*' --exclude=''
+          test "$(stat -c %s iso/GodHand.iso.part-000)" -gt 1000000
+          cat iso/GodHand.iso.part-* > "$RUNNER_TEMP/GodHand.iso"
+          mkdir -p "$RUNNER_TEMP/godhand_boot"
+          python3 tools/godhand_iso_pipeline.py --iso "$RUNNER_TEMP/GodHand.iso" \
+            --out "$RUNNER_TEMP/godhand_boot" --extract-elf
+          test -s "$RUNNER_TEMP/godhand_boot/boot.elf"
+
+      - name: Install headless graphics dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq xvfb xauth libgl1 libx11-6 \
+            libxrandr2 libxi6 libxinerama1 libxcursor1 libasound2t64
+
+      - name: Bounded 20-second genuine guest boot and diagnostics
+        shell: bash
+        run: |
+          set -uo pipefail
+          game="$GITHUB_WORKSPACE/built/linux-x86_64/GodHand_Recomp_Game"
+          logfile="$RUNNER_TEMP/godhand-prebuilt-execution.log"
+          frame="$RUNNER_TEMP/godhand-prebuilt-first-frame.ppm"
+          rm -f "$frame" built/frames/first_real_gs_frame.ppm
+          code=0
+          GODHAND_GS_FRAME_PPM="$frame" LIBGL_ALWAYS_SOFTWARE=1 \
+            timeout --kill-after=3s 20s xvfb-run -a -s '-screen 0 1280x720x24' \
+            "$game" "$RUNNER_TEMP/godhand_boot/boot.elf" \
+            > "$logfile" 2>&1 || code=$?
+          {
+            echo "source_commit=$GITHUB_SHA"
+            echo 'used_prebuilt_game=yes'
+            echo 'native_recompilation=no'
+            echo "execution_exit_code=$code"
+            echo 'execution_limit_seconds=20'
+            if test -s "$frame"; then
+              echo 'nonuniform_guest_gs_frame=yes'
+            else
+              echo 'nonuniform_guest_gs_frame=no'
+            fi
+            echo '--- first missing guest target ---'
+            grep -m 1 -F '[guest-branch:missing-target]' "$logfile" || true
+            echo '--- recent guest ticks ---'
+            grep -F '[run:tick]' "$logfile" | tail -n 3 || true
+            echo '--- execution log tail ---'
+            tail -n 90 "$logfile"
+          } > built/reports/prebuilt_smoke_status.txt
+          if test -s "$frame"; then
+            cp "$frame" built/frames/first_real_gs_frame.ppm
+          fi
+          grep -E '^(execution_exit_code|nonuniform_guest_gs_frame)=' built/reports/prebuilt_smoke_status.txt
+          grep -m 1 -F '[guest-branch:missing-target]' "$logfile" || true
+          exit 0
+
+      - name: Upload failure transcript
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: godhand-prebuilt-smoke-${{ github.run_id }}
+          retention-days: 7
+          if-no-files-found: ignore
+          path: |
+            ${{ runner.temp }}/godhand-prebuilt-execution.log
+            built/reports/prebuilt_smoke_status.txt
+
+      - name: Publish only fresh boot-smoke report to main
+        if: always() && github.ref == 'refs/heads/main'
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s built/reports/prebuilt_smoke_status.txt || exit 0
+          staging="$(mktemp -d)"
+          trap 'rm -rf "$staging"' EXIT
+          cp built/reports/prebuilt_smoke_status.txt "$staging/"
+          if test -s built/frames/first_real_gs_frame.ppm; then
+            cp built/frames/first_real_gs_frame.ppm "$staging/"
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            mkdir -p built/reports built/frames
+            cp "$staging/prebuilt_smoke_status.txt" built/reports/
+            git add -f built/reports/prebuilt_smoke_status.txt
+            if test -s "$staging/first_real_gs_frame.ppm"; then
+              cp "$staging/first_real_gs_frame.ppm" built/frames/
+              git add -f built/frames/first_real_gs_frame.ppm
+            fi
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m 'test: record short prebuilt God Hand boot probe [skip ci]'
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1
+
+      - name: Fail only when genuine guest framebuffer is absent
+        if: always()
+        shell: bash
+        run: |
+          if ! test -s built/frames/first_real_gs_frame.ppm; then
+            echo 'Prebuilt boot did not render a genuine GS frame; see prebuilt_smoke_status.txt.'
+            exit 1
+          fi
+          echo 'First nonuniform guest framebuffer captured; inspect before gameplay claims.'
