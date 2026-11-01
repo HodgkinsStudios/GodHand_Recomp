@@ -1,4 +1,5 @@
 output/entry_3b6990_0x3b6a00.cpp
+output/entry_3bafb8_0x3baff8.cpp
 output/register_functions.cpp
 output/sub_00100008_0x100008.cpp
 output/sub_00100010_0x100010.cpp
