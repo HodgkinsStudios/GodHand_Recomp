@@ -21,16 +21,20 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     steps:
-      - name: Checkout source and ISO LFS parts
+      - name: Checkout source without unnecessary game-binary/AOT LFS downloads
         uses: actions/checkout@v4
         with:
-          lfs: true
+          lfs: false
           submodules: recursive
           persist-credentials: true
       - name: Verify LFS and parser unit tests
         run: |
           set -euo pipefail
           python3 -m unittest discover -s tools/tests -v
+          # Download only the original ISO chunks required for analysis,
+          # not the 209 MB already-linked native binary or old AOT tarball.
+          git lfs install --local
+          git lfs pull --include='iso/GodHand.iso.part-*' --exclude=''
           git lfs ls-files
           test -s iso/GodHand.iso.part-000
           test -s iso/GodHand.iso.part-001
