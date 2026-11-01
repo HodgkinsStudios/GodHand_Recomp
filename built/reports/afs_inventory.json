@@ -1,0 +1,1021 @@
+{
+  "entries": 1445,
+  "archive_bytes": 1541885952,
+  "filename_toc_present": true,
+  "filename_toc_offset": 1541816320,
+  "filename_toc_bytes": 69360,
+  "source": "/home/runner/work/_temp/GodHand.iso",
+  "archive_offset_bytes": 4769792,
+  "iso_sidecar_indexes": {
+    "GODHAND.FST": {
+      "bytes": 32944,
+      "header32_hex": "465354000000803f100000004438000062676d00646c6c00646c6c746f6f6c00",
+      "strings_sample": [
+        "dlltool",
+        "event",
+        "modules",
+        "movie",
+        "subscr",
+        "bgm00.afd",
+        "bgm00.afs",
+        "bgmtbl.bmt",
+        "debugoptimize",
+        "event.rel",
+        "mcport.rel",
+        "r000.rel",
+        "r001.rel",
+        "r002.rel",
+        "r003.rel",
+        "r004.rel",
+        "r005.rel",
+        "r006.rel",
+        "r007.rel",
+        "r008.rel",
+        "r020.rel",
+        "r021.rel",
+        "r022.rel",
+        "r023.rel",
+        "r040.rel",
+        "r043.rel",
+        "r04e.rel",
+        "r04f.rel",
+        "r100.rel",
+        "r101.rel",
+        "r102.rel",
+        "r103.rel",
+        "r104.rel",
+        "r105.rel",
+        "r110.rel",
+        "r200.rel",
+        "r201.rel",
+        "r202.rel",
+        "r203.rel",
+        "r204.rel",
+        "r205.rel",
+        "r206.rel",
+        "r207.rel",
+        "r300.rel",
+        "r301.rel",
+        "r302.rel",
+        "r303.rel",
+        "r304.rel",
+        "r305.rel",
+        "r400.rel",
+        "r401.rel",
+        "r402.rel",
+        "r403.rel",
+        "r404.rel",
+        "r405.rel",
+        "r406.rel",
+        "r407.rel",
+        "r408.rel",
+        "r409.rel",
+        "r500.rel",
+        "r501.rel",
+        "r502.rel",
+        "r503.rel",
+        "r504.rel",
+        "r505.rel",
+        "r506.rel",
+        "r507.rel",
+        "r508.rel",
+        "r509.rel",
+        "r600.rel",
+        "r601.rel",
+        "r602.rel",
+        "r603.rel",
+        "r604.rel",
+        "r605.rel",
+        "r606.rel",
+        "r607.rel",
+        "r608.rel",
+        "r700.rel",
+        "r701.rel"
+      ],
+      "strings_count": 1457
+    },
+    "0FLISTDV.DIR": {
+      "bytes": 23,
+      "header32_hex": "574f4c5645532e4653540d0a5f444154412e4146530d0a",
+      "strings_sample": [
+        "WOLVES.FST",
+        "_DATA.AFS"
+      ],
+      "strings_count": 2
+    }
+  },
+  "sum_entry_bytes": 1540397895,
+  "signatures": {
+    "MPEG program stream/PSS candidate": 6,
+    "PS2 TIM2 texture": 35,
+    "nested AFS archive": 188,
+    "unknown": 1216
+  },
+  "extensions": {
+    ".dat": 641,
+    "": 216,
+    ".afd": 185,
+    ".afs": 185,
+    ".ses": 162,
+    ".i": 10,
+    ".da": 9,
+    ".bin": 8,
+    ".af": 6,
+    ".idd": 6,
+    ".sfd": 5,
+    ".id": 4,
+    ".d": 3,
+    ".tm2": 2,
+    ".bmt": 1,
+    ".atb": 1,
+    ".s": 1
+  },
+  "examples": [
+    {
+      "index": 0,
+      "name": "core.bin",
+      "offset": 12288,
+      "size": 29024,
+      "signature": "unknown",
+      "header_hex": "060000004000000040120000c01a0000"
+    },
+    {
+      "index": 1,
+      "name": "core.dat",
+      "offset": 43008,
+      "size": 2713824,
+      "signature": "unknown",
+      "header_hex": "080000006000000060260000606c0000"
+    },
+    {
+      "index": 2,
+      "name": "core_eng.bin",
+      "offset": 2758656,
+      "size": 1233056,
+      "signature": "unknown",
+      "header_hex": "250000003001000070250000b0490000"
+    },
+    {
+      "index": 3,
+      "name": "core_fra.bin",
+      "offset": 3993600,
+      "size": 1232192,
+      "signature": "unknown",
+      "header_hex": "250000003001000070250000b0490000"
+    },
+    {
+      "index": 4,
+      "name": "core_ger.bin",
+      "offset": 5226496,
+      "size": 1232192,
+      "signature": "unknown",
+      "header_hex": "250000003001000070250000b0490000"
+    },
+    {
+      "index": 5,
+      "name": "core_ita.bin",
+      "offset": 6459392,
+      "size": 1232192,
+      "signature": "unknown",
+      "header_hex": "250000003001000070250000b0490000"
+    },
+    {
+      "index": 6,
+      "name": "core_jpn.bin",
+      "offset": 7692288,
+      "size": 1311072,
+      "signature": "unknown",
+      "header_hex": "280000005001000090250000d0490000"
+    },
+    {
+      "index": 7,
+      "name": "core_spa.bin",
+      "offset": 9005056,
+      "size": 1232192,
+      "signature": "unknown",
+      "header_hex": "250000003001000070250000b0490000"
+    },
+    {
+      "index": 8,
+      "name": "core_usa.bin",
+      "offset": 10237952,
+      "size": 1235184,
+      "signature": "unknown",
+      "header_hex": "250000003001000070250000b0490000"
+    },
+    {
+      "index": 9,
+      "name": "effcorepad.d",
+      "offset": 11474944,
+      "size": 209664,
+      "signature": "unknown",
+      "header_hex": "30303030303030303030303030303030"
+    },
+    {
+      "index": 10,
+      "name": "face_",
+      "offset": 11685888,
+      "size": 9696,
+      "signature": "unknown",
+      "header_hex": "01000000400020003000000000210000"
+    },
+    {
+      "index": 11,
+      "name": "face_",
+      "offset": 11696128,
+      "size": 2176,
+      "signature": "PS2 TIM2 texture",
+      "header_hex": "54494d32040001000000000000000000"
+    },
+    {
+      "index": 12,
+      "name": "face_",
+      "offset": 11700224,
+      "size": 9696,
+      "signature": "unknown",
+      "header_hex": "01000000400020003000000000210000"
+    },
+    {
+      "index": 13,
+      "name": "face_",
+      "offset": 11710464,
+      "size": 2176,
+      "signature": "PS2 TIM2 texture",
+      "header_hex": "54494d32040001000000000000000000"
+    },
+    {
+      "index": 14,
+      "name": "face_",
+      "offset": 11714560,
+      "size": 9696,
+      "signature": "unknown",
+      "header_hex": "01000000400020003000000000210000"
+    },
+    {
+      "index": 15,
+      "name": "face_",
+      "offset": 11724800,
+      "size": 2176,
+      "signature": "PS2 TIM2 texture",
+      "header_hex": "54494d32040001000000000000000000"
+    },
+    {
+      "index": 16,
+      "name": "face_",
+      "offset": 11728896,
+      "size": 5184,
+      "signature": "PS2 TIM2 texture",
+      "header_hex": "54494d32040001000000000000000000"
+    },
+    {
+      "index": 17,
+      "name": "kue_t",
+      "offset": 11735040,
+      "size": 9696,
+      "signature": "unknown",
+      "header_hex": "01000000400020003000000000210000"
+    },
+    {
+      "index": 18,
+      "name": "kue_t",
+      "offset": 11745280,
+      "size": 8320,
+      "signature": "PS2 TIM2 texture",
+      "header_hex": "54494d32040001000000000000000000"
+    },
+    {
+      "index": 19,
+      "name": "mcfile.dat",
+      "offset": 11755520,
+      "size": 103136,
+      "signature": "unknown",
+      "header_hex": "0200000020000000e08e010049434f00"
+    },
+    {
+      "index": 20,
+      "name": "moji8.tm2",
+      "offset": 11859968,
+      "size": 3776,
+      "signature": "PS2 TIM2 texture",
+      "header_hex": "54494d32040001000000000000000000"
+    },
+    {
+      "index": 21,
+      "name": "moji81.tm2",
+      "offset": 11864064,
+      "size": 3200,
+      "signature": "PS2 TIM2 texture",
+      "header_hex": "54494d32040001000000000000000000"
+    },
+    {
+      "index": 22,
+      "name": "roo",
+      "offset": 11868160,
+      "size": 5876,
+      "signature": "unknown",
+      "header_hex": "61000000100000009401000000000000"
+    },
+    {
+      "index": 23,
+      "name": "sub_c",
+      "offset": 11874304,
+      "size": 17888,
+      "signature": "unknown",
+      "header_hex": "01000000400040003000000000410000"
+    },
+    {
+      "index": 24,
+      "name": "sub_c",
+      "offset": 11892736,
+      "size": 17472,
+      "signature": "PS2 TIM2 texture",
+      "header_hex": "54494d32040001000000000000000000"
+    },
+    {
+      "index": 25,
+      "name": "sub_e",
+      "offset": 11911168,
+      "size": 17888,
+      "signature": "unknown",
+      "header_hex": "01000000400040003000000000410000"
+    },
+    {
+      "index": 26,
+      "name": "sub_e",
+      "offset": 11929600,
+      "size": 16512,
+      "signature": "PS2 TIM2 texture",
+      "header_hex": "54494d32040001000000000000000000"
+    },
+    {
+      "index": 27,
+      "name": "sub_m",
+      "offset": 11948032,
+      "size": 66624,
+      "signature": "PS2 TIM2 texture",
+      "header_hex": "54494d32040001000000000000000000"
+    },
+    {
+      "index": 28,
+      "name": "sub_t",
+      "offset": 12015616,
+      "size": 17888,
+      "signature": "unknown",
+      "header_hex": "01000000400040003000000000410000"
+    },
+    {
+      "index": 29,
+      "name": "sub_t",
+      "offset": 12034048,
+      "size": 16512,
+      "signature": "PS2 TIM2 texture",
+      "header_hex": "54494d32040001000000000000000000"
+    },
+    {
+      "index": 30,
+      "name": "coreid.da",
+      "offset": 12052480,
+      "size": 447472,
+      "signature": "unknown",
+      "header_hex": "300000009001000070270000504d0000"
+    },
+    {
+      "index": 31,
+      "name": "coreidtex",
+      "offset": 12500992,
+      "size": 310912,
+      "signature": "unknown",
+      "header_hex": "1f00000000010000e0260000c04c0000"
+    },
+    {
+      "index": 32,
+      "name": "corei",
+      "offset": 12812288,
+      "size": 310912,
+      "signature": "unknown",
+      "header_hex": "1f00000000010000e0260000c04c0000"
+    },
+    {
+      "index": 33,
+      "name": "files00.d",
+      "offset": 13123584,
+      "size": 6880,
+      "signature": "unknown",
+      "header_hex": "2a000000000000006001000000000000"
+    },
+    {
+      "index": 34,
+      "name": "files",
+      "offset": 13131776,
+      "size": 6880,
+      "signature": "unknown",
+      "header_hex": "2a000000000000006001000000000000"
+    },
+    {
+      "index": 35,
+      "name": "filescore",
+      "offset": 13139968,
+      "size": 135616,
+      "signature": "unknown",
+      "header_hex": "030000002000000000060100e08b0100"
+    },
+    {
+      "index": 36,
+      "name": "files",
+      "offset": 13277184,
+      "size": 135616,
+      "signature": "unknown",
+      "header_hex": "030000002000000000060100e08b0100"
+    },
+    {
+      "index": 37,
+      "name": "fude01.da",
+      "offset": 13414400,
+      "size": 9712,
+      "signature": "unknown",
+      "header_hex": "01000000100000005433320000000000"
+    },
+    {
+      "index": 38,
+      "name": "fude0",
+      "offset": 13424640,
+      "size": 9712,
+      "signature": "unknown",
+      "header_hex": "01000000100000005433320000000000"
+    },
+    {
+      "index": 39,
+      "name": "fude02.da",
+      "offset": 13434880,
+      "size": 67056,
+      "signature": "unknown",
+      "header_hex": "01000000100000005433320000000000"
+    },
+    {
+      "index": 40,
+      "name": "fude0",
+      "offset": 13502464,
+      "size": 67056,
+      "signature": "unknown",
+      "header_hex": "01000000100000005433320000000000"
+    },
+    {
+      "index": 41,
+      "name": "fude03.da",
+      "offset": 13570048,
+      "size": 67056,
+      "signature": "unknown",
+      "header_hex": "01000000100000005433320000000000"
+    },
+    {
+      "index": 42,
+      "name": "fude0",
+      "offset": 13637632,
+      "size": 67056,
+      "signature": "unknown",
+      "header_hex": "01000000100000005433320000000000"
+    },
+    {
+      "index": 43,
+      "name": "fude04.da",
+      "offset": 13705216,
+      "size": 67056,
+      "signature": "unknown",
+      "header_hex": "01000000100000005433320000000000"
+    },
+    {
+      "index": 44,
+      "name": "fude0",
+      "offset": 13772800,
+      "size": 67056,
+      "signature": "unknown",
+      "header_hex": "01000000100000005433320000000000"
+    },
+    {
+      "index": 45,
+      "name": "fude05.da",
+      "offset": 13840384,
+      "size": 67056,
+      "signature": "unknown",
+      "header_hex": "01000000100000005433320000000000"
+    },
+    {
+      "index": 46,
+      "name": "fude0",
+      "offset": 13907968,
+      "size": 67056,
+      "signature": "unknown",
+      "header_hex": "01000000100000005433320000000000"
+    },
+    {
+      "index": 47,
+      "name": "fude06.da",
+      "offset": 13975552,
+      "size": 67056,
+      "signature": "unknown",
+      "header_hex": "01000000100000005433320000000000"
+    },
+    {
+      "index": 48,
+      "name": "fude0",
+      "offset": 14043136,
+      "size": 67056,
+      "signature": "unknown",
+      "header_hex": "01000000100000005433320000000000"
+    },
+    {
+      "index": 49,
+      "name": "fude07.da",
+      "offset": 14110720,
+      "size": 9712,
+      "signature": "unknown",
+      "header_hex": "01000000100000005433320000000000"
+    },
+    {
+      "index": 50,
+      "name": "fude0",
+      "offset": 14120960,
+      "size": 9712,
+      "signature": "unknown",
+      "header_hex": "01000000100000005433320000000000"
+    },
+    {
+      "index": 51,
+      "name": "fudecore.",
+      "offset": 14131200,
+      "size": 183504,
+      "signature": "unknown",
+      "header_hex": "0d0000007000000050260000304c0000"
+    },
+    {
+      "index": 52,
+      "name": "fudec",
+      "offset": 14315520,
+      "size": 183504,
+      "signature": "unknown",
+      "header_hex": "0d0000007000000050260000304c0000"
+    },
+    {
+      "index": 53,
+      "name": "itemcore.",
+      "offset": 14499840,
+      "size": 77648,
+      "signature": "unknown",
+      "header_hex": "080000005000000030260000104c0000"
+    },
+    {
+      "index": 54,
+      "name": "itemc",
+      "offset": 14577664,
+      "size": 9712,
+      "signature": "unknown",
+      "header_hex": "01000000100000005433320000000000"
+    },
+    {
+      "index": 55,
+      "name": "mapcore.d",
+      "offset": 14587904,
+      "size": 29120,
+      "signature": "unknown",
+      "header_hex": "030000002000000000260000e04b0000"
+    },
+    {
+      "index": 56,
+      "name": "mapco",
+      "offset": 14618624,
+      "size": 9712,
+      "signature": "unknown",
+      "header_hex": "01000000100000005433320000000000"
+    },
+    {
+      "index": 57,
+      "name": "shop00.da",
+      "offset": 14628864,
+      "size": 50528,
+      "signature": "unknown",
+      "header_hex": "030000002000000060240000e0440000"
+    },
+    {
+      "index": 58,
+      "name": "shop0",
+      "offset": 14680064,
+      "size": 50528,
+      "signature": "unknown",
+      "header_hex": "030000002000000060240000e0440000"
+    },
+    {
+      "index": 59,
+      "name": "shopcore.",
+      "offset": 14731264,
+      "size": 91568,
+      "signature": "unknown",
+      "header_hex": "0800000050000000d008000050110000"
+    },
+    {
+      "index": 60,
+      "name": "shopc",
+      "offset": 14823424,
+      "size": 91568,
+      "signature": "unknown",
+      "header_hex": "0800000050000000d008000050110000"
+    },
+    {
+      "index": 61,
+      "name": "template.",
+      "offset": 14915584,
+      "size": 16,
+      "signature": "unknown",
+      "header_hex": "00000000000000000000000000000000"
+    },
+    {
+      "index": 62,
+      "name": "templ",
+      "offset": 14917632,
+      "size": 16,
+      "signature": "unknown",
+      "header_hex": "00000000000000000000000000000000"
+    },
+    {
+      "index": 63,
+      "name": "titlecore",
+      "offset": 14919680,
+      "size": 3440768,
+      "signature": "unknown",
+      "header_hex": "260000004001000020870000008d0200"
+    },
+    {
+      "index": 64,
+      "name": "title",
+      "offset": 18362368,
+      "size": 584912,
+      "signature": "unknown",
+      "header_hex": "0d0000007000000050860000308c0200"
+    },
+    {
+      "index": 65,
+      "name": "bgm00.afd",
+      "offset": 18948096,
+      "size": 1808,
+      "signature": "unknown",
+      "header_hex": "38000000100000000000000000000000"
+    },
+    {
+      "index": 66,
+      "name": "bgm00.afs",
+      "offset": 18950144,
+      "size": 450799616,
+      "signature": "nested AFS archive",
+      "header_hex": "41465300350000000008000000606d00"
+    },
+    {
+      "index": 67,
+      "name": "bgmtbl.bmt",
+      "offset": 469749760,
+      "size": 1248,
+      "signature": "unknown",
+      "header_hex": "2000000010000000a000000054010000"
+    },
+    {
+      "index": 68,
+      "name": "core.afd",
+      "offset": 469751808,
+      "size": 197120,
+      "signature": "unknown",
+      "header_hex": "2a000000100000005005000000000000"
+    },
+    {
+      "index": 69,
+      "name": "core.afs",
+      "offset": 469950464,
+      "size": 1077248,
+      "signature": "nested AFS archive",
+      "header_hex": "414653000b000000000800005e3b0100"
+    },
+    {
+      "index": 70,
+      "name": "core.ses",
+      "offset": 471027712,
+      "size": 1074992,
+      "signature": "unknown",
+      "header_hex": "53455300cdcc8c3f0000000000010000"
+    },
+    {
+      "index": 71,
+      "name": "dumm",
+      "offset": 472102912,
+      "size": 64,
+      "signature": "unknown",
+      "header_hex": "02000000200000003000000054424c00"
+    },
+    {
+      "index": 72,
+      "name": "dumm",
+      "offset": 472104960,
+      "size": 64,
+      "signature": "unknown",
+      "header_hex": "02000000200000003000000054424c00"
+    },
+    {
+      "index": 73,
+      "name": "dumm",
+      "offset": 472107008,
+      "size": 64,
+      "signature": "unknown",
+      "header_hex": "02000000200000003000000054424c00"
+    },
+    {
+      "index": 74,
+      "name": "dumm",
+      "offset": 472109056,
+      "size": 64,
+      "signature": "unknown",
+      "header_hex": "02000000200000003000000054424c00"
+    },
+    {
+      "index": 75,
+      "name": "dumm",
+      "offset": 472111104,
+      "size": 64,
+      "signature": "unknown",
+      "header_hex": "02000000200000003000000054424c00"
+    },
+    {
+      "index": 76,
+      "name": "dumm",
+      "offset": 472113152,
+      "size": 64,
+      "signature": "unknown",
+      "header_hex": "02000000200000003000000054424c00"
+    },
+    {
+      "index": 77,
+      "name": "el00.dat",
+      "offset": 472115200,
+      "size": 327392,
+      "signature": "unknown",
+      "header_hex": "0200000020000000e0d00200544d3300"
+    },
+    {
+      "index": 78,
+      "name": "el01.dat",
+      "offset": 472442880,
+      "size": 304608,
+      "signature": "unknown",
+      "header_hex": "0200000020000000201d0300544d3300"
+    },
+    {
+      "index": 79,
+      "name": "el02.dat",
+      "offset": 472748032,
+      "size": 187168,
+      "signature": "unknown",
+      "header_hex": "0200000020000000a0ed0000544d3300"
+    },
+    {
+      "index": 196,
+      "name": "em00.afs",
+      "offset": 491409408,
+      "size": 47104,
+      "signature": "nested AFS archive",
+      "header_hex": "41465300010000000008000094a20000"
+    },
+    {
+      "index": 200,
+      "name": "em01.afs",
+      "offset": 509933568,
+      "size": 47104,
+      "signature": "nested AFS archive",
+      "header_hex": "41465300010000000008000094a20000"
+    },
+    {
+      "index": 204,
+      "name": "em02.afs",
+      "offset": 515225600,
+      "size": 69632,
+      "signature": "nested AFS archive",
+      "header_hex": "414653000200000000080000ea520000"
+    },
+    {
+      "index": 1439,
+      "name": "clover.sfd",
+      "offset": 1170599936,
+      "size": 1935360,
+      "signature": "MPEG program stream/PSS candidate",
+      "header_hex": "000001ba21000100038090b1000001bb"
+    },
+    {
+      "index": 1440,
+      "name": "e3.sfd",
+      "offset": 1172535296,
+      "size": 57438208,
+      "signature": "MPEG program stream/PSS candidate",
+      "header_hex": "000001ba2100010005804835000001bb"
+    },
+    {
+      "index": 1441,
+      "name": "order.sfd",
+      "offset": 1229973504,
+      "size": 69838848,
+      "signature": "MPEG program stream/PSS candidate",
+      "header_hex": "000001ba2100010005804839000001bb"
+    },
+    {
+      "index": 1442,
+      "name": "public.sfd",
+      "offset": 1299812352,
+      "size": 19488768,
+      "signature": "MPEG program stream/PSS candidate",
+      "header_hex": "000001ba210001000580481b000001bb"
+    },
+    {
+      "index": 1443,
+      "name": "staff.sfd",
+      "offset": 1319301120,
+      "size": 111650816,
+      "signature": "MPEG program stream/PSS candidate",
+      "header_hex": "000001ba2100010003806c15000001bb"
+    }
+  ],
+  "first_entries": [
+    {
+      "index": 0,
+      "offset": 12288,
+      "size": 29024,
+      "name": "core.bin"
+    },
+    {
+      "index": 1,
+      "offset": 43008,
+      "size": 2713824,
+      "name": "core.dat"
+    },
+    {
+      "index": 2,
+      "offset": 2758656,
+      "size": 1233056,
+      "name": "core_eng.bin"
+    },
+    {
+      "index": 3,
+      "offset": 3993600,
+      "size": 1232192,
+      "name": "core_fra.bin"
+    },
+    {
+      "index": 4,
+      "offset": 5226496,
+      "size": 1232192,
+      "name": "core_ger.bin"
+    },
+    {
+      "index": 5,
+      "offset": 6459392,
+      "size": 1232192,
+      "name": "core_ita.bin"
+    },
+    {
+      "index": 6,
+      "offset": 7692288,
+      "size": 1311072,
+      "name": "core_jpn.bin"
+    },
+    {
+      "index": 7,
+      "offset": 9005056,
+      "size": 1232192,
+      "name": "core_spa.bin"
+    },
+    {
+      "index": 8,
+      "offset": 10237952,
+      "size": 1235184,
+      "name": "core_usa.bin"
+    },
+    {
+      "index": 9,
+      "offset": 11474944,
+      "size": 209664,
+      "name": "effcorepad.d"
+    },
+    {
+      "index": 10,
+      "offset": 11685888,
+      "size": 9696,
+      "name": "face_"
+    },
+    {
+      "index": 11,
+      "offset": 11696128,
+      "size": 2176,
+      "name": "face_"
+    },
+    {
+      "index": 12,
+      "offset": 11700224,
+      "size": 9696,
+      "name": "face_"
+    },
+    {
+      "index": 13,
+      "offset": 11710464,
+      "size": 2176,
+      "name": "face_"
+    },
+    {
+      "index": 14,
+      "offset": 11714560,
+      "size": 9696,
+      "name": "face_"
+    },
+    {
+      "index": 15,
+      "offset": 11724800,
+      "size": 2176,
+      "name": "face_"
+    },
+    {
+      "index": 16,
+      "offset": 11728896,
+      "size": 5184,
+      "name": "face_"
+    },
+    {
+      "index": 17,
+      "offset": 11735040,
+      "size": 9696,
+      "name": "kue_t"
+    },
+    {
+      "index": 18,
+      "offset": 11745280,
+      "size": 8320,
+      "name": "kue_t"
+    },
+    {
+      "index": 19,
+      "offset": 11755520,
+      "size": 103136,
+      "name": "mcfile.dat"
+    },
+    {
+      "index": 20,
+      "offset": 11859968,
+      "size": 3776,
+      "name": "moji8.tm2"
+    },
+    {
+      "index": 21,
+      "offset": 11864064,
+      "size": 3200,
+      "name": "moji81.tm2"
+    },
+    {
+      "index": 22,
+      "offset": 11868160,
+      "size": 5876,
+      "name": "roo"
+    },
+    {
+      "index": 23,
+      "offset": 11874304,
+      "size": 17888,
+      "name": "sub_c"
+    },
+    {
+      "index": 24,
+      "offset": 11892736,
+      "size": 17472,
+      "name": "sub_c"
+    },
+    {
+      "index": 25,
+      "offset": 11911168,
+      "size": 17888,
+      "name": "sub_e"
+    },
+    {
+      "index": 26,
+      "offset": 11929600,
+      "size": 16512,
+      "name": "sub_e"
+    },
+    {
+      "index": 27,
+      "offset": 11948032,
+      "size": 66624,
+      "name": "sub_m"
+    },
+    {
+      "index": 28,
+      "offset": 12015616,
+      "size": 17888,
+      "name": "sub_t"
+    },
+    {
+      "index": 29,
+      "offset": 12034048,
+      "size": 16512,
+      "name": "sub_t"
+    }
+  ]
+}
