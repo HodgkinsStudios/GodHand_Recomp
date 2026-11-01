@@ -204,3 +204,6 @@ The real CP17 native AOT executable (209,109,192 bytes) and generated C++ archiv
 
 ### CP19 current boot-development checkpoint
 CP18 generated AOT source archive and native game executable are both published on GitHub main, via Git LFS. Original ELF execution now passes two previously missing indirect-call targets; next blocked guest entry is 0x0038B6E0. CP19 validates and registers this genuine MIPS entry, then uses cached native recompilation. See docs/CP19_THIRD_GUEST_ENTRY.md.
+
+### CP20 status
+CP19 real native AOT executable and generated C++ remain committed under built/ in main via Git LFS. First three indirect-call blockers were resolved, fourth guest call at 0x0031DA28 remains. CP20 additionally validates the genuine callback pointer 0x00375840 found in execution trace. See docs/CP20_BOOT_DISPATCH.md.
