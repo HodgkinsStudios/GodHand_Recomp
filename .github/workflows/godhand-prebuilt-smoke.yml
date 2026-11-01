@@ -51,6 +51,16 @@ jobs:
             --out "$RUNNER_TEMP/godhand_boot" --extract-elf
           test -s "$RUNNER_TEMP/godhand_boot/boot.elf"
 
+      - name: Audit real ELF embedded guest callback pointer tables
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s tools/tests -p 'test_scan_guest_pointer_tables.py' -v
+          python3 tools/scan_guest_pointer_tables.py \
+            --elf "$RUNNER_TEMP/godhand_boot/boot.elf" \
+            --report built/reports/code_pointer_audit.json
+          test -s built/reports/code_pointer_audit.json
+
       - name: Install headless graphics dependencies
         shell: bash
         run: |
@@ -107,6 +117,7 @@ jobs:
           path: |
             ${{ runner.temp }}/godhand-prebuilt-execution.log
             built/reports/prebuilt_smoke_status.txt
+            built/reports/code_pointer_audit.json
 
       - name: Publish only fresh boot-smoke report to main
         if: always() && github.ref == 'refs/heads/main'
@@ -117,6 +128,9 @@ jobs:
           staging="$(mktemp -d)"
           trap 'rm -rf "$staging"' EXIT
           cp built/reports/prebuilt_smoke_status.txt "$staging/"
+          if test -s built/reports/code_pointer_audit.json; then
+            cp built/reports/code_pointer_audit.json "$staging/"
+          fi
           if test -s built/frames/first_real_gs_frame.ppm; then
             cp built/frames/first_real_gs_frame.ppm "$staging/"
           fi
@@ -128,6 +142,10 @@ jobs:
             mkdir -p built/reports built/frames
             cp "$staging/prebuilt_smoke_status.txt" built/reports/
             git add -f built/reports/prebuilt_smoke_status.txt
+            if test -s "$staging/code_pointer_audit.json"; then
+              cp "$staging/code_pointer_audit.json" built/reports/
+              git add -f built/reports/code_pointer_audit.json
+            fi
             if test -s "$staging/first_real_gs_frame.ppm"; then
               cp "$staging/first_real_gs_frame.ppm" built/frames/
               git add -f built/frames/first_real_gs_frame.ppm

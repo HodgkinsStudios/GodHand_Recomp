@@ -113,3 +113,8 @@
 - CP19 native link run 41323942723 succeeded; original guest ELF advanced past 0x0038B6E0 to missing JALR target 0x0031DA28. No guest GS activity or actual game frame yet.
 - Add original ELF-backed entry discovery for observed target 0x0031DA28 and callback table candidate 0x00375840, preserving 0x003BAFB8, 0x0038F200 and 0x0038B6E0.
 - Analyzer and linker workflows refuse updated output unless all five authentic MIPS addresses are validated and registered. No guest instructions patched.
+
+## CP21 — Audit true embedded ELF callback tables
+- Added independent MIPS ELF32 pointer-group audit, including callback tables in executable LOAD segments, reporting original-file-backed candidates without changing code or automatically treating data as functions.
+- Added six synthetic-ELF tests and an inexpensive, bounded prebuilt-only workflow report to investigate the remaining indirect-call coverage systematically.
+- Not a game-specific runtime hook; no artificial graphics and no AOT binary replacement from this audit.
