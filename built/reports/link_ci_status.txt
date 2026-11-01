@@ -59,8 +59,8 @@ _deps/raylib-src/src/external/jar_mod.h:125:13: note: at offset 1083 into destin
   125 |     muchar  title[20];
       |             ^~~~~
 [61/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/ps2_pad.cpp.o
-[62/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/ps2_rom_device.cpp.o
-[63/106] Building C object _deps/raylib-build/raylib/CMakeFiles/raylib.dir/rtextures.c.o
+[62/106] Building C object _deps/raylib-build/raylib/CMakeFiles/raylib.dir/rtextures.c.o
+[63/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/ps2_rom_device.cpp.o
 [64/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/ps2_memory.cpp.o
 [65/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/ps2_iop_host.cpp.o
 [66/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/ps2_frame_capture.cpp.o
@@ -82,8 +82,8 @@ _deps/raylib-src/src/external/jar_mod.h:125:13: note: at offset 1083 into destin
 [82/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/GS.cpp.o
 [83/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/IPU.cpp.o
 [84/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/LibC.cpp.o
-[85/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/MPEG.cpp.o
-[86/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/MemoryCard.cpp.o
+[85/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/MemoryCard.cpp.o
+[86/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/MPEG.cpp.o
 [87/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/Pad.cpp.o
 [88/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/RPC.cpp.o
 [89/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/System.cpp.o
@@ -91,15 +91,15 @@ _deps/raylib-src/src/external/jar_mod.h:125:13: note: at offset 1083 into destin
 [91/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/Unimplemented.cpp.o
 [92/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/SIF.cpp.o
 [93/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/VU.cpp.o
-[94/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Syscalls/Deci2.cpp.o
-[95/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Syscalls/Dispatcher.cpp.o
+[94/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Syscalls/Dispatcher.cpp.o
+[95/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Syscalls/Deci2.cpp.o
 [96/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Syscalls/FileIO.cpp.o
 [97/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Syscalls/Interrupt.cpp.o
 [98/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Syscalls/Sync.cpp.o
 [99/106] Linking C static library _deps/raylib-build/raylib/libraylib.a
 [100/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Syscalls/RPC.cpp.o
 [101/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Syscalls/System.cpp.o
-[102/106] Building CXX object ps2xRuntime/CMakeFiles/ps2EntryRunner.dir/src/main.cpp.o
-[103/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Syscalls/Thread.cpp.o
+[102/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Syscalls/Thread.cpp.o
+[103/106] Building CXX object ps2xRuntime/CMakeFiles/ps2EntryRunner.dir/src/main.cpp.o
 [104/106] Linking CXX static library ps2xRuntime/libps2_runtime.a
 [105/106] Linking CXX executable ps2xRuntime/ps2EntryRunner
