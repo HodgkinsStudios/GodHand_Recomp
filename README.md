@@ -210,3 +210,6 @@ CP19 real native AOT executable and generated C++ remain committed under built/ 
 
 ### CP22 function-boundary work
 The original God Hand ELF contains callback pointer tables embedded in executable LOAD regions. The conservative upstream function-pointer scanner did not inspect these because it limited scans to data-only sections. CP22 generalizes original-code analysis to high-confidence executable-region pointer clusters. Read docs/CP22_EMBEDDED_CALLBACK_DISCOVERY.md. The last genuine native binary remains in Git LFS until replaced by a successfully linked AOT; visible guest graphics have not yet been certified.
+
+### CP23 — Recovery from actual native boot traces
+`tools/observed_entry_recovery.py` is a standalone ELF-validated entry-point recovery helper for real `[guest-branch:missing-target]` boot logs. It never patches guest instructions or emits fake graphics. See `docs/CP23_BOOT_RECOVERY.md` for usage and current CP22 native link status.
