@@ -123,3 +123,9 @@
 - Real original ELF audit found 358 executable-region pointer groups, with a strongly supported 71-pointer callback table containing multiple previously missing guest call targets.
 - Added generic conservative function start discovery for groups of four or more consecutive executable pointers, all validated by existing MIPS callable-entry heuristics; no names/addresses hardcoded in the recompiler.
 - This is a function-boundary analysis improvement, not an instruction patch or high-level game shortcut. Validate Linux/Windows compiler and subsequent full AOT analysis before replacing the linked executable.
+
+## CP24 — Original guest countdown diagnosis (2026-11-01)
+- CP22 AOT native binary published to main, authentic GIF/DMA/GS transfer traffic observed; game has no nonuniform guest framebuffer yet.
+- Inspected exact AOT host function `sub_00398890_0x398890.cpp` after preserved boot was stuck at 0x00398930: guest loops while decrementing `$v0` until it reaches `$v1=-1`, loaded from original guest global at 0x003F868C.
+- Added prebuilt-only AOT source inspection and bounded original ELF boot PC inspection workflows; preserved reports without guest patching.
+- Added thread-safe `$v0/$v1` debug snapshots on scheduler checkpoints and log output; triggers an explicit native link with cached 9k+ compilation results, no gameplay modification.

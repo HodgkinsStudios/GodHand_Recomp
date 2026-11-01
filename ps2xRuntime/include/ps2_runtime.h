@@ -530,6 +530,9 @@ public:
     std::atomic<uint32_t> m_debugRa{0};
     std::atomic<uint32_t> m_debugSp{0};
     std::atomic<uint32_t> m_debugGp{0};
+    // Guest-thread snapshots consumed by the host UI without racing the R5900 context.
+    std::atomic<uint32_t> m_debugV0{0};
+    std::atomic<uint32_t> m_debugV1{0};
 
 private:
     struct LoadedModule

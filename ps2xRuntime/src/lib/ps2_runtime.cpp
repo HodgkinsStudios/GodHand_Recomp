@@ -2235,7 +2235,18 @@ void PS2Runtime::postEeEvent(EeEvent event)
 
 bool PS2Runtime::eeCheckpointDue(uint32_t cycles) noexcept
 {
-    return m_eeScheduler->checkpointDue(cycles);
+    const bool due = m_eeScheduler->checkpointDue(cycles);
+    // Publish a race-free snapshot only when the guest yields to its scheduler.
+    // These are diagnostic counters: do not change any guest register or timing.
+    if (due)
+    {
+        if (R5900Context *context = m_eeScheduler->currentContext())
+        {
+            m_debugV0.store(static_cast<uint32_t>(_mm_extract_epi32(context->r[2], 0)), std::memory_order_relaxed);
+            m_debugV1.store(static_cast<uint32_t>(_mm_extract_epi32(context->r[3], 0)), std::memory_order_relaxed);
+        }
+    }
+    return due;
 }
 
 [[noreturn]] void PS2Runtime::eeWaitVSyncTicks(uint32_t ticks, uint32_t resumePc)
@@ -2425,6 +2436,8 @@ void PS2Runtime::run()
                 const uint32_t dbgRa = m_debugRa.load(std::memory_order_relaxed);
                 const uint32_t dbgSp = m_debugSp.load(std::memory_order_relaxed);
                 const uint32_t dbgGp = m_debugGp.load(std::memory_order_relaxed);
+                const uint32_t dbgV0 = m_debugV0.load(std::memory_order_relaxed);
+                const uint32_t dbgV1 = m_debugV1.load(std::memory_order_relaxed);
                 const auto eeSnapshot = m_eeScheduler->snapshot();
 
                 RUNTIME_LOG("[run:tick] tick=" << tick
@@ -2432,6 +2445,8 @@ void PS2Runtime::run()
                                                << " ra=0x" << dbgRa
                                                << " sp=0x" << dbgSp
                                                << " gp=0x" << dbgGp
+                                               << " v0=0x" << dbgV0
+                                               << " v1=0x" << dbgV1
                                                << " dispfb1=0x" << gs.dispfb1
                                                << " display1=0x" << gs.display1
                                                << std::dec

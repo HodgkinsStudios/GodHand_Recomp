@@ -4,7 +4,7 @@ name: GodHand - Link AOT and test first frame
 on:
   push:
     branches: [main]
-    paths: ['built/aot/generated_cpp.tar.gz']
+    paths: ['built/aot/generated_cpp.tar.gz', '.github/workflows/godhand-link.yml']
   workflow_run:
     workflows: ['GodHand - ISO boot ELF and AOT analysis']
     types: [completed]

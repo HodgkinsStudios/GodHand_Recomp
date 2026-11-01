@@ -213,3 +213,6 @@ The original God Hand ELF contains callback pointer tables embedded in executabl
 
 ### CP23 — Recovery from actual native boot traces
 `tools/observed_entry_recovery.py` is a standalone ELF-validated entry-point recovery helper for real `[guest-branch:missing-target]` boot logs. It never patches guest instructions or emits fake graphics. See `docs/CP23_BOOT_RECOVERY.md` for usage and current CP22 native link status.
+
+### CP24 — Native boot countdown investigation
+CP22 compiled and published the complete AOT. Real DMA/GIF traffic and GS transfer registers now run, but no nonuniform guest framebuffer is captured. Guest source inspection identified a countdown at `0x00398930` within a genuine SDK bootstrap sequence after `sceSifInitRpc` and before `sceSifBindRpc`. CP24 adds diagnostic-only R5900 `$v0` / `$v1` snapshots to each scheduler checkpoint. No guest code, timer behavior, GPU framebuffer or wait condition is modified.
