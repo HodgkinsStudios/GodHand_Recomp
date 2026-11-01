@@ -91,7 +91,6 @@ jobs:
             timeout 2400 "$RECOMP" "$RUNNER_TEMP/game/godhand.toml" \
               > "$RUNNER_TEMP/recomp.log" 2>&1 || status=$?
           fi
-          printf 'analyzer_and_recompiler_exit_status=%s\n' "$status" > built/reports/aot_status.txt
           if [ -f "$RUNNER_TEMP/analyzer.log" ]; then tail -n 100 "$RUNNER_TEMP/analyzer.log" > built/reports/analyzer_tail.txt; fi
           if [ -f "$RUNNER_TEMP/recomp.log" ]; then tail -n 100 "$RUNNER_TEMP/recomp.log" > built/reports/recompiler_tail.txt; fi
           # Generated C++ is not automatically an executable or proof of booting.
@@ -113,8 +112,13 @@ jobs:
             # archive omitted headers and could not be compiled independently.
             (cd "$RUNNER_TEMP/game/output" && tar -czf "$GITHUB_WORKSPACE/built/aot/generated_cpp.tar.gz" .)
           fi
+          if [ "$status" -eq 0 ] && [ ! -s built/aot/generated_cpp.tar.gz ]; then
+            echo 'ERROR: recompiler returned success but did not produce an archive' >&2
+            status=1
+          fi
+          printf 'analyzer_and_recompiler_exit_status=%s\n' "$status" > built/reports/aot_status.txt
           echo "AOT diagnostic stage exit status: $status"
-          exit 0
+          exit "$status"
       - name: Summarize unhandled translation errors
         if: always()
         shell: bash
