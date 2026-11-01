@@ -107,6 +107,89 @@ jobs:
           grep -m 1 -F '[guest-branch:missing-target]' "$logfile" || true
           exit 0
 
+      - name: Diagnose persistent guest PC from real boot ELF
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p built/reports
+          python3 - "$RUNNER_TEMP/godhand_boot/boot.elf" \
+            "$RUNNER_TEMP/godhand-prebuilt-execution.log" \
+            built/reports/guest_stall_inspection.txt <<'PY'
+          import collections
+          import pathlib
+          import re
+          import struct
+          import sys
+
+          elfpath, logpath, outpath = map(pathlib.Path, sys.argv[1:4])
+          log = logpath.read_text(errors='replace') if logpath.exists() else ''
+          pcs = [int(v, 16) for v in re.findall(r'\[run:tick\][^\n]*?\bpc=0x([0-9a-fA-F]+)', log)]
+          if not pcs or not elfpath.is_file():
+              outpath.write_text('No guest tick PC or original ELF available\n')
+              sys.exit(0)
+          target, count = collections.Counter(pcs).most_common(1)[0]
+          elf = elfpath.read_bytes()
+          if elf[:6] != b'\x7fELF\x01\x01':
+              outpath.write_text('Unexpected ELF class or endian\n')
+              sys.exit(0)
+          phoff = struct.unpack_from('<I', elf, 28)[0]
+          phentsize, phnum = struct.unpack_from('<HH', elf, 42)
+          segments = []
+          for n in range(phnum):
+              pos = phoff + n * phentsize
+              if pos + 32 > len(elf):
+                  break
+              kind, offset, vaddr, _, filesz, memsz, flags, _ = struct.unpack_from('<8I', elf, pos)
+              if kind == 1 and flags & 1 and offset + filesz <= len(elf):
+                  segments.append((vaddr, vaddr + filesz, offset, flags))
+          def read_word(addr):
+              for lo, hi, off, _ in segments:
+                  if lo <= addr and addr + 4 <= hi:
+                      return struct.unpack_from('<I', elf, off + addr - lo)[0]
+              return None
+          def decode(pc, w):
+              op = w >> 26
+              rs, rt, rd = (w >> 21) & 31, (w >> 16) & 31, (w >> 11) & 31
+              imm = w & 0xffff
+              signed = imm if imm < 0x8000 else imm - 0x10000
+              branch = (pc + 4 + signed * 4) & 0xffffffff
+              if w == 0: return 'nop'
+              if op == 0:
+                  fun = w & 63
+                  if fun == 8: return f'jr r{rs}'
+                  if fun == 9: return f'jalr r{rs}, r{rd}'
+                  if fun in (0x20,0x21): return f'add(u) r{rd}, r{rs}, r{rt}'
+                  if fun in (0x24,0x25): return f'and/or r{rd}, r{rs}, r{rt}'
+                  if fun in (0x2a,0x2b): return f'slt(u) r{rd}, r{rs}, r{rt}'
+                  return f'special funct=0x{fun:02x} rs={rs} rt={rt} rd={rd}'
+              if op in (2,3):
+                  addr = ((pc + 4) & 0xf0000000) | ((w & 0x3ffffff) << 2)
+                  return ('jal' if op == 3 else 'j') + f' 0x{addr:08x}'
+              if op in (4,5,6,7):
+                  return f'{("beq","bne","blez","bgtz")[op-4]} r{rs}, r{rt} -> 0x{branch:08x}'
+              if op == 1:
+                  return f'regimm rt={rt} r{rs} -> 0x{branch:08x}'
+              if op == 9: return f'addiu r{rt}, r{rs}, {signed}'
+              if op == 0xf: return f'lui r{rt}, 0x{imm:04x}'
+              if op == 0xd: return f'ori r{rt}, r{rs}, 0x{imm:04x}'
+              if op == 0xc: return f'andi r{rt}, r{rs}, 0x{imm:04x}'
+              if op in (0x20,0x21,0x23,0x24,0x25,0x27,0x28,0x29,0x2b,0x2f,0x37,0x3f):
+                  names={0x20:'lb',0x21:'lh',0x23:'lw',0x24:'lbu',0x25:'lhu',0x27:'lwu',0x28:'sb',0x29:'sh',0x2b:'sw',0x2f:'cache',0x37:'ld',0x3f:'sd'}
+                  return f'{names[op]} r{rt}, {signed}(r{rs})'
+              return f'op=0x{op:02x} rs={rs} rt={rt} imm=0x{imm:04x}'
+          output = [f'observed_stall_pc=0x{target:08X}',f'pc_samples={count}/{len(pcs)}',
+                    f'executable_elf_segments={len(segments)}',
+                    'Note: raw original PS2 ELF instructions; no guest code patched.',
+                    '---- MIPS instructions surrounding persistent guest PC ----']
+          for addr in range(max(0,target-0xa0)&~3, target+0x84,4):
+              word = read_word(addr)
+              output.append(f'{"=>" if addr == target else "  "} 0x{addr:08x}: ' +
+                            (f'0x{word:08x}  {decode(addr,word)}' if word is not None else 'NOT_FILE_BACKED'))
+          outpath.write_text('\n'.join(output)+'\n')
+          print('\n'.join(output))
+          PY
+
       - name: Upload failure transcript
         if: always()
         uses: actions/upload-artifact@v4
@@ -117,6 +200,7 @@ jobs:
           path: |
             ${{ runner.temp }}/godhand-prebuilt-execution.log
             built/reports/prebuilt_smoke_status.txt
+            built/reports/guest_stall_inspection.txt
             built/reports/code_pointer_audit.json
 
       - name: Publish only fresh boot-smoke report to main
@@ -128,6 +212,9 @@ jobs:
           staging="$(mktemp -d)"
           trap 'rm -rf "$staging"' EXIT
           cp built/reports/prebuilt_smoke_status.txt "$staging/"
+          if test -s built/reports/guest_stall_inspection.txt; then
+            cp built/reports/guest_stall_inspection.txt "$staging/"
+          fi
           if test -s built/reports/code_pointer_audit.json; then
             cp built/reports/code_pointer_audit.json "$staging/"
           fi
@@ -142,6 +229,10 @@ jobs:
             mkdir -p built/reports built/frames
             cp "$staging/prebuilt_smoke_status.txt" built/reports/
             git add -f built/reports/prebuilt_smoke_status.txt
+            if test -s "$staging/guest_stall_inspection.txt"; then
+              cp "$staging/guest_stall_inspection.txt" built/reports/
+              git add -f built/reports/guest_stall_inspection.txt
+            fi
             if test -s "$staging/code_pointer_audit.json"; then
               cp "$staging/code_pointer_audit.json" built/reports/
               git add -f built/reports/code_pointer_audit.json
