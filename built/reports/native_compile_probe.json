@@ -1,7 +1,7 @@
 {
   "selected_translation_units": 24,
-  "successful_translation_units": 23,
-  "failed_translation_units": 1,
+  "successful_translation_units": 24,
+  "failed_translation_units": 0,
   "selection_strategy": "entry, registration, suspected invalid regions, stratified code addresses",
   "records": [
     {
@@ -21,8 +21,8 @@
     },
     {
       "source": "sub_003C01D8_0x3c01d8.cpp",
-      "return_code": -1,
-      "diagnostic": "Command '['/usr/bin/c++', '-DAGRESSIVE_LOGS=1', '-DGRAPHICS_API_OPENGL_33', '-DPLATFORM_DESKTOP', '-DPS2X_ENABLE_IOP_RPC_TRACE=1', '-DPS2_FUNCTION_LOG_TRACKER=1', '-DPS2_RUNTIME_LOGS=1', '-I/home/runner/work/_temp/game/output', '-I/home/runner/work/GodHand_Recomp/GodHand_Recomp/ps2xRuntime/include', '-I/home/runner/work/GodHand_Recomp/GodHand_Recomp/ps2xRuntime/src/lib/Kernel', '-I/home/runner/work/GodHand_Recomp/GodHand_Recomp/build-game/_deps/raylib-src/src', '-I/home/runner/work/GodHand_Recomp/GodHand_Recomp/build-game/_deps/raylib-src/src/external/glfw/include', '-I/home/runner/work/GodHand_Recomp/GodHand_Recomp/ps2xIOP/include', '-msse4.1', '-O3', '-DNDEBUG', '-std=gnu++20', '-flto=auto', '-fno-fat-lto-objects', '-O0', '-g0', '-fno-lto', '-o', 'ps2xRuntime/CMakeFiles/ps2EntryRunner.dir/home/runner/work/_temp/game/output/sub_003C01D8_0x3c01d8.cpp.o', '-c', '/home/runner/work/_temp/game/output/sub_003C01D8_0x3c01d8.cpp']' timed out after 90 seconds"
+      "return_code": 0,
+      "diagnostic": "\n"
     },
     {
       "source": "sub_003FDD40_0x3fdd40.cpp",
