@@ -91,3 +91,8 @@
 - Added `ccache` restore/save checkpoints to retain completed compilation work across fresh hosted runners, including canceled runs after a checkpoint.
 - Enabled streaming compilation progress and downloadable logs; preserved full native link and GS validation gates.
 - Passed seven focused tests and Bash syntax checks for 13 workflow shell steps. Native build and game-frame result still unverified.
+
+## CP16 — Reuse successful AOT, bound runtime testing
+- Confirmed CP15 native build 9,231 generated guest C++ translation units compiled and linked, 98.92% ccache hit rate, 209,103,376-byte x86-64 executable published to main through LFS.
+- Verified CP16 prebuilt-only 20-second real boot probe: original ELF loaded; OpenGL initialized; missing indirect JALR target `0x003BAFB8` (caller `0x0031DB2C`); no game GS frame; exit 124.
+- Added bounded `.github/workflows/godhand-prebuilt-smoke.yml` without recompilation, published diagnostic report, and made both costly AOT workflows manual-only. Restricted analyzer publishing to its own files so stale `link_ci_*` diagnostics cannot overwrite the successful native-link result.
