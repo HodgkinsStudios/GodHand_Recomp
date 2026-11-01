@@ -1,4 +1,8 @@
 #include "iop_compat_test_support.h"
+#include "emulator/core/iop_cpu.h"
+#include "emulator/core/iop_kernel.h"
+#include "emulator/core/iop_memory.h"
+#include "emulator/imports/iop_cdvd.h"
 #include <array>
 #include <string>
 using namespace iop_test;
@@ -69,6 +73,23 @@ void missingIsNotFound() {
     host.isoImagePath.clear();
     require(iop.handleRpc(q).handled && host.word(0x800u)==0u,"missing media fabricated");
 }
+void nativeCdvdImportUsesOriginalLsn() {
+    Host host;
+    iso(host);
+    ps2x::iop::detail::IopMemory memory;
+    ps2x::iop::detail::IopKernel kernel(memory);
+    kernel.reset();
+    ps2x::iop::detail::IopCdvd cdvd(host, memory, kernel);
+    cdvd.reset();
+    const char path[] = "cdrom0:\\README.TXT;1";
+    require(memory.writeRam(0x1800u, path, sizeof(path)), "IOP filename not writable");
+    ps2x::iop::detail::IopCpuState cpu{};
+    cpu.gpr[4] = 0x2000u;
+    cpu.gpr[5] = 0x1800u;
+    require(cdvd.dispatchImport(10u, cpu) && cpu.gpr[2] == 1u, "physical cdvdman file search failed");
+    require(memory.read32(0x2000u) == 21u && memory.read32(0x2004u) == 123u,
+            "physical cdvdman returned a synthetic LSN incompatible with original ISO sectors");
+}
 void bounds() {
     Host host;
     iso(host);
@@ -85,6 +106,7 @@ int main() {
         {"SearchFile returns original ISO9660 sector and length",searchRealIso},
         {"Absent media and missing files return failure",missingIsNotFound},
         {"Short SearchFile requests are rejected",bounds},
+        {"IOP cdvdman SearchFile uses physical ISO LSN",nativeCdvdImportUsesOriginalLsn},
     };
     return run(tests);
 }

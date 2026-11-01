@@ -1,4 +1,5 @@
 #include "module_factories.h"
+#include "../iso9660_lookup.h"
 #include <algorithm>
 #include <array>
 #include <cctype>
@@ -152,15 +153,9 @@ public:
             const auto begin = packet.begin() + 32u;
             const auto end = std::find(begin, packet.begin() + 288u, uint8_t(0));
             if (end != packet.begin() + 288u) {
-                FileEntry entry{};
-                Disc disc(m_host);
                 const std::string path(begin, end);
-                if (disc.find(path, entry)) {
-                    std::array<uint8_t, 32> out{};
-                    put32(out.data(), entry.lsn);
-                    put32(out.data()+4u, entry.size);
-                    std::memcpy(out.data()+8u, entry.name.data(), std::min<size_t>(entry.name.size(), 16u));
-                    std::copy(entry.date.begin(), entry.date.end(), out.begin()+24u);
+                std::array<uint8_t, 32> out{};
+                if (lookupIso9660CdvdFile(m_host, path, out)) {
                     const auto dest = le32(packet.data()+288u);
                     found = m_host.writeGuest(req.send.address, out.data(), out.size());
                     if (found && dest && dest != req.send.address)
@@ -179,6 +174,17 @@ private:
     IopHost& m_host;
 };
 } // namespace
+bool lookupIso9660CdvdFile(IopHost& host, std::string_view path, std::array<uint8_t, 32>& out) {
+    Disc disc(host);
+    FileEntry entry{};
+    if (!disc.find(path, entry)) return false;
+    out.fill(0u);
+    put32(out.data(), entry.lsn);
+    put32(out.data()+4u, entry.size);
+    std::memcpy(out.data()+8u, entry.name.data(), std::min<size_t>(entry.name.size(), 16u));
+    std::copy(entry.date.begin(), entry.date.end(), out.begin()+24u);
+    return true;
+}
 std::unique_ptr<IopService> createCdvdfsvService(IopHost& host) {
     return std::make_unique<Service>(host);
 }

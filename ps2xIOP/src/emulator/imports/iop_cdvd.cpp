@@ -1,4 +1,5 @@
 #include "iop_cdvd.h"
+#include "../../iso9660_lookup.h"
 
 #include "../core/iop_cpu.h"
 #include "../core/iop_kernel.h"
@@ -600,6 +601,14 @@ namespace ps2x::iop::detail
                 return false;
 
             const std::string guestPath = memory.readString(nameAddress, 1024u);
+            // Preserve real sector addresses when the original ISO is mounted.
+            // Virtual ISO extents are only valid without a physical image.
+            if (!host.hostPath(HostPathKind::CdImage).empty())
+            {
+                std::array<uint8_t, 32u> authentic{};
+                return lookupIso9660CdvdFile(host, guestPath, authentic) &&
+                       memory.writeRam(resultAddress, authentic.data(), authentic.size());
+            }
             IsoNode *node = findVirtualIsoNode(guestPath);
             if (!node)
                 return false;
