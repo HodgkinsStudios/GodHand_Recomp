@@ -26,3 +26,4 @@ CP16: manual-only expensive workflows; short prebuilt-only 20s real boot smoke c
 
 CP17: verified guest JALR target 0x003BAFB8 entry hint; AOT output must register real guest code; cache-preserving relink triggered on archive change.
 CP18: CP17 linked AOT+archive verified on main; boot advances past 0x003BAFB8 but stalls at 0x0038F200. Transactional ELF-backed multiple entry hints; generated registry verifies both, retains existing executable until successful new link.
+CP19: CP18 native binary+archive on main; two missing JALR targets now pass, next observed 0x0038B6E0 (JR RA before generated 0x0038B6E8). Validate genuine ELF code and register three observed entries, then relink. No HLE or fake frames.

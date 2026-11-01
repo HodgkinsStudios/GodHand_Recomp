@@ -200,3 +200,7 @@ God Hand's real generated AOT executable is **already linked** (209,103,376 byte
 
 ### CP18 current native AOT state
 The real CP17 native AOT executable (209,109,192 bytes) and generated C++ archive (25,001,106 bytes) are on GitHub main as Git LFS objects. The executable loads God Hand's original ELF but has no verified guest-rendered frame. A new ELF-backed guest entry recovery addresses the next observed JALR target 0x0038F200, preserving 0x003BAFB8. See docs/CP18_SECOND_GUEST_ENTRY.md.
+
+
+### CP19 current boot-development checkpoint
+CP18 generated AOT source archive and native game executable are both published on GitHub main, via Git LFS. Original ELF execution now passes two previously missing indirect-call targets; next blocked guest entry is 0x0038B6E0. CP19 validates and registers this genuine MIPS entry, then uses cached native recompilation. See docs/CP19_THIRD_GUEST_ENTRY.md.

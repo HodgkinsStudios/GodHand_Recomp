@@ -102,3 +102,9 @@
 - Verified 209,109,192-byte CP17 native executable and 25,001,106-byte generated AOT archive in Git LFS on main.
 - Real CP17 boot reaches past 0x003BAFB8; next guest JALR missing target is 0x0038F200. No guest GS drawing yet.
 - Added atomic multi-target ELF validation and generated-registry checks; no guest instruction replacement or synthetic rendering.
+
+
+## CP19 — Recover third genuine MIPS function entry
+- CP18 native game linked and published, boot passed 0x003BAFB8 and 0x0038F200; next missing target 0x0038B6E0.
+- Added a third original-ELF-validated entry metadata hint and required it in both generated and native registry checks.
+- Restricted auto analysis to explicit seed script or workflow changes. All guest functions and real frame validation remain mandatory.
