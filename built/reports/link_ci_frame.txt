@@ -71,32 +71,32 @@ INFO: TIMER: Target time per frame: 16.667 milliseconds
 Loading segment: 0x100000 - 0x7867b4 (filesz: 0x360ce4, memsz: 0x6867b4)
 Registered code region: 100000 - 460ce4ELF file loaded successfully. Entry point: 0x100008Starting execution at address 0x100008INFO: TEXTURE: [ID 3] Texture loaded successfully (640x512 | R8G8B8A8 | 1 mipmaps)
 [SetupHeap] base=0x7867b4 alignedBase=0x7867c0 size=0xf000 runtimeBase=0x7867c0 runtimeEnd=0x7867c0
-[guest-branch:missing-target] kind=IndirectCall op=JALR source=0x31db2c target=0x38f200 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 a0=0x3fc9b4 a1=0x7854b0 a2=0xffffffff a3=0x400000 s0=0x3fc994 s1=0x45 v0=0x38f200 v1=0x750000 a0Readable=yes a0[0]=0x3c4084 a0[4]=0x3c4490 a0[8]=0x3c4910 a0[c]=0x3c4f04 s0Readable=yes s0[0]=0x38b6e0 s0[4]=0x38f200 s0[8]=0x3bafb8 s0[c]=0x0 recordReadable=yes record[0]=0x27bdff30 record[4]=0x282d record[8]=0xffb500b0 record[c]=0x3a0202d vtableReadable=yes vtbl[0]=0x10 vtbl[4]=0x0 vtbl[8]=0x78010001 vtbl[c]=0x1d0c40 codeRegion=yes policy=1 trace=0x3b64e8 -> 0x3b64a8 -> 0x3b64f0 -> 0x3b655c -> 0x3b64e8 -> 0x3b64a8 -> 0x3b64f0 -> 0x3b6570 -> 0x3b6628 -> 0x3b68b8 -> 0x3b6a30 -> 0x3a52f0 -> 0x3b76b8 -> 0x3af990 -> 0x3b63a0 -> 0x3b6a00 -> 0x3b6a20 -> 0x3b6a10 -> 0x3b0740 -> 0x3af9e0 -> 0x3b63f0 -> 0x3b6b90 -> 0x3b63a0 -> 0x3b63f0 -> 0x3b0950 -> 0x3b6738 -> 0x3b66d0 -> 0x3afd50 -> 0x3afd40 -> 0x3afd50 -> 0x3afd40 -> 0x3b7b40 -> 0x3b7b30 -> 0x3b7ad8 -> 0x3b7ae8 -> 0x3b7ae0 -> 0x3b7b88 -> 0x3aff20 -> 0x3aff20 -> 0x3b7b30 -> 0x3b7b30 -> 0x3b7b20 -> 0x3b7b30 -> 0x3b7b20 -> 0x3b7b30 -> 0x3b7b20 -> 0x3b7b30 -> 0x3b7b20 -> 0x3b7b30 -> 0x3b7b20 -> 0x3b7b30 -> 0x3b7b20 -> 0x3b6658 -> 0x3b7988 -> 0x1001f0 -> 0x3aff20 -> 0x320260 -> 0x3a7b88 -> 0x30ac40 -> 0x31db50 -> 0x31daa0 -> 0x3bafb8 -> 0x3224d0 -> 0x31db34
-[run:tick] tick=120 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=240 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=360 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=480 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=600 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=720 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=840 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=960 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=1080 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=1200 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=1320 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=1440 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=1560 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=1680 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=1800 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=1920 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=2040 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=2160 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=2280 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=2400 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=2520 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=2640 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=2760 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=2880 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=3000 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=3120 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
-[run:tick] tick=3240 pc=0x38f200 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[guest-branch:missing-target] kind=IndirectCall op=JALR source=0x31db2c target=0x38b6e0 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 a0=0x1fffec0 a1=0x45dae8 a2=0xffffffff a3=0x0 s0=0x3fc990 s1=0x44 v0=0x38b6e0 v1=0x3fa5d4 a0Readable=yes a0[0]=0x3fc994 a0[4]=0x0 a0[8]=0x0 a0[c]=0x0 s0Readable=yes s0[0]=0x375840 s0[4]=0x38b6e0 s0[8]=0x38f200 s0[c]=0x3bafb8 recordReadable=yes record[0]=0x3e00008 record[4]=0x0 record[8]=0x27bdffd0 record[c]=0x3c020046 vtableReadable=yes vtbl[0]=0x38b6e0 vtbl[4]=0x38f200 vtbl[8]=0x3bafb8 vtbl[c]=0x0 codeRegion=yes policy=1 trace=0x3b64e8 -> 0x3b64a8 -> 0x3b64f0 -> 0x3b6570 -> 0x3b6628 -> 0x3b68b8 -> 0x3b6a30 -> 0x3a52f0 -> 0x3b76b8 -> 0x3af990 -> 0x3b63a0 -> 0x3b6a00 -> 0x3b6a20 -> 0x3b6a10 -> 0x3b0740 -> 0x3af9e0 -> 0x3b63f0 -> 0x3b6b90 -> 0x3b63a0 -> 0x3b63f0 -> 0x3b0950 -> 0x3b6738 -> 0x3b66d0 -> 0x3afd50 -> 0x3afd40 -> 0x3afd50 -> 0x3afd40 -> 0x3b7b40 -> 0x3b7b30 -> 0x3b7ad8 -> 0x3b7ae8 -> 0x3b7ae0 -> 0x3b7b88 -> 0x3aff20 -> 0x3aff20 -> 0x3b7b30 -> 0x3b7b30 -> 0x3b7b20 -> 0x3b7b30 -> 0x3b7b20 -> 0x3b7b30 -> 0x3b7b20 -> 0x3b7b30 -> 0x3b7b20 -> 0x3b7b30 -> 0x3b7b20 -> 0x3b7b30 -> 0x3b7b20 -> 0x3b6658 -> 0x3b7988 -> 0x1001f0 -> 0x3aff20 -> 0x320260 -> 0x3a7b88 -> 0x30ac40 -> 0x31db50 -> 0x31daa0 -> 0x3bafb8 -> 0x3224d0 -> 0x31db34 -> 0x38f200 -> 0x3a52f0 -> 0x3a52f0 -> 0x3a52f0
+[run:tick] tick=120 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=240 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=360 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=480 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=600 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=720 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=840 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=960 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=1080 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=1200 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=1320 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=1440 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=1560 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=1680 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=1800 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=1920 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=2040 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=2160 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=2280 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=2400 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=2520 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=2640 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=2760 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=2880 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=3000 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=3120 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
+[run:tick] tick=3240 pc=0x38b6e0 ra=0x31db34 sp=0x1ffff30 gp=0x468cf0 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=0 gif=0 gsw=0 vif=0
 [run:tick] tick=3360 pc=0x3nonuniform_guest_gs_frame=no
