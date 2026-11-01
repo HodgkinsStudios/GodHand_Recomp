@@ -65,7 +65,16 @@ def add_entry_hint(toml_text: str, address: int):
         closing = section.find(']', entry.end())
         if closing < 0:
             raise ValueError('Unterminated entry_points array')
-        section = section[:closing] + f'  "{canonical}",\n' + section[closing:]
+        # Respect both inline arrays (no trailing comma) and multiline arrays.
+        # TOML requires a separator between values; do not corrupt the config.
+        current_items = section[entry.end():closing]
+        if not current_items.strip():
+            addition = f'"{canonical}"'
+        elif current_items.rstrip().endswith(','):
+            addition = f'  "{canonical}",\n'
+        else:
+            addition = f', "{canonical}"'
+        section = section[:closing] + addition + section[closing:]
     else:
         section += f'\nentry_points = ["{canonical}"]\n'
     result = toml_text[:start] + section + toml_text[end:]
