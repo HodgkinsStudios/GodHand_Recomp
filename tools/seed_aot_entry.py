@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Validate an actual MIPS code address and add a non-patching AOT entry hint."""
+"""Validate an actual MIPS code address and add a non-patching AOT entry hint.
+
+The generated registry may bind an interior entry to an existing function body;
+a separate guest translation unit is not necessary in that case.
+"""
 import argparse
 import json
 from pathlib import Path

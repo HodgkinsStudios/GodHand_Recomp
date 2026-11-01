@@ -17,10 +17,14 @@ class WorkflowFailureReportingTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(result.stdout.strip(), '1')
 
-    def test_runtime_and_recompiler_changes_trigger_aot(self):
+    def test_expensive_aot_requires_manual_trigger_except_validated_target_recovery(self):
+        # CP16 deliberately removed broad push triggers; they caused hours of
+        # unnecessary recompilation and interrupted first-boot investigations.
+        self.assertIn('workflow_dispatch:', self.workflow)
+        self.assertIn("paths: ['tools/seed_aot_entry.py']", self.workflow)
         for glob in ('ps2xRuntime/**', 'ps2xRecomp/**', 'ps2xAnalyzer/**',
                      'ps2xIOP/**', 'CMakeLists.txt'):
-            self.assertIn("- '" + glob + "'", self.workflow)
+            self.assertNotIn("- '" + glob + "'", self.workflow)
 
     def test_record_failure_status_and_errors(self):
         self.assertIn('> "$RUNNER_TEMP/native-build.log" 2>&1 || STATUS=$?', self.workflow)
