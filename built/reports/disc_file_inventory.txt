@@ -1,0 +1,13 @@
+iso_bytes= 1567686656
+entry_count= 8
+file_count= 7
+--- ISO9660 directory entries (name, LSN, bytes, directory) ---
+0FLISTDV.DIR | lsn=755203 | size=23 | directory=0
+GODHAND.FST | lsn=755204 | size=32944 | directory=0
+MODULES | lsn=262 | size=214 | directory=1
+MODULES/IOPRP310.IMG | lsn=2039 | size=278353 | directory=0
+MODULES/IRX.IMS | lsn=2175 | size=314304 | directory=0
+SLUS_215.03 | lsn=277 | size=3607008 | directory=0
+SYSTEM.CNF | lsn=276 | size=57 | directory=0
+_DATA.AFS | lsn=2329 | size=1541885952 | directory=0
+sdrdrv_irx_present= 0
