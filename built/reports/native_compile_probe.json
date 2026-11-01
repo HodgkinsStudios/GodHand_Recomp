@@ -1,7 +1,7 @@
 {
   "selected_translation_units": 24,
-  "successful_translation_units": 24,
-  "failed_translation_units": 0,
+  "successful_translation_units": 23,
+  "failed_translation_units": 1,
   "selection_strategy": "entry, registration, suspected invalid regions, stratified code addresses",
   "records": [
     {
@@ -21,8 +21,8 @@
     },
     {
       "source": "sub_003C01D8_0x3c01d8.cpp",
-      "return_code": 0,
-      "diagnostic": "\n"
+      "return_code": -1,
+      "diagnostic": "Command '['/usr/bin/c++', '-DAGRESSIVE_LOGS=1', '-DGRAPHICS_API_OPENGL_33', '-DPLATFORM_DESKTOP', '-DPS2X_ENABLE_IOP_RPC_TRACE=1', '-DPS2_FUNCTION_LOG_TRACKER=1', '-DPS2_RUNTIME_LOGS=1', '-I/home/runner/work/_temp/game/output', '-I/home/runner/work/GodHand_Recomp/GodHand_Recomp/ps2xRuntime/include', '-I/home/runner/work/GodHand_Recomp/GodHand_Recomp/ps2xRuntime/src/lib/Kernel', '-I/home/runner/work/GodHand_Recomp/GodHand_Recomp/build-game/_deps/raylib-src/src', '-I/home/runner/work/GodHand_Recomp/GodHand_Recomp/build-game/_deps/raylib-src/src/external/glfw/include', '-I/home/runner/work/GodHand_Recomp/GodHand_Recomp/ps2xIOP/include', '-msse4.1', '-O3', '-DNDEBUG', '-std=gnu++20', '-flto=auto', '-fno-fat-lto-objects', '-O0', '-g0', '-fno-lto', '-o', 'ps2xRuntime/CMakeFiles/ps2EntryRunner.dir/home/runner/work/_temp/game/output/sub_003C01D8_0x3c01d8.cpp.o', '-c', '/home/runner/work/_temp/game/output/sub_003C01D8_0x3c01d8.cpp']' timed out after 90 seconds"
     },
     {
       "source": "sub_003FDD40_0x3fdd40.cpp",
@@ -35,92 +35,92 @@
       "diagnostic": "\n"
     },
     {
-      "source": "sub_00138DB8_0x138db8.cpp",
+      "source": "sub_00138D40_0x138d40.cpp",
       "return_code": 0,
       "diagnostic": "\n"
     },
     {
-      "source": "sub_001632A0_0x1632a0.cpp",
+      "source": "sub_001630E8_0x1630e8.cpp",
       "return_code": 0,
       "diagnostic": "\n"
     },
     {
-      "source": "sub_00187A78_0x187a78.cpp",
+      "source": "sub_00187D10_0x187d10.cpp",
       "return_code": 0,
       "diagnostic": "\n"
     },
     {
-      "source": "sub_001A4F28_0x1a4f28.cpp",
+      "source": "sub_001A5D68_0x1a5d68.cpp",
       "return_code": 0,
       "diagnostic": "\n"
     },
     {
-      "source": "sub_001D4A90_0x1d4a90.cpp",
+      "source": "sub_001D5650_0x1d5650.cpp",
       "return_code": 0,
       "diagnostic": "\n"
     },
     {
-      "source": "sub_001FAEE0_0x1faee0.cpp",
+      "source": "sub_001FBDA0_0x1fbda0.cpp",
       "return_code": 0,
       "diagnostic": "\n"
     },
     {
-      "source": "sub_0027DBF8_0x27dbf8.cpp",
+      "source": "sub_0027E630_0x27e630.cpp",
       "return_code": 0,
       "diagnostic": "\n"
     },
     {
-      "source": "sub_002A52E8_0x2a52e8.cpp",
+      "source": "sub_002A6C78_0x2a6c78.cpp",
       "return_code": 0,
       "diagnostic": "\n"
     },
     {
-      "source": "sub_002BB258_0x2bb258.cpp",
+      "source": "sub_002BCD58_0x2bcd58.cpp",
       "return_code": 0,
       "diagnostic": "\n"
     },
     {
-      "source": "sub_002D4210_0x2d4210.cpp",
+      "source": "sub_002D5070_0x2d5070.cpp",
       "return_code": 0,
       "diagnostic": "\n"
     },
     {
-      "source": "sub_00302988_0x302988.cpp",
+      "source": "sub_00304BF8_0x304bf8.cpp",
       "return_code": 0,
       "diagnostic": "\n"
     },
     {
-      "source": "sub_0031DE10_0x31de10.cpp",
+      "source": "sub_0031EB38_0x31eb38.cpp",
       "return_code": 0,
       "diagnostic": "\n"
     },
     {
-      "source": "sub_0032EF68_0x32ef68.cpp",
+      "source": "sub_0032F988_0x32f988.cpp",
       "return_code": 0,
       "diagnostic": "\n"
     },
     {
-      "source": "sub_00344790_0x344790.cpp",
+      "source": "sub_00343C18_0x343c18.cpp",
       "return_code": 0,
       "diagnostic": "\n"
     },
     {
-      "source": "sub_003547B0_0x3547b0.cpp",
+      "source": "sub_00353928_0x353928.cpp",
       "return_code": 0,
       "diagnostic": "\n"
     },
     {
-      "source": "sub_0036C038_0x36c038.cpp",
+      "source": "sub_0036BF50_0x36bf50.cpp",
       "return_code": 0,
       "diagnostic": "\n"
     },
     {
-      "source": "sub_0038B368_0x38b368.cpp",
+      "source": "sub_0038B100_0x38b100.cpp",
       "return_code": 0,
       "diagnostic": "\n"
     },
     {
-      "source": "sub_003B0390_0x3b0390.cpp",
+      "source": "sub_003B02E8_0x3b02e8.cpp",
       "return_code": 0,
       "diagnostic": "\n"
     }
