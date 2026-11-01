@@ -23,3 +23,5 @@ CP13: local build_godhand.sh with cached LFS AOT or ISO regeneration; incrementa
 CP14: hosted AOT source build in 4 lossless Ninja batches; per-batch GitHub ccache checkpoints; live progress and retained logs; 7 focused tests pass; game link/frame unverified.
 CP15: generated AOT registry replaced fallback (duplicate symbol fix); 9,231 generated units linked into 209,103,376-byte native binary; guest boot stuck at missing JALR target 0x003BAFB8; no GS frame.
 CP16: manual-only expensive workflows; short prebuilt-only 20s real boot smoke confirmed same missing target; isolated analyzer report publishing; restored accurate successful-link reports.
+
+CP17: verified guest JALR target 0x003BAFB8 entry hint; AOT output must register real guest code; cache-preserving relink triggered on archive change.
