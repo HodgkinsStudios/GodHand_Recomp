@@ -637,6 +637,11 @@ void PS2Runtime::advanceIopEeCycles(uint64_t eeCycles) noexcept
 void PS2Runtime::resetIop()
 {
     m_iopSubsystem->reset();
+    // BIOS-less host starts the ROM0 CDVD RPC service during IOP boot.
+    // A successful file lookup still requires a valid original disc image.
+    const auto cdvdfsv = m_iopSubsystem->loadModule("rom0:CDVDFSV", nullptr, 0u);
+    if (cdvdfsv.moduleId <= 0)
+        std::cerr << "[IOP:boot] CDVDFSV ROM service unavailable" << std::endl;
 }
 
 ps2x::iop::DebugSnapshot PS2Runtime::iopDebugSnapshot() const
@@ -1089,6 +1094,11 @@ void PS2Runtime::configureIoPathsFromElf(const std::string &elfPath)
         paths.mcRoot = paths.elfDirectory / "mc0";
     }
 
+    // The original ISO must be mounted explicitly for CDVD sector addresses.
+    if (const char *image = std::getenv("PS2X_CD_IMAGE"); image && *image)
+        paths.cdImage = image;
+    if (const char *root = std::getenv("PS2X_CD_ROOT"); root && *root)
+        paths.cdRoot = root;
     setIoPaths(paths);
 }
 

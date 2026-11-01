@@ -62,7 +62,9 @@ namespace iop_test
         uint32_t allocateGuest(uint32_t, uint32_t) override { return 0u; }
         void freeGuest(uint32_t) override {}
         void audioCommand(uint32_t, uint32_t, GuestBuffer, GuestBuffer) override { ++audioCalls; }
-        std::string hostPath(HostPathKind) const override { return {}; }
+        std::string hostPath(HostPathKind kind) const override {
+            return kind == HostPathKind::CdImage ? isoImagePath : std::string{};
+        }
         std::string translateGuestPath(std::string_view path) const override { return std::string(path); }
         uint64_t openHostFile(std::string_view) override { return file.empty() ? 0u : 1u; }
         bool hostFileSize(uint64_t handle, uint64_t &size) const override
@@ -108,6 +110,7 @@ namespace iop_test
 
         std::vector<uint8_t> guest;
         std::vector<uint8_t> file;
+        std::string isoImagePath;
         std::vector<std::string> logs;
         std::vector<MemoryCardRequest> cardCalls;
         mutable size_t guestReads = 0u;

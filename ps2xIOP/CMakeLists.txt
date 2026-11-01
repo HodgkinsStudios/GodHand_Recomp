@@ -25,6 +25,7 @@ add_library(ps2_iop STATIC
     src/emulator/imports/iop_sysmem.cpp
     src/emulator/imports/iop_timrman.cpp
     src/emulator/imports/iop_vblank.cpp
+    src/modules/cdvdfsv.cpp
     src/modules/dbcman.cpp
     src/modules/libsd.cpp
     src/modules/mcserv.cpp
@@ -44,6 +45,10 @@ add_library(ps2x::iop ALIAS ps2_iop)
 
 if(PS2X_IOP_BUILD_TESTS)
     enable_testing()
+    add_executable(ps2_iop_cdvdfsv_tests tests/iop_cdvdfsv_tests.cpp)
+    target_link_libraries(ps2_iop_cdvdfsv_tests PRIVATE ps2_iop)
+    add_test(NAME ps2_iop_cdvdfsv_tests COMMAND ps2_iop_cdvdfsv_tests)
+
     add_executable(ps2_iop_emulator_tests tests/iop_emulator_tests.cpp)
     target_link_libraries(ps2_iop_emulator_tests PRIVATE ps2_iop)
     add_test(NAME ps2_iop_emulator_tests COMMAND ps2_iop_emulator_tests)

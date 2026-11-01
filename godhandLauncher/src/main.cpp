@@ -213,6 +213,12 @@ void play(Launcher& app) {
     with_settings = g_environ_setenv(with_data, "GODHAND_GS_FRAME_PPM", firstFrame.c_str(), TRUE);
     g_strfreev(with_data);
     with_data = with_settings;
+    const std::string cd_image = (app.data_dir / "GodHand.iso").string();
+    const std::string cd_root = (app.data_dir / "Extracted_Iso").string();
+    with_settings = g_environ_setenv(with_data, "PS2X_CD_IMAGE", cd_image.c_str(), TRUE);
+    g_strfreev(with_data);
+    with_data = g_environ_setenv(with_settings, "PS2X_CD_ROOT", cd_root.c_str(), TRUE);
+    g_strfreev(with_settings);
     const fs::path log_path = app.data_dir / "logs/last_launch.log";
     fs::create_directories(log_path.parent_path(), ec);
     if (ec) {

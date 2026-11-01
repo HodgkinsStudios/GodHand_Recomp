@@ -1,0 +1,24 @@
+name: GodHand - CDVDFSV real disc RPC unit tests
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ps2xIOP/**'
+      - '.github/workflows/godhand-cdvd-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  iop-cdvd-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - name: Configure standalone IOP tests
+        run: cmake -S ps2xIOP -B build-iop -G Ninja -DCMAKE_BUILD_TYPE=Release -DPS2X_IOP_BUILD_TESTS=ON
+      - name: Compile standalone IOP tests
+        run: cmake --build build-iop --parallel 3
+      - name: Verify IOP services without a retail ISO
+        run: ctest --test-dir build-iop --output-on-failure
