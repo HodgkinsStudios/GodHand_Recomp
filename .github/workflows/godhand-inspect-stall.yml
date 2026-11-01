@@ -1,0 +1,77 @@
+name: GodHand - Inspect compiled guest stall (no ISO, no rebuild)
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/godhand-inspect-stall.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: godhand-guest-stall-inspection-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - name: Checkout without heavy LFS downloads
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+      - name: Inspect exact generated MIPS function in cached AOT C++ archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='built/aot/generated_cpp.tar.gz' --exclude=''
+          test "$(stat -c %s built/aot/generated_cpp.tar.gz)" -gt 1000000
+          mkdir -p "$RUNNER_TEMP/aot-functions" built/reports
+          tar -xzf built/aot/generated_cpp.tar.gz -C "$RUNNER_TEMP/aot-functions"
+          python3 - "$RUNNER_TEMP/aot-functions" built/reports/guest_stall_aot_inspection.txt <<'PY'
+          import pathlib, re, sys
+          root = pathlib.Path(sys.argv[1])
+          out = pathlib.Path(sys.argv[2])
+          file = next(root.rglob('sub_00398890_0x398890.cpp'), None)
+          if file is None:
+              raise SystemExit('Missing AOT TU for guest PC 0x00398930')
+          lines = file.read_text(errors='replace').splitlines()
+          hits = [i for i, line in enumerate(lines) if
+                  re.search(r'(398930|39892c|398934|398910|398940|398964)',line,re.I)]
+          ranges = []
+          for i in hits[:24]:
+              a, b = max(0,i-18), min(len(lines),i+27)
+              if ranges and a <= ranges[-1][1]:
+                  ranges[-1]=(ranges[-1][0],max(b,ranges[-1][1]))
+              else:
+                  ranges.append((a,b))
+          if not ranges:
+              ranges = [(0,min(250,len(lines)))]
+          result = [f'compiled_source={file.name}', f'full_lines={len(lines)}',
+                    f'guest_pc=0x00398930', f'pc_related_hits={len(hits)}',
+                    'Source is generated from original MIPS; no instruction injection.']
+          for a,b in ranges:
+              result.append(f'---- generated source lines {a+1}..{b} ----')
+              result.extend(f'{j+1:6d}: {lines[j]}' for j in range(a,b))
+          out.write_text('\n'.join(result)+'\n')
+          print('\n'.join(result))
+          PY
+      - name: Publish bounded original-code inspection to main
+        shell: bash
+        run: |
+          set -euo pipefail
+          staging="$(mktemp -d)"
+          trap 'rm -rf "$staging"' EXIT
+          cp built/reports/guest_stall_aot_inspection.txt "$staging/"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for i in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            mkdir -p built/reports
+            cp "$staging/guest_stall_aot_inspection.txt" built/reports/
+            git add -f built/reports/guest_stall_aot_inspection.txt
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m 'test: preserve generated AOT guest stall source inspection [skip ci]'
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1
