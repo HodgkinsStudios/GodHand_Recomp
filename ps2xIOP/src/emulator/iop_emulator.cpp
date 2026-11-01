@@ -20,6 +20,7 @@
 #include <algorithm>
 #include <cctype>
 #include <map>
+#include <unordered_map>
 #include <optional>
 #include <span>
 #include <sstream>
@@ -118,6 +119,7 @@ namespace ps2x::iop::detail
             memory.reset();
             kernel.reset();
             modules.clear();
+            missingModuleWarnings.clear();
             imports.reset();
             rpc.reset();
             cdvd.reset();
@@ -646,7 +648,11 @@ namespace ps2x::iop::detail
             std::vector<uint8_t> image;
             if (!IopModuleLoader::readWholeHostFile(host, path, image))
             {
-                log(LogLevel::Warning, std::string("[IOP] failed to open IRX '") + std::string(path) + "'");
+                // Preserve the first failure for each unique IRX but do not
+                // flood stdout when EE repeatedly retries a missing module.
+                uint32_t &warnings = missingModuleWarnings[std::string(path)];
+                if (warnings++ < 2u)
+                    log(LogLevel::Warning, std::string("[IOP] failed to open IRX '") + std::string(path) + "'");
                 return {true, -1, -1};
             }
             return loadImage(std::string(path), image, arguments, argumentSize);
@@ -695,6 +701,7 @@ namespace ps2x::iop::detail
         IopImportRegistry imports;
         IopLoadcore loadcore;
         std::map<int, Module> modules;
+        std::unordered_map<std::string, uint32_t> missingModuleWarnings;
         std::map<int, uint64_t> pendingDmaInterrupts;
         std::multimap<uint64_t, ScheduledGuestCallback> pendingGuestCallbacks;
         uint32_t nextModuleId = 1;

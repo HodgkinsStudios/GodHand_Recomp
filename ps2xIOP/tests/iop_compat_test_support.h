@@ -66,7 +66,10 @@ namespace iop_test
             return kind == HostPathKind::CdImage ? isoImagePath : std::string{};
         }
         std::string translateGuestPath(std::string_view path) const override { return std::string(path); }
-        uint64_t openHostFile(std::string_view) override { return file.empty() ? 0u : 1u; }
+        uint64_t openHostFile(std::string_view path) override {
+            if (!isoImagePath.empty() && path != isoImagePath) return 0u;
+            return file.empty() ? 0u : 1u;
+        }
         bool hostFileSize(uint64_t handle, uint64_t &size) const override
         {
             size = file.size();

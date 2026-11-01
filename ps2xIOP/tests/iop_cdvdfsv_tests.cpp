@@ -3,6 +3,7 @@
 #include "emulator/core/iop_kernel.h"
 #include "emulator/core/iop_memory.h"
 #include "emulator/imports/iop_cdvd.h"
+#include "emulator/services/iop_module_loader.h"
 #include <array>
 #include <string>
 using namespace iop_test;
@@ -90,6 +91,26 @@ void nativeCdvdImportUsesOriginalLsn() {
     require(memory.read32(0x2000u) == 21u && memory.read32(0x2004u) == 123u,
             "physical cdvdman returned a synthetic LSN incompatible with original ISO sectors");
 }
+void readDiscIrxDirectly() {
+    Host host;
+    iso(host);
+    for (uint32_t i = 0u; i < 123u; ++i)
+        host.file[21u*2048u+i] = static_cast<uint8_t>(i ^ 0x5Au);
+    std::vector<uint8_t> contents;
+    require(ps2x::iop::detail::IopModuleLoader::readWholeHostFile(
+                host, "cdrom0:\\README.TXT;1", contents), "ISO-only module not opened");
+    require(contents.size() == 123u, "incorrect ISO module byte length");
+    for (uint32_t i = 0u; i < 123u; ++i)
+        require(contents[i] == static_cast<uint8_t>(i ^ 0x5Au), "IRX bytes did not match disc");
+    require(!ps2x::iop::detail::IopModuleLoader::readWholeHostFile(
+                host, "cdrom0:\\MISSING.IRX;1", contents), "nonexistent module opened");
+    require(contents.empty(), "a failed module read returned stale file bytes");
+    require(!ps2x::iop::detail::IopModuleLoader::readWholeHostFile(
+                host, "host0:README.TXT", contents), "host file missing was substituted with ISO data");
+    host.file.resize(21u*2048u+50u);
+    require(!ps2x::iop::detail::IopModuleLoader::readWholeHostFile(
+                host, "cdrom0:\\README.TXT;1", contents), "truncated disc extent read accepted");
+}
 void bounds() {
     Host host;
     iso(host);
@@ -107,6 +128,7 @@ int main() {
         {"Absent media and missing files return failure",missingIsNotFound},
         {"Short SearchFile requests are rejected",bounds},
         {"IOP cdvdman SearchFile uses physical ISO LSN",nativeCdvdImportUsesOriginalLsn},
+        {"IOP IRX loader reads original ISO bytes and rejects missing/truncated modules",readDiscIrxDirectly},
     };
     return run(tests);
 }

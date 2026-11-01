@@ -1,9 +1,12 @@
 #include "iop_module_loader.h"
+#include "../../iso9660_lookup.h"
+#include "ps2x/iop/ps2_path.h"
 
 #include "../core/iop_memory.h"
 #include "ps2x/iop/iop_subsystem.h"
 
 #include <algorithm>
+#include <array>
 #include <cstring>
 #include <limits>
 #include <string>
@@ -300,24 +303,70 @@ namespace ps2x::iop::detail
 
     bool IopModuleLoader::readWholeHostFile(IopHost &host, std::string_view guestPath, std::vector<uint8_t> &bytes)
     {
+        bytes.clear();
         const std::string translated = host.translateGuestPath(guestPath);
         const std::string_view path = translated.empty() ? guestPath : std::string_view(translated);
         const uint64_t handle = host.openHostFile(path);
-        if (handle == 0u)
-            return false;
-
-        uint64_t size = 0u;
-        if (!host.hostFileSize(handle, size) || size == 0u || size > kMaxImageSize)
+        if (handle != 0u)
         {
-            host.closeHostFile(handle);
-            return false;
+            uint64_t size = 0u;
+            const bool sizeOk = host.hostFileSize(handle, size) && size != 0u && size <= kMaxImageSize;
+            if (sizeOk)
+            {
+                bytes.resize(static_cast<size_t>(size));
+                size_t bytesRead = 0u;
+                const bool ok = host.readHostFile(handle, 0u, bytes.data(), bytes.size(), bytesRead) &&
+                                bytesRead == bytes.size();
+                host.closeHostFile(handle);
+                if (ok) return true;
+                bytes.clear();
+            }
+            else
+            {
+                host.closeHostFile(handle);
+            }
         }
 
-        bytes.resize(static_cast<size_t>(size));
-        size_t bytesRead = 0u;
-        const bool ok = host.readHostFile(handle, 0u, bytes.data(), bytes.size(), bytesRead) && bytesRead == bytes.size();
-        host.closeHostFile(handle);
-        return ok;
+        // CDROM IRX modules often live solely in the mounted original ISO.
+        // Resolve their actual ISO9660 extent; never substitute fabricated
+        // filenames, IRX images or synthetic sector mappings.
+        const ParsedPs2Path parsed = parsePs2Path(guestPath);
+        if (!parsed || parsed.device != Ps2PathDevice::Cdrom)
+            return false;
+        std::array<uint8_t, 32u> file{};
+        if (!lookupIso9660CdvdFile(host, guestPath, file))
+            return false;
+        const auto le32 = [](const uint8_t *p) -> uint32_t
+        {
+            return static_cast<uint32_t>(p[0]) |
+                   (static_cast<uint32_t>(p[1]) << 8u) |
+                   (static_cast<uint32_t>(p[2]) << 16u) |
+                   (static_cast<uint32_t>(p[3]) << 24u);
+        };
+        const uint32_t sector = le32(file.data());
+        const uint32_t imageSize = le32(file.data() + 4u);
+        if (imageSize == 0u || imageSize > kMaxImageSize)
+            return false;
+        const std::string isoPath = host.hostPath(HostPathKind::CdImage);
+        if (isoPath.empty()) return false;
+        const uint64_t isoHandle = host.openHostFile(isoPath);
+        if (isoHandle == 0u) return false;
+
+        uint64_t discSize = 0u;
+        const uint64_t offset = static_cast<uint64_t>(sector) * 2048u;
+        const bool inRange = host.hostFileSize(isoHandle, discSize) &&
+                             offset <= discSize && imageSize <= discSize - offset;
+        bool readOk = false;
+        if (inRange)
+        {
+            bytes.resize(imageSize);
+            size_t received = 0u;
+            readOk = host.readHostFile(isoHandle, offset, bytes.data(), imageSize, received) &&
+                     received == imageSize;
+        }
+        host.closeHostFile(isoHandle);
+        if (!readOk) bytes.clear();
+        return readOk;
     }
 
     bool IopModuleLoader::readElfFromGuest(IopHost &host, uint32_t guestAddress, std::vector<uint8_t> &bytes)
