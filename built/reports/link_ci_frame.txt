@@ -1,103 +1,132 @@
 native_executable=built
 execution_exit_code=124
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
-[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
+[gs:reg] idx=65 reg=0x51 value=0x0
+[gs:reg] idx=66 reg=0x52 value=0x1000000010
+[gs:reg] idx=67 reg=0x53 value=0x0
+[gs:reg] idx=68 reg=0x50 value=0x4022000010000
+[gs:reg] idx=69 reg=0x51 value=0x0
+[gs:reg] idx=70 reg=0x52 value=0x1000000010
+[gs:reg] idx=71 reg=0x53 value=0x0
+[gs:reg] idx=72 reg=0x50 value=0x4024000010000
+[gs:reg] idx=73 reg=0x51 value=0x0
+[gs:reg] idx=74 reg=0x52 value=0x1000000010
+[gs:reg] idx=75 reg=0x53 value=0x0
+[gs:reg] idx=76 reg=0x50 value=0x4026000010000
+[gs:reg] idx=77 reg=0x51 value=0x0
+[gs:reg] idx=78 reg=0x52 value=0x1000000010
+[gs:reg] idx=79 reg=0x53 value=0x0
+[gs:reg] idx=80 reg=0x50 value=0x4028000010000
+[gs:reg] idx=81 reg=0x51 value=0x0
+[gs:reg] idx=82 reg=0x52 value=0x1000000010
+[gs:reg] idx=83 reg=0x53 value=0x0
+[gs:reg] idx=84 reg=0x50 value=0x402a000010000
+[gs:reg] idx=85 reg=0x51 value=0x0
+[gs:reg] idx=86 reg=0x52 value=0x1000000010
+[gs:reg] idx=87 reg=0x53 value=0x0
+[gs:reg] idx=88 reg=0x50 value=0x402c000010000
+[gs:reg] idx=89 reg=0x51 value=0x0
+[gs:reg] idx=90 reg=0x52 value=0x1000000010
+[gs:reg] idx=91 reg=0x53 value=0x0
+[gs:reg] idx=92 reg=0x50 value=0x402e000010000
+[gs:reg] idx=93 reg=0x51 value=0x0
+[gs:reg] idx=94 reg=0x52 value=0x1000000010
+[gs:reg] idx=95 reg=0x53 value=0x0
+[gs:reg] idx=96 reg=0x50 value=0x4030000010000
+[gs:reg] idx=97 reg=0x51 value=0x0
+[gs:reg] idx=98 reg=0x52 value=0x1000000010
+[gs:reg] idx=99 reg=0x53 value=0x0
+[gs:reg] idx=100 reg=0x50 value=0x4032000010000
+[gs:reg] idx=101 reg=0x51 value=0x0
+[gs:reg] idx=102 reg=0x52 value=0x1000000010
+[gs:reg] idx=103 reg=0x53 value=0x0
+[gs:reg] idx=104 reg=0x50 value=0x4034000010000
+[gs:reg] idx=105 reg=0x51 value=0x0
+[gs:reg] idx=106 reg=0x52 value=0x1000000010
+[gs:reg] idx=107 reg=0x53 value=0x0
+[gs:reg] idx=108 reg=0x50 value=0x4036000010000
+[gs:reg] idx=109 reg=0x51 value=0x0
+[gs:reg] idx=110 reg=0x52 value=0x1000000010
+[gs:reg] idx=111 reg=0x53 value=0x0
+[gs:reg] idx=112 reg=0x50 value=0x4038000010000
+[gs:reg] idx=113 reg=0x51 value=0x0
+[gs:reg] idx=114 reg=0x52 value=0x1000000010
+[gs:reg] idx=115 reg=0x53 value=0x0
+[gs:reg] idx=116 reg=0x50 value=0x403a000010000
+[gs:reg] idx=117 reg=0x51 value=0x0
+[gs:reg] idx=118 reg=0x52 value=0x1000000010
+[gs:reg] idx=119 reg=0x53 value=0x0
+[gs:reg] idx=120 reg=0x50 value=0x403c000010000
+[gs:reg] idx=121 reg=0x51 value=0x0
+[gs:reg] idx=122 reg=0x52 value=0x1000000010
+[gs:reg] idx=123 reg=0x53 value=0x0
+[gs:reg] idx=124 reg=0x50 value=0x403e000010000
+[gs:reg] idx=125 reg=0x51 value=0x0
+[gs:reg] idx=126 reg=0x52 value=0x1000000010
+[gs:reg] idx=127 reg=0x53 value=0x0
+[SifInitRpc] Initialized[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SIO2MAN.IRX;1'
+[ps2xIOP] [IOP:HLE] fallback module='cdrom0:\MODULES\SIO2MAN.IRX;1' physical IRX unavailable; using registered HLE provider
+[SIF module] load-emulated id=1073741825 ref=1 path="cdrom0:\MODULES\SIO2MAN.IRX;1"
+[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\PADMAN.IRX;1'
+[ps2xIOP] [IOP:HLE] fallback module='cdrom0:\MODULES\PADMAN.IRX;1' physical IRX unavailable; using registered HLE provider
+[SIF module] load-emulated id=1073741826 ref=1 path="cdrom0:\MODULES\PADMAN.IRX;1"
+[gs:gif] idx=0 size=128 nloop=7 flg=0 nreg=1 ctx0fbp=0 ctx1fbp=0
+[gs:copy-reg] reg=0x41 value=0x8005 primCtxt=0 ctx0fbp=0 ctx1fbp=0
+[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\LIBSD.IRX;1'
+[ps2xIOP] [IOP:HLE] fallback module='cdrom0:\MODULES\LIBSD.IRX;1' physical IRX unavailable; using registered HLE provider
+[SIF module] load-emulated id=1073741827 ref=1 path="cdrom0:\MODULES\LIBSD.IRX;1"
+[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
+[ps2xIOP:warning] [IOP:load-failed] module='cdrom0:\MODULES\SDRDRV.IRX;1' no HLE provider accepted the module; physical IRX was not loaded
+[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
+[run:tick] tick=120 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=240 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=360 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=480 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=600 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=720 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=840 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=960 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1080 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1200 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1320 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1440 pc=0x2c9de0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1560 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1680 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1800 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1920 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2040 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2160 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2280 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2400 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2520 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2640 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2760 pc=0x2c9dd0 r--- last EE guest ticks and IOP module activity ---
+[run:tick] tick=120 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=240 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=360 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=480 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=600 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=720 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=840 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=960 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1080 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1200 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1320 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1440 pc=0x2c9de0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1560 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1680 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1800 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=1920 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2040 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2160 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2280 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2400 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2520 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2640 pc=0x2c9dd0 ra=0x2c9de0 sp=0x1fffe10 gp=0x468cf0 v0=0xffffffff v1=0x585024 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 dma=16385 gif=16385 gsw=0 vif=2
+[run:tick] tick=2760 pc=0x2c9dd0 r
+--- first module load failures ---
+[SifInitRpc] Initialized[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SIO2MAN.IRX;1'
+[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\PADMAN.IRX;1'
+[ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\LIBSD.IRX;1'
 [ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
 [ps2xIOP:warning] [IOP] failed to open IRX 'cdrom0:\MODULES\SDRDRV.IRX;1'
 nonuniform_guest_gs_frame=no
