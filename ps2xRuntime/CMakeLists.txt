@@ -463,6 +463,7 @@ endif()
 if(PS2X_AOT_SOURCE_DIR)
     list(REMOVE_ITEM RUNNER_SRC_FILES
         "${CMAKE_CURRENT_SOURCE_DIR}/src/runner/register_functions.cpp")
+    message(STATUS "Native runner: using AOT-generated function registration; fallback disabled")
 endif()
 
 if(PS2X_IS_ANDROID)
