@@ -1557,6 +1557,74 @@ namespace
         }
     }
 
+    void ScanEmbeddedExecutablePointerTables(const std::vector<ps2recomp::Section> &sections,
+                                             std::unordered_set<uint32_t> &starts)
+    {
+        // Some stripped EE ELFs place actual callback/vtable data inside an
+        // executable PT_LOAD rather than a separately marked .data section.
+        // The data-only pointer scanner cannot see these genuine functions.
+        //
+        // Promote addresses only from runs of >=4 adjacent code pointers where
+        // EVERY target has a conservative callable MIPS entry shape. A single
+        // numeric constant or a random piece of decoded instruction data is
+        // not enough evidence for a new function boundary.
+        constexpr size_t kMinConsecutivePointers = 4u;
+
+        for (const auto &section : sections)
+        {
+            if (!section.isCode || !section.data ||
+                section.size < kMinConsecutivePointers * MIPS_INSTRUCTION_SIZE)
+            {
+                continue;
+            }
+
+            std::vector<uint32_t> pointerRun;
+            auto flushRun = [&]()
+            {
+                if (pointerRun.size() >= kMinConsecutivePointers)
+                {
+                    const bool distinctTargets = std::adjacent_find(
+                        pointerRun.begin(), pointerRun.end(),
+                        [](uint32_t a, uint32_t b) { return a != b; }) != pointerRun.end();
+                    const bool allCallable = distinctTargets &&
+                        std::all_of(pointerRun.begin(), pointerRun.end(),
+                                    [&](uint32_t address)
+                                    {
+                                        return LooksLikeCallableEntry(sections, address, true);
+                                    });
+                    if (allCallable)
+                    {
+                        starts.insert(pointerRun.begin(), pointerRun.end());
+                    }
+                }
+                pointerRun.clear();
+            };
+
+            for (uint32_t offset = 0;
+                 offset + MIPS_INSTRUCTION_SIZE <= section.size;
+                 offset += MIPS_INSTRUCTION_SIZE)
+            {
+                uint32_t target = 0;
+                const bool codePointer =
+                    ReadSectionWord(section, offset, target) &&
+                    (target % MIPS_INSTRUCTION_SIZE) == 0u &&
+                    FindCodeSectionByAddress(sections, target) != nullptr;
+                if (codePointer)
+                {
+                    pointerRun.push_back(target);
+                }
+                else if (!pointerRun.empty())
+                {
+                    flushRun();
+                }
+            }
+            if (!pointerRun.empty())
+            {
+                flushRun();
+            }
+        }
+    }
+
     void ScanAdjacentLeafThunkRuns(const std::vector<ps2recomp::Section> &sections, std::unordered_set<uint32_t> &starts)
     {
         // Stripped retail ELFs occasionally pack trivial accessors back-to-back:
@@ -1651,6 +1719,7 @@ namespace
 
         ScanMaterializedCodeAddresses(sections, starts);
         ScanDataFunctionPointerTables(sections, starts);
+        ScanEmbeddedExecutablePointerTables(sections, starts);
         ScanAdjacentLeafThunkRuns(sections, starts);
 
         std::vector<uint32_t> sortedStarts(starts.begin(), starts.end());

@@ -207,3 +207,6 @@ CP18 generated AOT source archive and native game executable are both published 
 
 ### CP20 status
 CP19 real native AOT executable and generated C++ remain committed under built/ in main via Git LFS. First three indirect-call blockers were resolved, fourth guest call at 0x0031DA28 remains. CP20 additionally validates the genuine callback pointer 0x00375840 found in execution trace. See docs/CP20_BOOT_DISPATCH.md.
+
+### CP22 function-boundary work
+The original God Hand ELF contains callback pointer tables embedded in executable LOAD regions. The conservative upstream function-pointer scanner did not inspect these because it limited scans to data-only sections. CP22 generalizes original-code analysis to high-confidence executable-region pointer clusters. Read docs/CP22_EMBEDDED_CALLBACK_DISCOVERY.md. The last genuine native binary remains in Git LFS until replaced by a successfully linked AOT; visible guest graphics have not yet been certified.

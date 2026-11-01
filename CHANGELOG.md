@@ -118,3 +118,8 @@
 - Added independent MIPS ELF32 pointer-group audit, including callback tables in executable LOAD segments, reporting original-file-backed candidates without changing code or automatically treating data as functions.
 - Added six synthetic-ELF tests and an inexpensive, bounded prebuilt-only workflow report to investigate the remaining indirect-call coverage systematically.
 - Not a game-specific runtime hook; no artificial graphics and no AOT binary replacement from this audit.
+
+## CP22 — Recover authentic functions from executable-embedded pointer tables
+- Real original ELF audit found 358 executable-region pointer groups, with a strongly supported 71-pointer callback table containing multiple previously missing guest call targets.
+- Added generic conservative function start discovery for groups of four or more consecutive executable pointers, all validated by existing MIPS callable-entry heuristics; no names/addresses hardcoded in the recompiler.
+- This is a function-boundary analysis improvement, not an instruction patch or high-level game shortcut. Validate Linux/Windows compiler and subsequent full AOT analysis before replacing the linked executable.
