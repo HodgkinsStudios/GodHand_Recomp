@@ -274,6 +274,7 @@ jobs:
           export GODHAND_GS_FRAME_PPM="$RUNNER_TEMP/godhand_first_frame.ppm"
           export LIBGL_ALWAYS_SOFTWARE=1
           export PS2X_CD_IMAGE="$RUNNER_TEMP/GodHand.iso"
+          # CP29/CP30 real-disc module and asset tests: use authentic ISO.
           timeout --kill-after=5s 90s xvfb-run -a -s '-screen 0 1280x720x24' \
             "$game" "$RUNNER_TEMP/game/boot.elf" \
             > "$RUNNER_TEMP/godhand-execution.log" 2>&1 || status=$?

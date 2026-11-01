@@ -1,0 +1,98 @@
+name: GodHand - Inspect and selectively extract AFS in runner
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/godhand_afs.py'
+      - 'tools/tests/test_godhand_afs.py'
+      - '.github/workflows/godhand-afs-inspect.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  afs-analysis:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+          persist-credentials: true
+      - name: Validate standalone AFS parser/extractor on synthetic fixtures
+        run: python3 -m unittest discover -s tools/tests -p test_godhand_afs.py -v
+      - name: Restore legally supplied original ISO in ephemeral runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='iso/GodHand.iso.part-*' --exclude=''
+          cat iso/GodHand.iso.part-* > "$RUNNER_TEMP/GodHand.iso"
+          test "$(stat -c %s "$RUNNER_TEMP/GodHand.iso")" -eq 1567686656
+      - name: Index entire AFS and inspect GODHAND.FST without extracting files to repo
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p built/reports
+          python3 tools/godhand_afs.py --iso "$RUNNER_TEMP/GodHand.iso" \
+            --report built/reports/afs_inventory.json \
+            --examples 80 > "$RUNNER_TEMP/afs-inspect-output.json"
+          python3 - <<'PY' | tee built/reports/afs_analysis_summary.txt
+          import json
+          r = json.load(open('built/reports/afs_inventory.json'))
+          print('archive_bytes=', r['archive_bytes'])
+          print('entry_count=', r['entries'])
+          print('filename_toc_present=', r['filename_toc_present'])
+          print('filename_toc_offset=', r['filename_toc_offset'])
+          print('signature_histogram=', r['signatures'])
+          print('extension_histogram=', r['extensions'])
+          for name, sidecar in r.get('iso_sidecar_indexes', {}).items():
+              print('index_file=', name, 'bytes=', sidecar['bytes'])
+              print('index_magic=', sidecar['header32_hex'])
+              print('index_strings_first40=', sidecar['strings_sample'][:40])
+          print('--- AFS entry examples ---')
+          for entry in r['examples'][:80]:
+              print(entry['index'], entry['size'], entry['name'], entry['signature'], entry['header_hex'])
+          PY
+      - name: Perform actual limited extraction and classify first useful entries
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/afs-sample-extract"
+          sample_ids="$(python3 - <<'PY'
+          import json
+          entries = json.load(open('built/reports/afs_inventory.json'))['first_entries']
+          selected = [str(e['index']) for e in entries if 0 < e['size'] <= 1024*1024][:4]
+          print(','.join(selected))
+          PY
+          )"
+          if test -n "$sample_ids"; then
+            python3 tools/godhand_afs.py --iso "$RUNNER_TEMP/GodHand.iso" \
+              --extract-dir "$RUNNER_TEMP/afs-sample-extract" --ids "$sample_ids" \
+              --max-entry-mib 2 --max-total-mib 8 \
+              > "$RUNNER_TEMP/afs-extraction-summary.json"
+            {
+              echo "--- Actual AFS sample extraction (metadata only) ---"
+              echo "selected_ids=$sample_ids"
+              find "$RUNNER_TEMP/afs-sample-extract" -maxdepth 1 -type f -printf '%f %s bytes\n'
+              file "$RUNNER_TEMP/afs-sample-extract/"* || true
+            } >> built/reports/afs_analysis_summary.txt
+          else
+            echo 'No AFS sample entries met safe 1 MiB extraction limit' >> built/reports/afs_analysis_summary.txt
+          fi
+          # No extracted retail assets are uploaded or committed.
+          rm -rf "$RUNNER_TEMP/afs-sample-extract"
+      - name: Publish inventory and extraction diagnostics only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f built/reports/afs_inventory.json built/reports/afs_analysis_summary.txt
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'docs: index original AFS and validate bounded asset extraction [skip ci]'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git rebase origin/main
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1
