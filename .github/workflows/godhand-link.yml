@@ -5,6 +5,9 @@ on:
   push:
     branches: [main]
     paths: ['built/aot/generated_cpp.tar.gz']
+  workflow_run:
+    workflows: ['GodHand - ISO boot ELF and AOT analysis']
+    types: [completed]
   workflow_dispatch:
 
 permissions:
@@ -17,6 +20,8 @@ concurrency:
 
 jobs:
   native-game:
+    # workflow_run can be triggered by the CI bot, unlike ordinary bot pushes.
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-24.04
     timeout-minutes: 180
     env:
@@ -31,6 +36,22 @@ jobs:
         with:
           lfs: false
           persist-credentials: true
+
+      - name: Verify validated AOT entry before automatic relink
+        if: github.event_name == 'workflow_run'
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s built/reports/aot_validated_entry.json
+          python3 - <<'PYCODE'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('built/reports/aot_validated_entry.json').read_text())
+          assert report['entry_address'] == '0x003BAFB8', report
+          assert report['guest_instruction_bytes_patched'] is False
+          assert 'analyzer_and_recompiler_exit_status=0' in Path('built/reports/aot_status.txt').read_text()
+          print('Validated original MIPS entry and successful AOT regeneration')
+          PYCODE
 
       - name: Restore only previously generated AOT sources from LFS
         shell: bash
