@@ -6,8 +6,8 @@ BUILD TAIL
 [55/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/game_overrides.cpp.o
 [56/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/gs/ps2_gs_memory.cpp.o
 [57/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/ps2_audio_vag.cpp.o
-[58/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/gs/gs_frontend.cpp.o
-[59/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/gs/gs_cpu_backend.cpp.o
+[58/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/gs/gs_cpu_backend.cpp.o
+[59/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/gs/gs_frontend.cpp.o
 [60/106] Building C object _deps/raylib-build/raylib/CMakeFiles/raylib.dir/raudio.c.o
 In file included from _deps/raylib-src/src/raudio.c:180:
 _deps/raylib-src/src/external/miniaudio.h: In function ‘ma_device_stop__alsa’:
@@ -59,8 +59,8 @@ _deps/raylib-src/src/external/jar_mod.h:125:13: note: at offset 1083 into destin
   125 |     muchar  title[20];
       |             ^~~~~
 [61/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/ps2_pad.cpp.o
-[62/106] Building C object _deps/raylib-build/raylib/CMakeFiles/raylib.dir/rtextures.c.o
-[63/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/ps2_rom_device.cpp.o
+[62/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/ps2_rom_device.cpp.o
+[63/106] Building C object _deps/raylib-build/raylib/CMakeFiles/raylib.dir/rtextures.c.o
 [64/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/ps2_memory.cpp.o
 [65/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/ps2_iop_host.cpp.o
 [66/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/ps2_frame_capture.cpp.o
@@ -80,12 +80,12 @@ _deps/raylib-src/src/external/jar_mod.h:125:13: note: at offset 1083 into destin
 [80/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/FileIO.cpp.o
 [81/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/Font.cpp.o
 [82/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/GS.cpp.o
-[83/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/IPU.cpp.o
-[84/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/LibC.cpp.o
+[83/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/LibC.cpp.o
+[84/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/IPU.cpp.o
 [85/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/MemoryCard.cpp.o
 [86/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/MPEG.cpp.o
-[87/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/Pad.cpp.o
-[88/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/RPC.cpp.o
+[87/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/RPC.cpp.o
+[88/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/Pad.cpp.o
 [89/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/System.cpp.o
 [90/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/TTY.cpp.o
 [91/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Stubs/Unimplemented.cpp.o
@@ -99,7 +99,7 @@ _deps/raylib-src/src/external/jar_mod.h:125:13: note: at offset 1083 into destin
 [99/106] Linking C static library _deps/raylib-build/raylib/libraylib.a
 [100/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Syscalls/RPC.cpp.o
 [101/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Syscalls/System.cpp.o
-[102/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Syscalls/Thread.cpp.o
-[103/106] Linking CXX static library ps2xRuntime/libps2_runtime.a
-[104/106] Building CXX object ps2xRuntime/CMakeFiles/ps2EntryRunner.dir/src/main.cpp.o
+[102/106] Building CXX object ps2xRuntime/CMakeFiles/ps2EntryRunner.dir/src/main.cpp.o
+[103/106] Building CXX object ps2xRuntime/CMakeFiles/ps2_runtime.dir/src/lib/Kernel/Syscalls/Thread.cpp.o
+[104/106] Linking CXX static library ps2xRuntime/libps2_runtime.a
 [105/106] Linking CXX executable ps2xRuntime/ps2EntryRunner
