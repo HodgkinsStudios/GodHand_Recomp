@@ -44,8 +44,8 @@ jobs:
                   ranges[-1]=(ranges[-1][0],max(b,ranges[-1][1]))
               else:
                   ranges.append((a,b))
-          if not ranges:
-              ranges = [(0,min(250,len(lines)))]
+          # Include the function's setup of timer registers, not just its loop.
+          ranges = [(0,min(355,len(lines)))] + [(a,b) for a,b in ranges if a >= 355]
           result = [f'compiled_source={file.name}', f'full_lines={len(lines)}',
                     f'guest_pc=0x00398930', f'pc_related_hits={len(hits)}',
                     'Source is generated from original MIPS; no instruction injection.']
