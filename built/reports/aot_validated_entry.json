@@ -41,6 +41,34 @@
       "first_instruction_lui": false,
       "entry_hint_added": true,
       "guest_instruction_bytes_patched": false
+    },
+    {
+      "entry_address": "0x0031DA28",
+      "executable_segment_start": "0x00100000",
+      "executable_segment_end": "0x007867B4",
+      "first_four_mips_words": [
+        "0x27BDFFF0",
+        "0x24040001",
+        "0xFFBF0000",
+        "0x0C0C767C"
+      ],
+      "first_instruction_lui": false,
+      "entry_hint_added": true,
+      "guest_instruction_bytes_patched": false
+    },
+    {
+      "entry_address": "0x00375840",
+      "executable_segment_start": "0x00100000",
+      "executable_segment_end": "0x007867B4",
+      "first_four_mips_words": [
+        "0x27BDFFF0",
+        "0x24040001",
+        "0xFFBF0000",
+        "0x0C0DD5E8"
+      ],
+      "first_instruction_lui": false,
+      "entry_hint_added": true,
+      "guest_instruction_bytes_patched": false
     }
   ],
   "guest_instruction_bytes_patched": false
