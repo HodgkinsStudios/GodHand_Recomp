@@ -1,4 +1,5 @@
 name: GodHand - ISO boot ELF and AOT analysis
+# CP22: validate executable-embedded original ELF callback table discovery.
 # Full ISO reanalysis is explicit: boot smoke tests reuse the existing AOT.
 # A push to the PS2 runtime must not trigger hours of recompilation.
 on:
