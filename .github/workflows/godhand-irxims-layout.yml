@@ -1,0 +1,78 @@
+name: GodHand - Inspect authentic IRX.IMS container metadata
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/godhand-irxims-layout.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  inspect-archive:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          lfs: false
+      - name: Restore original God Hand ISO
+        shell: bash
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='iso/GodHand.iso.part-*' --exclude=''
+          cat iso/GodHand.iso.part-* > "$RUNNER_TEMP/GodHand.iso"
+      - name: Inspect container signatures, module names and embedded ELF headers only
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p built/reports
+          python3 - "$RUNNER_TEMP/GodHand.iso" <<'PY' | tee built/reports/irx_ims_layout.txt
+          import re
+          import struct
+          import sys
+          sys.path.insert(0, 'tools')
+          from godhand_iso_pipeline import iso_entries, read_entry
+          with open(sys.argv[1], 'rb') as f:
+              entries = iso_entries(f)
+              item = entries.get('MODULES/IRX.IMS')
+              if not item:
+                  raise SystemExit('IRX.IMS missing from real ISO')
+              data = read_entry(f, item, 16*1024*1024)
+          print('container_size=', len(data))
+          print('header32_hex=', data[:32].hex())
+          print('header_words_le=', [hex(struct.unpack_from('<I', data, p)[0]) for p in range(0, min(64, len(data)), 4)])
+          for token in (b'SDRDRV', b'sdrdrv', b'LIBSD', b'libsd', b'CDVD', b'cdvd', b'IRX', b'ROMDIR'):
+              positions = [m.start() for m in re.finditer(re.escape(token), data)][:15]
+              print('literal=', token.decode(), 'occurrences_first15=', positions)
+          names = sorted({m.group().decode('ascii', 'replace') for m in re.finditer(rb'[A-Za-z0-9_]{2,18}\.[Ii][Rr][Xx]', data)})
+          print('visible_irx_filenames=', names)
+          headers = []
+          for m in re.finditer(b'\x7fELF', data):
+              pos = m.start()
+              if pos + 52 > len(data) or data[pos+4:pos+6] != b'\x01\x01':
+                  continue
+              e_type, machine = struct.unpack_from('<HH', data, pos+16)
+              entry, phoff, shoff = struct.unpack_from('<III', data, pos+24)
+              phentsize, phnum = struct.unpack_from('<HH', data, pos+42)
+              shentsize, shnum = struct.unpack_from('<HH', data, pos+46)
+              headers.append((pos, hex(e_type), machine, hex(entry), phoff, phentsize, phnum, shoff, shentsize, shnum))
+          print('valid_elf_candidates=', len(headers))
+          for hdr in headers[:60]:
+              print('ELF_offset,type,machine,entry,phoff,phentsize,phnum,shoff,shentsize,shnum=', hdr)
+          PY
+      - name: Commit metadata-only layout report
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f built/reports/irx_ims_layout.txt
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'docs: inspect real God Hand IRX.IMS module archive [skip ci]'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git rebase origin/main
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1
