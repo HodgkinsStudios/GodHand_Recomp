@@ -27,6 +27,20 @@ int main() {
     assert(godhand::find_game_executable(launcher, checkout, data) == fs::absolute(built));
     std::ofstream(sibling).put('x');
     assert(godhand::find_game_executable(launcher, checkout, data) == fs::absolute(sibling));
+    // A 134-byte LFS pointer can have the executable bit without being an ELF.
+    assert(godhand::game_binary_problem(sibling).find("not a Linux ELF") != std::string::npos);
+    {
+        std::ofstream out(sibling, std::ios::binary | std::ios::trunc);
+        out << "version https://git-lfs.github.com/spec/v1\n"
+               "oid sha256:0000000000000000000000000000000000000000000000000000000000000000\n"
+               "size 209109192\n";
+    }
+    assert(godhand::game_binary_problem(sibling).find("Git LFS pointer") != std::string::npos);
+    {
+        std::ofstream out(sibling, std::ios::binary | std::ios::trunc);
+        out.write("\x7f" "ELF", 4);
+    }
+    assert(godhand::game_binary_problem(sibling).empty());
     fs::remove(sibling);
     fs::remove(built);
     std::ofstream(legacy).put('x');

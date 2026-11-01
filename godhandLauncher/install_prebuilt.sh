@@ -13,7 +13,10 @@ fi
 mkdir -p "$HOME/.local/bin" "$HOME/.local/share/applications"
 install -m755 "$BINARY" "$HOME/.local/bin/GodHand_Recomp_Launcher"
 GAME="$ROOT/built/linux-x86_64/GodHand_Recomp_Game"
-if [[ -f "$GAME" && -x "$GAME" ]]; then
+if [[ -f "$GAME" && -x "$GAME" ]] && head -c 64 "$GAME" | grep -aq '^version https://git-lfs.github.com/spec/v1'; then
+  echo 'Only a Git LFS pointer was downloaded for GodHand_Recomp_Game.' >&2
+  echo 'Run git lfs pull, then reinstall; the launcher will remain available.' >&2
+elif [[ -f "$GAME" && -x "$GAME" ]]; then
   # The launcher finds the native game next to its own executable. This also
   # works when launching from the desktop menu instead of the repository root.
   install -m755 "$GAME" "$HOME/.local/bin/GodHand_Recomp_Game"

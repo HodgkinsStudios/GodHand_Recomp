@@ -6,6 +6,9 @@
 #include <gtk/gtk.h>
 
 #include <filesystem>
+#include <fcntl.h>
+#include <cerrno>
+#include <cstring>
 #include <memory>
 #include <string>
 #include <thread>
@@ -30,6 +33,7 @@ struct Launcher {
     std::unique_ptr<godhand::InputManager> input;
 
     bool installing = false;
+    bool game_running = false;
     bool installed = false;
     fs::path data_dir;
 };
@@ -122,7 +126,38 @@ void choose_iso(Launcher& app) {
     g_object_unref(dialog);
 }
 
+void redirect_game_output(gpointer user_data) {
+    // Child setup must use async-signal-safe operations only.
+    const int fd = *static_cast<const int*>(user_data);
+    if (fd >= 0) {
+        if (fd != STDOUT_FILENO) ::dup2(fd, STDOUT_FILENO);
+        if (fd != STDERR_FILENO) ::dup2(fd, STDERR_FILENO);
+        if (fd > STDERR_FILENO) ::close(fd);
+    }
+}
+
+void game_child_exited(GPid pid, gint wait_status, gpointer user_data) {
+    auto& app = *static_cast<Launcher*>(user_data);
+    g_spawn_close_pid(pid);
+    app.game_running = false;
+    gtk_widget_set_sensitive(app.button, TRUE);
+    const std::string log_path = (app.data_dir / "logs/last_launch.log").string();
+    GError* error = nullptr;
+    if (g_spawn_check_wait_status(wait_status, &error)) {
+        gtk_label_set_text(GTK_LABEL(app.status),
+            "Native game exited. No rendered frame has been verified.");
+    } else {
+        const std::string detail = error ? error->message : "Unknown child process failure";
+        if (error) g_error_free(error);
+        gtk_label_set_text(GTK_LABEL(app.status), "Native game exited with an error. See the launch log.");
+        show_error(app, "Native God Hand game stopped",
+            detail + "\n\nDiagnostic log:\n" + log_path +
+            "\n\nThis is an experimental AOT build; successful compilation does not imply the game has reached graphics.");
+    }
+}
+
 void play(Launcher& app) {
+    if (app.game_running) return;
     std::error_code ec;
     const auto found = godhand::find_game_executable(
         godhand::launcher_executable_directory(), fs::current_path(ec), app.data_dir);
@@ -137,6 +172,12 @@ void play(Launcher& app) {
         return;
     }
     const fs::path executable = *found;
+    const std::string binary_problem = godhand::game_binary_problem(executable);
+    if (!binary_problem.empty()) {
+        show_error(app, "Invalid native game executable",
+            binary_problem + "\n\nPath: " + executable.string());
+        return;
+    }
     if (access(executable.c_str(), X_OK) != 0) {
         show_error(app, "AOT game executable is not executable",
             "Check the permissions of:\n" + executable.string());
@@ -172,16 +213,39 @@ void play(Launcher& app) {
     with_settings = g_environ_setenv(with_data, "GODHAND_GS_FRAME_PPM", firstFrame.c_str(), TRUE);
     g_strfreev(with_data);
     with_data = with_settings;
+    const fs::path log_path = app.data_dir / "logs/last_launch.log";
+    fs::create_directories(log_path.parent_path(), ec);
+    if (ec) {
+        g_strfreev(with_data);
+        show_error(app, "Unable to create game log directory", ec.message());
+        return;
+    }
+    int log_fd = ::open(log_path.c_str(), O_CREAT | O_WRONLY | O_TRUNC, 0600);
+    if (log_fd < 0) {
+        g_strfreev(with_data);
+        show_error(app, "Unable to create game log", std::strerror(errno));
+        return;
+    }
+    ::dprintf(log_fd, "[launcher] Executable: %s\n[launcher] Boot ELF: %s\n",
+              program.c_str(), bootPath.c_str());
     GError* error = nullptr;
-    gboolean launched = g_spawn_async(app.data_dir.c_str(), argv, with_data,
-        G_SPAWN_DEFAULT, nullptr, nullptr, nullptr, &error);
+    GPid child_pid = 0;
+    const gboolean launched = g_spawn_async(app.data_dir.c_str(), argv, with_data,
+        static_cast<GSpawnFlags>(G_SPAWN_DO_NOT_REAP_CHILD | G_SPAWN_LEAVE_DESCRIPTORS_OPEN),
+        redirect_game_output, &log_fd, &child_pid, &error);
+    ::close(log_fd);
     g_strfreev(with_data);
     if (!launched) {
-        std::string message = error ? error->message : "Unknown process launch error";
+        const std::string message = error ? error->message : "Unknown process launch error";
         if (error) g_error_free(error);
-        show_error(app, "Unable to start God Hand", message);
+        show_error(app, "Unable to start God Hand",
+            message + "\n\nDiagnostic log:\n" + log_path.string());
     } else {
-        gtk_label_set_text(GTK_LABEL(app.status), "Started native God Hand executable.");
+        app.game_running = true;
+        gtk_widget_set_sensitive(app.button, FALSE);
+        gtk_label_set_text(GTK_LABEL(app.status),
+            "Native game launched. Monitoring process; logging to logs/last_launch.log.");
+        g_child_watch_add(child_pid, game_child_exited, &app);
     }
 }
 
