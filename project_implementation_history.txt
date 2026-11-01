@@ -25,3 +25,4 @@ CP15: generated AOT registry replaced fallback (duplicate symbol fix); 9,231 gen
 CP16: manual-only expensive workflows; short prebuilt-only 20s real boot smoke confirmed same missing target; isolated analyzer report publishing; restored accurate successful-link reports.
 
 CP17: verified guest JALR target 0x003BAFB8 entry hint; AOT output must register real guest code; cache-preserving relink triggered on archive change.
+CP18: CP17 linked AOT+archive verified on main; boot advances past 0x003BAFB8 but stalls at 0x0038F200. Transactional ELF-backed multiple entry hints; generated registry verifies both, retains existing executable until successful new link.

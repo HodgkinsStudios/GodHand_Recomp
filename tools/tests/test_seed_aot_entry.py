@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from seed_aot_entry import inspect_elf_target, add_entry_hint
+from seed_aot_entry import inspect_elf_target, add_entry_hint, validate_and_seed_entries
 
 def make_elf(words, flags=5):
     blob=bytearray(0x300)
@@ -34,6 +34,26 @@ class GuestEntryHintTests(unittest.TestCase):
         updated,added=add_entry_hint('[general]\ninput="x"\n',0x3bafb8)
         self.assertTrue(added)
         self.assertIn('entry_points = ["0x003BAFB8"]',updated)
+
+    def test_multi_target_seeding_and_deduplication(self):
+        elf=bytearray(make_elf((0x3c040040,0x3c050078,0x2484c9b4,0x080c8934)))
+        struct.pack_into('<IIII', elf, 0x1c0, 0x27bdffe0, 0xafbf0018, 0x03e00008, 0)
+        config='[general]\nentry_points=["0x00100008"]\n'
+        updated, entries=validate_and_seed_entries(bytes(elf),config,[0x3bafb8,0x3bafc0,0x3bafc0])
+        self.assertEqual(len(entries),2)
+        self.assertIn('0x003BAFB8',updated)
+        self.assertIn('0x003BAFC0',updated)
+        self.assertTrue(all(v['entry_hint_added'] for v in entries))
+        self.assertTrue(all(v['guest_instruction_bytes_patched'] is False for v in entries))
+        again, results=validate_and_seed_entries(bytes(elf),updated,[0x3bafb8,0x3bafc0])
+        self.assertEqual(updated,again)
+        self.assertTrue(all(not v['entry_hint_added'] for v in results))
+
+    def test_invalid_second_entry_refuses_transaction(self):
+        config='[general]\nentry_points=[]\n'
+        with self.assertRaises(ValueError):
+            validate_and_seed_entries(make_elf((0x3c040040,0x3c050078,0x2484c9b4,0x080c8934)),config,[0x3bafb8,0x3bb000])
+
 
 if __name__=='__main__':
     unittest.main()

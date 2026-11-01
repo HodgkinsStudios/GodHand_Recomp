@@ -96,3 +96,9 @@
 - Confirmed CP15 native build 9,231 generated guest C++ translation units compiled and linked, 98.92% ccache hit rate, 209,103,376-byte x86-64 executable published to main through LFS.
 - Verified CP16 prebuilt-only 20-second real boot probe: original ELF loaded; OpenGL initialized; missing indirect JALR target `0x003BAFB8` (caller `0x0031DB2C`); no game GS frame; exit 124.
 - Added bounded `.github/workflows/godhand-prebuilt-smoke.yml` without recompilation, published diagnostic report, and made both costly AOT workflows manual-only. Restricted analyzer publishing to its own files so stale `link_ci_*` diagnostics cannot overwrite the successful native-link result.
+
+
+## CP18 — Second observed MIPS call recovery
+- Verified 209,109,192-byte CP17 native executable and 25,001,106-byte generated AOT archive in Git LFS on main.
+- Real CP17 boot reaches past 0x003BAFB8; next guest JALR missing target is 0x0038F200. No guest GS drawing yet.
+- Added atomic multi-target ELF validation and generated-registry checks; no guest instruction replacement or synthetic rendering.

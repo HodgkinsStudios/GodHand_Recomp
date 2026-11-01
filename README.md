@@ -196,3 +196,7 @@ The native God Hand build now compiles all generated C++ in four deterministic N
 
 ## CP16 — Safe native runtime investigation
 God Hand's real generated AOT executable is **already linked** (209,103,376 bytes) and stored through Git LFS in `built/linux-x86_64/GodHand_Recomp_Game`. The launcher finds a sibling game binary; download the LFS payload with `git lfs pull` after pulling main. The game is **not yet playable**: both a 90-second test and an independent bounded 20-second prebuilt-only smoke test entered the guest at `0x00100008` but stalled on a missing `JALR` target `0x003BAFB8` called at `0x0031DB2C`; no genuine GS frame was produced. The function list lacks an entry at the target (neighboring starts `0x003BAD80` and `0x003BAFF8`). Both heavyweight full AOT analysis and native-link workflows are now manual-only, avoiding accidental large rebuilds. The short smoke workflow writes `built/reports/prebuilt_smoke_status.txt`, and its last report is on main.
+
+
+### CP18 current native AOT state
+The real CP17 native AOT executable (209,109,192 bytes) and generated C++ archive (25,001,106 bytes) are on GitHub main as Git LFS objects. The executable loads God Hand's original ELF but has no verified guest-rendered frame. A new ELF-backed guest entry recovery addresses the next observed JALR target 0x0038F200, preserving 0x003BAFB8. See docs/CP18_SECOND_GUEST_ENTRY.md.

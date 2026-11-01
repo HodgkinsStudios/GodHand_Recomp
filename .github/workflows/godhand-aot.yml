@@ -84,6 +84,7 @@ jobs:
               --elf "$RUNNER_TEMP/game/boot.elf" \
               --config "$RUNNER_TEMP/game/godhand.toml" \
               --entry 0x003BAFB8 \
+              --entry 0x0038F200 \
               --report built/reports/aot_validated_entry.json || status=$?
           fi
           if [ "$status" -eq 0 ]; then
@@ -101,10 +102,12 @@ jobs:
             # registered as a resume entry in the owner's generated function,
             # rather than as a separate entry_*.cpp translation unit.
             # Only the generated dispatch table is authoritative here.
-            if ! grep -Eiq '0x0*3bafb8' "$RUNNER_TEMP/game/output/register_functions.cpp"; then
-              echo 'ERROR: generated registry excludes MIPS address 0x003BAFB8' >&2
-              status=1
-            fi
+            for address in 3bafb8 38f200; do
+              if ! grep -Eiq "0x0*${address}" "$RUNNER_TEMP/game/output/register_functions.cpp"; then
+                echo "ERROR: generated registry excludes validated MIPS address 0x${address}" >&2
+                status=1
+              fi
+            done
           fi
           if [ "$status" -eq 0 ] && [ -s "$RUNNER_TEMP/generated-files.txt" ]; then
             find "$RUNNER_TEMP/game" -type f -name '*.cpp' -printf '%P\n' | sort > built/reports/generated_files.txt

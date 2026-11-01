@@ -73,22 +73,39 @@ def add_entry_hint(toml_text: str, address: int):
         raise ValueError('Entry point did not survive TOML round trip')
     return result, True
 
+def validate_and_seed_entries(elf: bytes, toml_text: str, addresses):
+    """Validate all guest code targets BEFORE writing any TOML hints."""
+    if not addresses:
+        raise ValueError('At least one guest entry is required')
+    addresses = list(dict.fromkeys(addresses))
+    verified = [inspect_elf_target(elf, address) for address in addresses]
+    updated = toml_text
+    for address, details in zip(addresses, verified):
+        updated, added = add_entry_hint(updated, address)
+        details['entry_hint_added'] = added
+        details['guest_instruction_bytes_patched'] = False
+    return updated, verified
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--elf', type=Path, required=True)
     p.add_argument('--config', type=Path, required=True)
-    p.add_argument('--entry', type=lambda s: int(s, 0), required=True)
+    p.add_argument('--entry', type=lambda s: int(s, 0), action='append', required=True)
     p.add_argument('--report', type=Path, required=True)
     args = p.parse_args()
     try:
-        details = inspect_elf_target(args.elf.read_bytes(), args.entry)
-        next_config, changed = add_entry_hint(args.config.read_text(), args.entry)
-        if changed:
-            args.config.write_text(next_config)
-        details.update(entry_hint_added=changed, guest_instruction_bytes_patched=False)
+        current = args.config.read_text()
+        updated, entries = validate_and_seed_entries(args.elf.read_bytes(), current, args.entry)
+        if updated != current:
+            args.config.write_text(updated)
+        result = entries[0] if len(entries) == 1 else {
+            'validated_entries': entries,
+            'guest_instruction_bytes_patched': False,
+        }
         args.report.parent.mkdir(parents=True, exist_ok=True)
-        args.report.write_text(json.dumps(details, indent=2) + '\n')
-        print(json.dumps(details, indent=2))
+        args.report.write_text(json.dumps(result, indent=2) + '\n')
+        print(json.dumps(result, indent=2))
     except (OSError, ValueError, KeyError, tomllib.TOMLDecodeError) as ex:
         p.exit(1, f'Unverified executable entry; refusing injection: {ex}\n')
 
