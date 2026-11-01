@@ -1,15 +1,7 @@
 name: GodHand - Link AOT and test first frame
-
+# Full native recompile is deliberately manual-only. Use the prebuilt smoke
+# workflow for fast boot regressions; never auto-build 9,231 guest C++ files.
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'ps2xRuntime/**'
-      - 'ps2xIOP/**'
-      - 'tools/aot_compile_probe.py'
-      - 'tools/aot_batch_build.py'
-      - 'tools/godhand_iso_pipeline.py'
-      - '.github/workflows/godhand-link.yml'
   workflow_dispatch:
 
 permissions:
