@@ -1,0 +1,26 @@
+name: GodHand - Guest entry recovery unit tests
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/observed_entry_recovery.py'
+      - 'tools/seed_aot_entry.py'
+      - 'tools/tests/test_observed_entry_recovery.py'
+      - 'tools/tests/test_seed_aot_entry.py'
+      - '.github/workflows/godhand-recovery-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  python-recovery-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout source (no game ISO or AOT LFS downloads)
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+      - name: Validate original ELF guest entry seeding
+        run: python3 -m unittest discover -s tools/tests -p 'test_seed_aot_entry.py' -v
+      - name: Validate observed runtime guest entry recovery
+        run: python3 -m unittest discover -s tools/tests -p 'test_observed_entry_recovery.py' -v
