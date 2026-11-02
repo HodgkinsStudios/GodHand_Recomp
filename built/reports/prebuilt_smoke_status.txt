@@ -1,4 +1,4 @@
-source_commit=07861528ba5f35d970ff4547e17f61723b59ec66
+source_commit=df6abfe2621dcc1c2212ae38671e36e5d0d50088
 used_prebuilt_game=yes
 native_recompilation=no
 execution_exit_code=124
@@ -7,15 +7,64 @@ nonuniform_guest_gs_frame=no
 --- first missing guest target ---
 [guest-branch:missing-target] kind=DirectJump op=EE scheduler source=0xf82 target=0xf82 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 a0=0x5e8140 a1=0x0 a2=0xffffffff a3=0x1fffdb0 s0=0x0 s1=0x740000 v0=0x5e84a0 v1=0x1 a0Readable=yes a0[0]=0x0 a0[4]=0x0 a0[8]=0x0 a0[c]=0x0 s0Readable=yes s0[0]=0x0 s0[4]=0x0 s0[8]=0x0 s0[c]=0x0 recordReadable=no record[0]=0x0 record[4]=0x0 record[8]=0x0 record[c]=0x0 vtableReadable=no vtbl[0]=0x0 vtbl[4]=0x0 vtbl[8]=0x0 vtbl[c]=0x0 codeRegion=no policy=1 trace=0x3454cc -> 0x348a70 -> 0x33b810 -> 0x33b658 -> 0x33b568 -> 0x324c90 -> 0x3afb90 -> 0x3afb30 -> 0x3252f8 -> 0x3afba0 -> 0x33b83c -> 0x33b878 -> 0x33b670 -> 0x33b5c8 -> 0x324d18 -> 0x325360 -> 0x3afba0 -> 0x3afc10 -> 0x3afb90 -> 0x3afb30 -> 0x33b858 -> 0x348a94 -> 0x3454e4 -> 0x348b20 -> 0x33bf88 -> 0x33bfa0 -> 0x345468 -> 0x2b49d0 -> 0x346b78 -> 0x359f78 -> 0x34dec8 -> 0x34dec8 -> 0x34dec8 -> 0x34dec8 -> 0x34dec8 -> 0x34dec8 -> 0x34dec8 -> 0x34dec8 -> 0x344520 -> 0x3452b0 -> 0x2d3710 -> 0x2d40f8 -> 0x3a52f0 -> 0x2d3710 -> 0x2d40f8 -> 0x3a52f0 -> 0x2d3710 -> 0x2d40f8 -> 0x3a52f0 -> 0x2be1cc -> 0x2ae3f0 -> 0x2be240 -> 0x3b60a0 -> 0x3b5e78 -> 0x3a58dc -> 0x2be240 -> 0x3b60a0 -> 0x3b5e78 -> 0x31a718 -> 0x397630 -> 0x3979e0 -> 0x3979e0 -> 0x2be4e8 -> 0x2be014
 --- first stack writes and original EE return diagnostics ---
+[EE:stack-write] pc=0x0038f208 ra=0x0031db34 sp=0x01fffe60 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000000000 valueLo=0x0000000000740000 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x003757a8 ra=0x00375854 sp=0x01fffee0 watch=0x01ffff10 write=0x01ffff10 width=16 old=0x0000000000740000 valueLo=0x00000000003fc98c valueHi=0x0000000000000000 op=WRITE128
+[EE:stack-write] pc=0x003182e4 ra=0x003184d4 sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000003fc98c valueLo=0x00000000003184d4 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x0030ee74 ra=0x0030eedc sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000003184d4 valueLo=0x000000000030eedc valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x0030e574 ra=0x0030e5ac sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x000000000030eedc valueLo=0x000000000030e5ac valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x0030714c ra=0x003071fc sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x000000000030e5ac valueLo=0x00000000003071fc valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x002df984 ra=0x002e0acc sp=0x01fffe10 watch=0x01ffff10 write=0x01ffff10 width=4 old=0x00000000003071fc valueLo=0x0000000000000000 valueHi=0x0000000000000000 op=WRITE32
+[EE:stack-write] pc=0x002d9ea4 ra=0x002d9f1c sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000000000 valueLo=0x00000000002d9f1c valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x002d9b7c ra=0x002d9bb4 sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000002d9f1c valueLo=0x00000000002d9bb4 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x002d31bc ra=0x002d31f4 sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000002d9bb4 valueLo=0x00000000002d31f4 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x002cd9ac ra=0x002cd9fc sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000002d31f4 valueLo=0x00000000002cd9fc valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x002cc3c0 ra=0x002cc4f4 sp=0x01fffee0 watch=0x01ffff10 write=0x01ffff10 width=16 old=0x00000000002cd9fc valueLo=0x00000000003fc94c valueHi=0x0000000000000000 op=WRITE128
+[EE:stack-write] pc=0x002c9c44 ra=0x002c9c7c sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000003fc94c valueLo=0x00000000002c9c7c valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x002c5340 ra=0x002c539c sp=0x01ffff00 watch=0x01ffff10 write=0x01ffff10 width=16 old=0x00000000002c9c7c valueLo=0x00000000003fc944 valueHi=0x0000000000000000 op=WRITE128
+[EE:stack-write] pc=0x002bf82c ra=0x002bf86c sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000003fc944 valueLo=0x00000000002bf86c valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x002be8f0 ra=0x002be95c sp=0x01fffee0 watch=0x01ffff10 write=0x01ffff10 width=16 old=0x00000000002bf86c valueLo=0x00000000003fc938 valueHi=0x0000000000000000 op=WRITE128
+[EE:stack-write] pc=0x002ba434 ra=0x002bb034 sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000003fc938 valueLo=0x00000000002bb034 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x002b5030 ra=0x002b5c14 sp=0x01fffe40 watch=0x01ffff10 write=0x01ffff10 width=16 old=0x00000000002bb034 valueLo=0x00000000003fc92c valueHi=0x0000000000000000 op=WRITE128
+[EE:stack-write] pc=0x002b485c ra=0x002b4894 sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000003fc92c valueLo=0x00000000002b4894 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x002ae94c ra=0x002ae984 sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000002b4894 valueLo=0x00000000002ae984 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x002ad1b8 ra=0x002ad22c sp=0x01fffee0 watch=0x01ffff10 write=0x01ffff10 width=16 old=0x00000000002ae984 valueLo=0x00000000003fc920 valueHi=0x0000000000000000 op=WRITE128
+[EE:stack-write] pc=0x002acbf4 ra=0x002acc64 sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000003fc920 valueLo=0x00000000002acc64 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x002a9d3c ra=0x002a9db4 sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000002acc64 valueLo=0x00000000002a9db4 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x002a72d4 ra=0x002a732c sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000002a9db4 valueLo=0x00000000002a732c valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x00295934 ra=0x0029596c sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000002a732c valueLo=0x000000000029596c valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x00294aec ra=0x00294b2c sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x000000000029596c valueLo=0x0000000000294b2c valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x0028ff8c ra=0x0028fff4 sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000294b2c valueLo=0x000000000028fff4 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x00284570 ra=0x00284a1c sp=0x01fffe90 watch=0x01ffff10 write=0x01ffff10 width=4 old=0x000000000028fff4 valueLo=0x0000000000000000 valueHi=0x0000000000000000 op=WRITE32
+[EE:stack-write] pc=0x00283c8c ra=0x00283ebc sp=0x01fffeb0 watch=0x01ffff10 write=0x01ffff10 width=4 old=0x0000000000000000 valueLo=0x0000000000000000 valueHi=0x0000000000000000 op=WRITE32
+[EE:stack-write] pc=0x0027b30c ra=0x0027b75c sp=0x01fffea0 watch=0x01ffff10 write=0x01ffff10 width=4 old=0x0000000000000000 valueLo=0x0000000000000000 valueHi=0x0000000000000000 op=WRITE32
+[EE:stack-write] pc=0x0027a814 ra=0x0027ac64 sp=0x01fffea0 watch=0x01ffff10 write=0x01ffff10 width=4 old=0x0000000000000000 valueLo=0x0000000000000000 valueHi=0x0000000000000000 op=WRITE32
+[EE:stack-write] pc=0x00276f38 ra=0x0027729c sp=0x01fffe90 watch=0x01ffff10 write=0x01ffff10 width=4 old=0x0000000000000000 valueLo=0x0000000000000000 valueHi=0x0000000000000000 op=WRITE32
+[EE:stack-write] pc=0x00201a8c ra=0x00201ac4 sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000000000 valueLo=0x0000000000201ac4 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x002009f4 ra=0x00200aa4 sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000201ac4 valueLo=0x0000000000200aa4 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x001ffdbc ra=0x001ffdf4 sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000200aa4 valueLo=0x00000000001ffdf4 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x001ff78c ra=0x001ff7f4 sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000001ffdf4 valueLo=0x00000000001ff7f4 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x001fe430 ra=0x001fe6ac sp=0x01fffee0 watch=0x01ffff10 write=0x01ffff10 width=16 old=0x00000000001ff7f4 valueLo=0x00000000003fc8d0 valueHi=0x0000000000000000 op=WRITE128
+[EE:stack-write] pc=0x001f7a38 ra=0x001f7d34 sp=0x01fffec0 watch=0x01ffff10 write=0x01ffff10 width=16 old=0x00000000003fc8d0 valueLo=0x00000000003fc8c8 valueHi=0x0000000000000000 op=WRITE128
+[EE:stack-write] pc=0x001f6e24 ra=0x001f6e5c sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000003fc8c8 valueLo=0x00000000001f6e5c valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x0016148c ra=0x001614c4 sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000001f6e5c valueLo=0x00000000001614c4 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x00155dd0 ra=0x001563e4 sp=0x01ffff00 watch=0x01ffff10 write=0x01ffff10 width=16 old=0x00000000001614c4 valueLo=0x00000000003fc8a4 valueHi=0x0000000000000000 op=WRITE128
+[EE:stack-write] pc=0x00152404 ra=0x0015243c sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000003fc8a4 valueLo=0x000000000015243c valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x00150614 ra=0x001506dc sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x000000000015243c valueLo=0x00000000001506dc valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x0014955c ra=0x00149594 sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000001506dc valueLo=0x0000000000149594 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x00141ad4 ra=0x00141b0c sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000149594 valueLo=0x0000000000141b0c valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x0013901c ra=0x00139054 sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000141b0c valueLo=0x0000000000139054 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x00135304 ra=0x0013533c sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000139054 valueLo=0x000000000013533c valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x00100fec ra=0x00101eac sp=0x01fffe20 watch=0x01ffff10 write=0x01ffff10 width=4 old=0x000000000013533c valueLo=0x0000000000000000 valueHi=0x0000000000000000 op=WRITE32
+[EE:stack-write] pc=0x0030d268 ra=0x0030b2b4 sp=0x01fffe50 watch=0x01ffff10 write=0x01ffff10 width=16 old=0x0000000000000000 valueLo=0x0000000000740000 valueHi=0x0000000000000000 op=WRITE128
+[gs:reg] idx=101 reg=0x51 value=0[EE:stack-write] pc=0x0030ed04 ra=0x0030b2c0 sp=0x01ffff00 watch=0x01ffff10 write=0x01ffff10 width=16 old=0x0000000000740000 valueLo=0x0000000000740000 valueHi=0x0000000000000000 op=WRITE128
+[EE:stack-write] pc=0x002be000 ra=0x0030b38c sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000740000 valueLo=0x000000000030b38c valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x003b6c44 ra=0x003b70ac sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x000000000030b38c valueLo=0x0000000000000782 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x003b6c44 ra=0x003b70ac sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000000782 valueLo=0x0000000000000f82 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x003b6c44 ra=0x003b70ac sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000000f82 valueLo=0x0000000000000f82 valueHi=0x0000000000000000 op=WRITE64
 [EE:invalid-return] dispatched=0x2be014 target=0xf82 ra=0xf82 sp=0x1ffff30 stack0=0x0 stack1=0x0 stack2=0x0 stack3=0x0 eeCycles=88125735
 [EE:main-dormant-cause] missing_recompiled_function pc=0xf82
 --- recent guest ticks ---
 --- execution log tail ---
-[gs:reg] idx=80 reg=0x50 value=0x4028000010000
-[gs:reg] idx=81 reg=0x51 value=0x0
-[gs:reg] idx=82 reg=0x52 value=0x1000000010
-[gs:reg] idx=83 reg=0x53 value=0x0
-[gs:reg] idx=84 reg=0x50 value=0x402a000010000
 [gs:reg] idx=85 reg=0x51 value=0x0
 [gs:reg] idx=86 reg=0x52 value=0x1000000010
 [gs:reg] idx=87 reg=0x53 value=0x0
@@ -32,7 +81,9 @@ nonuniform_guest_gs_frame=no
 [gs:reg] idx=98 reg=0x52 value=0x1000000010
 [gs:reg] idx=99 reg=0x53 value=0x0
 [gs:reg] idx=100 reg=0x50 value=0x4032000010000
-[gs:reg] idx=101 reg=0x51 value=0x0
+[gs:reg] idx=101 reg=0x51 value=0[EE:stack-write] pc=0x0030ed04 ra=0x0030b2c0 sp=0x01ffff00 watch=0x01ffff10 write=0x01ffff10 width=16 old=0x0000000000740000 valueLo=0x0000000000740000 valueHi=0x0000000000000000 op=WRITE128
+[EE:stack-write] pc=0x002be000 ra=0x0030b38c sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000740000 valueLo=0x000000000030b38c valueHi=0x0000000000000000 op=WRITE64
+x0
 [gs:reg] idx=102 reg=0x52 value=0x1000000010
 [gs:reg] idx=103 reg=0x53 value=0x0
 [gs:reg] idx=104 reg=0x50 value=0x4034000010000
@@ -93,6 +144,9 @@ nonuniform_guest_gs_frame=no
 [SIF module] load-emulated id=7 ref=1 path="cdrom0:\MODULES\CRI_ADXI.IRX;1"
 [ps2xIOP] [IOP printf] CRI ADX Driver : sceSdInit(SD_INIT_COLD) call.
 
+[EE:stack-write] pc=0x003b6c44 ra=0x003b70ac sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x000000000030b38c valueLo=0x0000000000000782 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x003b6c44 ra=0x003b70ac sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000000782 valueLo=0x0000000000000f82 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-write] pc=0x003b6c44 ra=0x003b70ac sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000000f82 valueLo=0x0000000000000f82 valueHi=0x0000000000000000 op=WRITE64
 [ps2xIOP] [IOP] loaded IRX id=8 entry=0x42c98 base=0x42b00 start=2
 [SIF module] load-emulated id=8 ref=1 path="cdrom0:\MODULES\MCMAN.IRX;1"
 [ps2xIOP] [IOP] loaded IRX id=9 entry=0x6da40 base=0x6da00 start=2
