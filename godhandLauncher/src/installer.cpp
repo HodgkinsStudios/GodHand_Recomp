@@ -223,7 +223,13 @@ InstallResult install_iso(const fs::path& source, const fs::path& root,
     const auto copy_temp = root / "GodHand.iso.partial";
     const auto extract_temp = root / "Extracted_Iso.partial";
     try {
-        if (is_installed(root)) return {true, "God Hand is already installed"};
+        if (is_installed(root)) {
+            // The ISO may be fully installed while AFS extraction is incomplete.
+            // Resume only the missing AFS entries; never recopy the disc.
+            const auto resumed = ensure_afs_extracted(root, progress);
+            if (!resumed.ok) return resumed;
+            return {true, "God Hand ISO and AFS files are installed"};
+        }
         std::error_code ec;
         if (!fs::is_regular_file(source) || !fs::exists(source))
             throw std::runtime_error("Selected ISO does not exist or is not a regular file");
@@ -257,21 +263,27 @@ InstallResult install_iso(const fs::path& source, const fs::path& root,
         fs::remove(root / "GodHand.iso", ec);
         fs::rename(copy_temp, root / "GodHand.iso");
         fs::rename(extract_temp, root / "Extracted_Iso");
+        // Commit ISO readiness independently from AFS readiness. If AFS work
+        // is interrupted, later launcher starts recognize the installed disc
+        // and repair missing assets without recopying the 1.5 GB ISO.
+        std::ofstream marker(root / "install.complete", std::ios::trunc);
+        marker << "GodHand_Recomp ISO stage v2\nISO bytes=" << file_size << "\n";
+        marker.close();
+        if (!marker) throw std::runtime_error("Could not write ISO stage completion marker");
         // The ISO9660 extraction only yields the large CRI _DATA.AFS container.
         // Unpack its authentic contents as part of first-run installation.
         const InstallResult afs = ensure_afs_extracted(root, [&](const std::string& label, double f) {
             report(progress, label, 0.90 + 0.09 * f);
         });
         if (!afs.ok) throw std::runtime_error(afs.message);
-        std::ofstream marker(root / "install.complete", std::ios::trunc);
-        marker << "GodHand_Recomp installation v1\nISO bytes=" << file_size << "\n";
-        marker.close();
-        if (!marker) throw std::runtime_error("Could not write installation completion marker");
         report(progress, "Installation complete", 1.0);
         return {true, "God Hand files installed successfully"};
     } catch (const std::exception& ex) {
         std::error_code ec;
-        fs::remove(root / "install.complete", ec);
+        // Do not discard a fully copied/extracted ISO if only the subsequent
+        // AFS stage failed. The separate AFS completion marker still prevents
+        // Play from launching before all assets are present.
+        if (!is_installed(root)) fs::remove(root / "install.complete", ec);
         fs::remove_all(copy_temp, ec);
         fs::remove_all(extract_temp, ec);
         return {false, ex.what()};

@@ -102,6 +102,13 @@ int main() {
     assert(godhand::ensure_afs_extracted(root / "install").ok);
     assert(fs::file_size(second) == 4);
     { std::ifstream input(second, std::ios::binary); std::string signature(4, '\0'); input.read(&signature[0], 4); assert(signature == "TIM2"); }
+    // Re-entering the ISO installer on a partial AFS state repairs assets
+    // rather than copying/re-extracting the already-complete disc.
+    fs::remove(second);
+    assert(!godhand::afs_extraction_complete(root / "install"));
+    assert(godhand::install_iso(iso, root / "install").ok);
+    assert(godhand::afs_extraction_complete(root / "install"));
+    assert(fs::file_size(second) == 4);
     // libarchive ISO9660 can change case or suffixes; verify payload exists.
     bool found = false;
     for (const auto& p : fs::recursive_directory_iterator(root / "install/Extracted_Iso")) {

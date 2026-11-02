@@ -10,7 +10,7 @@ This GTK3 launcher is a GodHand_Recomp-specific component by HodgkinsStudios, al
 - After extracting the ISO filesystem, also unpacks the real CRI `_DATA.AFS` into `Extracted_AFS/` using a native C++17 streaming extractor with safe index-prefixed filenames, bounded read checks, and atomic files.
 - On later launcher startups, checks the AFS completion marker and every entry's expected file size, then automatically repairs missing or incomplete entries in a worker thread.
 - The Play button also checks AFS readiness and blocks game launch until the repair finishes.
-- Runs ISO copying and both extraction stages in a worker thread with responsive progress UI; only marks installation complete after all stages finish.
+- Runs ISO copying and both extraction stages in a worker thread with responsive progress UI; reports installation success only after all stages finish. ISO-stage readiness is recorded independently so an interrupted AFS pass is resumable without recopying the ISO.
 - On later launches, displays **Play**, searches for the native `GodHand_Recomp_Game`, sets the real-ISO runtime environment, and captures the native process exit and crash log in `logs/last_launch.log`. A genuine rendered game screen remains unverified.
 - Preserves all game data **locally**, outside the source repo.
 
@@ -54,6 +54,6 @@ After pulling the latest `main`, run `bash godhandLauncher/install_prebuilt.sh`.
 
 ## Automatically extracted CRI AFS assets
 
-The original `_DATA.AFS` is contained inside the extracted ISO directory. It is **not** already extracted just because the `Extracted_Iso` directory exists. The native launcher now checks and unpacks this additional container into the independent `Extracted_AFS` directory, preserving index-prefixed filenames so duplicates do not collide. On the next launch, it checks for the `.complete` marker and verifies all expected entry sizes. It repairs only entries that are missing or incorrectly sized. If interrupted, temporary `.partial` files are discarded on retry.
+The original `_DATA.AFS` is contained inside the extracted ISO directory. It is **not** already extracted just because the `Extracted_Iso` directory exists. The native launcher now checks and unpacks this additional container into the independent `Extracted_AFS` directory, preserving index-prefixed filenames so duplicates do not collide. On the next launch, it checks for the `.complete` marker and verifies all expected entry sizes. It repairs only entries that are missing or incorrectly sized. If interrupted, temporary `.partial` files are discarded on retry. The ISO-stage marker is retained so incomplete AFS expansion can resume automatically without recopying the disc.
 
 For existing installs, just open the updated launcher and let it prepare the assets. No manual command is required. The game still reads from your local ISO as needed; extracted AFS files are diagnostic/asset resources, not an alternative to the console's CD/DVD filesystem calls.
