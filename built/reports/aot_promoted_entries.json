@@ -1,8 +1,14 @@
 {
   "requested": [
+    "0x334230",
     "0x3364f8"
   ],
   "promoted": [
+    {
+      "pc": "0x334230",
+      "owner": "sub_003341B8_0x3341b8.cpp",
+      "native_symbol": "sub_003341B8_0x3341b8"
+    },
     {
       "pc": "0x3364f8",
       "owner": "sub_00336498_0x336498.cpp",
