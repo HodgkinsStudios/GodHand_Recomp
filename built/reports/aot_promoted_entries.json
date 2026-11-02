@@ -1,0 +1,13 @@
+{
+  "requested": [
+    "0x3364f8"
+  ],
+  "promoted": [
+    {
+      "pc": "0x3364f8",
+      "owner": "sub_00336498_0x336498.cpp",
+      "native_symbol": "sub_00336498_0x336498"
+    }
+  ],
+  "rejected": []
+}
