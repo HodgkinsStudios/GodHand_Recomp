@@ -157,6 +157,12 @@ void EeScheduler::run()
 {
     assertExecutor();
     m_running.store(true, std::memory_order_release);
+    // Opt-in guest stack provenance. This code lives in the scheduler .cpp,
+    // avoiding a rebuild of all generated guest AOT translation units.
+    const uint32_t stackWatch = ps2GuestWatchAddress();
+    const bool watchStack = m_rdram && stackWatch != UINT32_MAX &&
+                            stackWatch <= PS2_RAM_SIZE - sizeof(uint64_t);
+    uint32_t stackChangesReported = 0u;
 
     while (!m_stopRequested.load(std::memory_order_acquire))
     {
@@ -300,6 +306,9 @@ void EeScheduler::run()
             continue;
         }
 
+        uint64_t stackValueBefore = 0u;
+        if (watchStack)
+            std::memcpy(&stackValueBefore, m_rdram + stackWatch, sizeof(stackValueBefore));
         try
         {
             m_insideInterrupt = !running->invocations.empty() && running->invocations.back().kind == GuestInvocationKind::Interrupt;
@@ -321,6 +330,22 @@ void EeScheduler::run()
             throw;
         }
 
+        if (watchStack)
+        {
+            uint64_t stackValueAfter = 0u;
+            std::memcpy(&stackValueAfter, m_rdram + stackWatch, sizeof(stackValueAfter));
+            if (stackValueBefore != stackValueAfter && stackChangesReported++ < 200u)
+            {
+                std::cerr << "[EE:stack-dispatch-delta] dispatched=0x" << std::hex
+                          << dispatchedPc << " next=0x" << context.pc
+                          << " sp=0x" << getRegU32(&context, 29)
+                          << " ra=0x" << getRegU32(&context, 31)
+                          << " watch=0x" << stackWatch
+                          << " before=0x" << stackValueBefore
+                          << " after=0x" << stackValueAfter
+                          << std::dec << " eeCycles=" << m_eeCycle << std::endl;
+            }
+        }
         if (context.pc != 0u && (context.pc & 3u) != 0u)
         {
             const uint32_t currentSp = getRegU32(&context, 29);
