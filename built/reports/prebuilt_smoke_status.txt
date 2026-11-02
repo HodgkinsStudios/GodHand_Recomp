@@ -1,80 +1,16 @@
-source_commit=5beea926b7625bf8cbf50efcf6416803dd0ee824
+source_commit=07861528ba5f35d970ff4547e17f61723b59ec66
 used_prebuilt_game=yes
 native_recompilation=no
 execution_exit_code=124
 execution_limit_seconds=20
 nonuniform_guest_gs_frame=no
 --- first missing guest target ---
+[guest-branch:missing-target] kind=DirectJump op=EE scheduler source=0xf82 target=0xf82 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 a0=0x5e8140 a1=0x0 a2=0xffffffff a3=0x1fffdb0 s0=0x0 s1=0x740000 v0=0x5e84a0 v1=0x1 a0Readable=yes a0[0]=0x0 a0[4]=0x0 a0[8]=0x0 a0[c]=0x0 s0Readable=yes s0[0]=0x0 s0[4]=0x0 s0[8]=0x0 s0[c]=0x0 recordReadable=no record[0]=0x0 record[4]=0x0 record[8]=0x0 record[c]=0x0 vtableReadable=no vtbl[0]=0x0 vtbl[4]=0x0 vtbl[8]=0x0 vtbl[c]=0x0 codeRegion=no policy=1 trace=0x3454cc -> 0x348a70 -> 0x33b810 -> 0x33b658 -> 0x33b568 -> 0x324c90 -> 0x3afb90 -> 0x3afb30 -> 0x3252f8 -> 0x3afba0 -> 0x33b83c -> 0x33b878 -> 0x33b670 -> 0x33b5c8 -> 0x324d18 -> 0x325360 -> 0x3afba0 -> 0x3afc10 -> 0x3afb90 -> 0x3afb30 -> 0x33b858 -> 0x348a94 -> 0x3454e4 -> 0x348b20 -> 0x33bf88 -> 0x33bfa0 -> 0x345468 -> 0x2b49d0 -> 0x346b78 -> 0x359f78 -> 0x34dec8 -> 0x34dec8 -> 0x34dec8 -> 0x34dec8 -> 0x34dec8 -> 0x34dec8 -> 0x34dec8 -> 0x34dec8 -> 0x344520 -> 0x3452b0 -> 0x2d3710 -> 0x2d40f8 -> 0x3a52f0 -> 0x2d3710 -> 0x2d40f8 -> 0x3a52f0 -> 0x2d3710 -> 0x2d40f8 -> 0x3a52f0 -> 0x2be1cc -> 0x2ae3f0 -> 0x2be240 -> 0x3b60a0 -> 0x3b5e78 -> 0x3a58dc -> 0x2be240 -> 0x3b60a0 -> 0x3b5e78 -> 0x31a718 -> 0x397630 -> 0x3979e0 -> 0x3979e0 -> 0x2be4e8 -> 0x2be014
+--- first stack writes and original EE return diagnostics ---
+[EE:invalid-return] dispatched=0x2be014 target=0xf82 ra=0xf82 sp=0x1ffff30 stack0=0x0 stack1=0x0 stack2=0x0 stack3=0x0 eeCycles=88125735
+[EE:main-dormant-cause] missing_recompiled_function pc=0xf82
 --- recent guest ticks ---
 --- execution log tail ---
-[gs:reg] idx=12 reg=0x50 value=0x4006000010000
-[gs:reg] idx=13 reg=0x51 value=0x0
-[gs:reg] idx=14 reg=0x52 value=0x1000000010
-[gs:reg] idx=15 reg=0x53 value=0x0
-[gs:reg] idx=16 reg=0x50 value=0x4008000010000
-[gs:reg] idx=17 reg=0x51 value=0x0
-[gs:reg] idx=18 reg=0x52 value=0x1000000010
-[gs:reg] idx=19 reg=0x53 value=0x0
-[gs:reg] idx=20 reg=0x50 value=0x400a000010000
-[gs:reg] idx=21 reg=0x51 value=0x0
-[gs:reg] idx=22 reg=0x52 value=0x1000000010
-[gs:reg] idx=23 reg=0x53 value=0x0
-[gs:reg] idx=24 reg=0x50 value=0x400c000010000
-[gs:reg] idx=25 reg=0x51 value=0x0
-[gs:reg] idx=26 reg=0x52 value=0x1000000010
-[gs:reg] idx=27 reg=0x53 value=0x0
-[gs:reg] idx=28 reg=0x50 value=0x400e000010000
-[gs:reg] idx=29 reg=0x51 value=0x0
-[gs:reg] idx=30 reg=0x52 value=0x1000000010
-[gs:reg] idx=31 reg=0x53 value=0x0
-[gs:reg] idx=32 reg=0x50 value=0x4010000010000
-[gs:reg] idx=33 reg=0x51 value=0x0
-[gs:reg] idx=34 reg=0x52 value=0x1000000010
-[gs:reg] idx=35 reg=0x53 value=0x0
-[gs:reg] idx=36 reg=0x50 value=0x4012000010000
-[gs:reg] idx=37 reg=0x51 value=0x0
-[gs:reg] idx=38 reg=0x52 value=0x1000000010
-[gs:reg] idx=39 reg=0x53 value=0x0
-[gs:reg] idx=40 reg=0x50 value=0x4014000010000
-[gs:reg] idx=41 reg=0x51 value=0x0
-[gs:reg] idx=42 reg=0x52 value=0x1000000010
-[gs:reg] idx=43 reg=0x53 value=0x0
-[gs:reg] idx=44 reg=0x50 value=0x4016000010000
-[gs:reg] idx=45 reg=0x51 value=0x0
-[gs:reg] idx=46 reg=0x52 value=0x1000000010
-[gs:reg] idx=47 reg=0x53 value=0x0
-[gs:reg] idx=48 reg=0x50 value=0x4018000010000
-[gs:reg] idx=49 reg=0x51 value=0x0
-[gs:reg] idx=50 reg=0x52 value=0x1000000010
-[gs:reg] idx=51 reg=0x53 value=0x0
-[gs:reg] idx=52 reg=0x50 value=0x401a000010000
-[gs:reg] idx=53 reg=0x51 value=0x0
-[gs:reg] idx=54 reg=0x52 value=0x1000000010
-[gs:reg] idx=55 reg=0x53 value=0x0
-[gs:reg] idx=56 reg=0x50 value=0x401c000010000
-[gs:reg] idx=57 reg=0x51 value=0x0
-[gs:reg] idx=58 reg=0x52 value=0x1000000010
-[gs:reg] idx=59 reg=0x53 value=0x0
-[gs:reg] idx=60 reg=0x50 value=0x401e000010000
-[gs:reg] idx=61 reg=0x51 value=0x0
-[gs:reg] idx=62 reg=0x52 value=0x1000000010
-[gs:reg] idx=63 reg=0x53 value=0x0
-[gs:reg] idx=64 reg=0x50 value=0x4020000010000
-[gs:reg] idx=65 reg=0x51 value=0x0
-[gs:reg] idx=66 reg=0x52 value=0x1000000010
-[gs:reg] idx=67 reg=0x53 value=0x0
-[gs:reg] idx=68 reg=0x50 value=0x4022000010000
-[gs:reg] idx=69 reg=0x51 value=0x0
-[gs:reg] idx=70 reg=0x52 value=0x1000000010
-[gs:reg] idx=71 reg=0x53 value=0x0
-[gs:reg] idx=72 reg=0x50 value=0x4024000010000
-[gs:reg] idx=73 reg=0x51 value=0x0
-[gs:reg] idx=74 reg=0x52 value=0x1000000010
-[gs:reg] idx=75 reg=0x53 value=0x0
-[gs:reg] idx=76 reg=0x50 value=0x4026000010000
-[gs:reg] idx=77 reg=0x51 value=0x0
-[gs:reg] idx=78 reg=0x52 value=0x1000000010
-[gs:reg] idx=79 reg=0x53 value=0x0
 [gs:reg] idx=80 reg=0x50 value=0x4028000010000
 [gs:reg] idx=81 reg=0x51 value=0x0
 [gs:reg] idx=82 reg=0x52 value=0x1000000010
@@ -96,4 +32,72 @@ nonuniform_guest_gs_frame=no
 [gs:reg] idx=98 reg=0x52 value=0x1000000010
 [gs:reg] idx=99 reg=0x53 value=0x0
 [gs:reg] idx=100 reg=0x50 value=0x4032000010000
-[gs:reg] idx=101 reg=0x51 value=0
+[gs:reg] idx=101 reg=0x51 value=0x0
+[gs:reg] idx=102 reg=0x52 value=0x1000000010
+[gs:reg] idx=103 reg=0x53 value=0x0
+[gs:reg] idx=104 reg=0x50 value=0x4034000010000
+[gs:reg] idx=105 reg=0x51 value=0x0
+[gs:reg] idx=106 reg=0x52 value=0x1000000010
+[gs:reg] idx=107 reg=0x53 value=0x0
+[gs:reg] idx=108 reg=0x50 value=0x4036000010000
+[gs:reg] idx=109 reg=0x51 value=0x0
+[gs:reg] idx=110 reg=0x52 value=0x1000000010
+[gs:reg] idx=111 reg=0x53 value=0x0
+[gs:reg] idx=112 reg=0x50 value=0x4038000010000
+[gs:reg] idx=113 reg=0x51 value=0x0
+[gs:reg] idx=114 reg=0x52 value=0x1000000010
+[gs:reg] idx=115 reg=0x53 value=0x0
+[gs:reg] idx=116 reg=0x50 value=0x403a000010000
+[gs:reg] idx=117 reg=0x51 value=0x0
+[gs:reg] idx=118 reg=0x52 value=0x1000000010
+[gs:reg] idx=119 reg=0x53 value=0x0
+[gs:reg] idx=120 reg=0x50 value=0x403c000010000
+[gs:reg] idx=121 reg=0x51 value=0x0
+[gs:reg] idx=122 reg=0x52 value=0x1000000010
+[gs:reg] idx=123 reg=0x53 value=0x0
+[gs:reg] idx=124 reg=0x50 value=0x403e000010000
+[gs:reg] idx=125 reg=0x51 value=0x0
+[gs:reg] idx=126 reg=0x52 value=0x1000000010
+[gs:reg] idx=127 reg=0x53 value=0x0
+[SifInitRpc] Initialized[ps2xIOP] [IOP] loaded IRX id=1 entry=0x103c4 base=0x10000 start=0
+[SIF module] load-emulated id=1 ref=1 path="cdrom0:\MODULES\SIO2MAN.IRX;1"
+[ps2xIOP] [IOP] loaded IRX id=2 entry=0x14148 base=0x10d00 start=0
+[SIF module] load-emulated id=2 ref=1 path="cdrom0:\MODULES\PADMAN.IRX;1"
+[gs:gif] idx=0 size=128 nloop=7 flg=0 nreg=1 ctx0fbp=0 ctx1fbp=0
+[gs:copy-reg] reg=0x41 value=0x8005 primCtxt=0 ctx0fbp=0 ctx1fbp=0
+[ps2xIOP] [IOP printf] yet sif hasn't been init
+
+[ps2xIOP] [IOP] loaded IRX id=3 entry=0x1acb0 base=0x1ac00 start=0
+[SIF module] load-emulated id=3 ref=1 path="cdrom0:\MODULES\LIBSD.IRX;1"
+[ps2xIOP] [IOP Kprintf] SDR driver version 4.0.1 (C) SCEI
+
+[ps2xIOP] [IOP Kprintf]  Exit rsd_main 
+
+[ps2xIOP] [IOP] loaded IRX id=4 entry=0x20ca0 base=0x20900 start=2
+[SIF module] load-emulated id=4 ref=1 path="cdrom0:\MODULES\SDRDRV.IRX;1"
+[ps2xIOP] [IOP] loaded IRX id=5 entry=0x25270 base=0x22600 start=2
+[SIF module] load-emulated id=5 ref=1 path="cdrom0:\MODULES\SDHD.IRX;1"
+[ps2xIOP] [IOP] loaded IRX id=6 entry=0x26194 base=0x25400 start=0
+[SIF module] load-emulated id=6 ref=1 path="cdrom0:\MODULES\SNDDRV.IRX;1"
+[ps2xIOP] [IOP printf] CRI ADX Driver Ver.9.67(%s %s)
+
+[ps2xIOP] [IOP printf] CRI ADX Driver : Main Thread Priority = %d
+
+[ps2xIOP] [IOP printf] CRI ADX Driver : PSM Thread Priority  = %d
+
+[ps2xIOP] [IOP printf] CRI ADX Driver : DTX Thread Priority  = %d
+
+[ps2xIOP] [IOP printf] CRI ADX Driver : SPU CORE Number = %d
+
+[ps2xIOP] [IOP] loaded IRX id=7 entry=0x2cd7c base=0x2c800 start=2
+[SIF module] load-emulated id=7 ref=1 path="cdrom0:\MODULES\CRI_ADXI.IRX;1"
+[ps2xIOP] [IOP printf] CRI ADX Driver : sceSdInit(SD_INIT_COLD) call.
+
+[ps2xIOP] [IOP] loaded IRX id=8 entry=0x42c98 base=0x42b00 start=2
+[SIF module] load-emulated id=8 ref=1 path="cdrom0:\MODULES\MCMAN.IRX;1"
+[ps2xIOP] [IOP] loaded IRX id=9 entry=0x6da40 base=0x6da00 start=2
+[SIF module] load-emulated id=9 ref=1 path="cdrom0:\MODULES\MCSERV.IRX;1"
+[EE:invalid-return] dispatched=0x2be014 target=0xf82 ra=0xf82 sp=0x1ffff30 stack0=0x0 stack1=0x0 stack2=0x0 stack3=0x0 eeCycles=88125735
+[guest-branch:missing-target] kind=DirectJump op=EE scheduler source=0xf82 target=0xf82 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 a0=0x5e8140 a1=0x0 a2=0xffffffff a3=0x1fffdb0 s0=0x0 s1=0x740000 v0=0x5e84a0 v1=0x1 a0Readable=yes a0[0]=0x0 a0[4]=0x0 a0[8]=0x0 a0[c]=0x0 s0Readable=yes s0[0]=0x0 s0[4]=0x0 s0[8]=0x0 s0[c]=0x0 recordReadable=no record[0]=0x0 record[4]=0x0 record[8]=0x0 record[c]=0x0 vtableReadable=no vtbl[0]=0x0 vtbl[4]=0x0 vtbl[8]=0x0 vtbl[c]=0x0 codeRegion=no policy=1 trace=0x3454cc -> 0x348a70 -> 0x33b810 -> 0x33b658 -> 0x33b568 -> 0x324c90 -> 0x3afb90 -> 0x3afb30 -> 0x3252f8 -> 0x3afba0 -> 0x33b83c -> 0x33b878 -> 0x33b670 -> 0x33b5c8 -> 0x324d18 -> 0x325360 -> 0x3afba0 -> 0x3afc10 -> 0x3afb90 -> 0x3afb30 -> 0x33b858 -> 0x348a94 -> 0x3454e4 -> 0x348b20 -> 0x33bf88 -> 0x33bfa0 -> 0x345468 -> 0x2b49d0 -> 0x346b78 -> 0x359f78 -> 0x34dec8 -> 0x34dec8 -> 0x34dec8 -> 0x34dec8 -> 0x34dec8 -> 0x34dec8 -> 0x34dec8 -> 0x34dec8 -> 0x344520 -> 0x3452b0 -> 0x2d3710 -> 0x2d40f8 -> 0x3a52f0 -> 0x2d3710 -> 0x2d40f8 -> 0x3a52f0 -> 0x2d3710 -> 0x2d40f8 -> 0x3a52f0 -> 0x2be1cc -> 0x2ae3f0 -> 0x2be240 -> 0x3b60a0 -> 0x3b5e78 -> 0x3a58dc -> 0x2be240 -> 0x3b60a0 -> 0x3b5e78 -> 0x31a718 -> 0x397630 -> 0x3979e0 -> 0x3979e0 -> 0x2be4e8 -> 0x2be014
+[EE:main-dormant-cause] missing_recompiled_function pc=0xf82
+[EE:main-dormant] previousState=0 pc=0xf82 ra=0xf82 sp=0x1ffff30 eeCycles=88125735 waitReason=0 invocationDepth=0
