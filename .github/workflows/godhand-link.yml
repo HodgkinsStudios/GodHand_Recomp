@@ -68,6 +68,25 @@ jobs:
           fi
           find "$RUNNER_TEMP/godhand_aot" -name '*.cpp' | wc -l
 
+      - name: Promote verified original MIPS indirect-call entry points in AOT
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s tools/tests -p test_promote_aot_entry.py -v
+          test -s built/reports/link_ci_frame.txt
+          python3 tools/promote_aot_entry.py \
+            --source-dir "$RUNNER_TEMP/godhand_aot" \
+            --diagnostic built/reports/link_ci_frame.txt \
+            --report built/reports/aot_promoted_entries.json
+          python3 - <<'PY'
+          import json
+          result = json.load(open('built/reports/aot_promoted_entries.json'))
+          if result['requested'] and not result['promoted']:
+              raise SystemExit('Unresolved original AOT target; see aot_promoted_entries.json')
+          for row in result['promoted']:
+              print('Promoted original MIPS AOT entry:', row)
+          PY
+
       - name: Install native runtime dependencies
         run: |
           sudo apt-get update
@@ -305,7 +324,7 @@ jobs:
           staging="$(mktemp -d)"
           trap 'rm -rf "$staging"' EXIT
           mkdir -p "$staging/reports" "$staging/linux-x86_64" "$staging/frames"
-          cp -f built/reports/link_ci_* "$staging/reports/" 2>/dev/null || true
+          cp -f built/reports/link_ci_* built/reports/aot_promoted_entries.json "$staging/reports/" 2>/dev/null || true
           for item in GodHand_Recomp_Game GodHand_Recomp_Game.sha256; do
             if test -f "built/linux-x86_64/$item"; then
               cp "built/linux-x86_64/$item" "$staging/linux-x86_64/"
@@ -321,7 +340,7 @@ jobs:
             cp -f "$staging/reports/"* built/reports/ 2>/dev/null || true
             cp -f "$staging/linux-x86_64/"* built/linux-x86_64/ 2>/dev/null || true
             cp -f "$staging/frames/"* built/frames/ 2>/dev/null || true
-            git add -f built/reports/link_ci_* 2>/dev/null || true
+            git add -f built/reports/link_ci_* built/reports/aot_promoted_entries.json 2>/dev/null || true
             for item in GodHand_Recomp_Game GodHand_Recomp_Game.sha256; do
               if test -f "built/linux-x86_64/$item"; then
                 git add -f "built/linux-x86_64/$item"
