@@ -2461,12 +2461,29 @@ void PS2Runtime::run()
                                                << " display1=0x" << gs.display1
                                                << std::dec
                                                << " activeThreads=" << eeSnapshot.threads.size()
+                                               << " eeSequence=" << eeSnapshot.sequence
+                                               << " eeCycles=" << eeSnapshot.eeCycle
+                                               << " runningEeThread=" << eeSnapshot.runningThreadId
+                                               << " nextEeEvent=" << eeSnapshot.nextEventCycle
                                                << " dma=" << curDma
                                                << " gif=" << curGif
                                                << " gsw=" << curGs
                                                << " vif=" << curVif
                                                << std::endl);
-
+                for (const auto &thread : eeSnapshot.threads)
+                {
+                    RUNTIME_LOG("[run:ee-thread] id=" << thread.id
+                                << " pc=0x" << std::hex << thread.pc
+                                << " ra=0x" << thread.ra
+                                << " sp=0x" << thread.sp
+                                << std::dec
+                                << " state=" << static_cast<unsigned>(thread.status)
+                                << " waitReason=" << static_cast<unsigned>(thread.waitReason)
+                                << " waitId=" << thread.waitId
+                                << " wakeCount=" << thread.wakeupCount
+                                << " invocationDepth=" << thread.invocationDepth
+                                << std::endl);
+                }
             }
         });
         uint32_t presentWidth = FB_WIDTH;
