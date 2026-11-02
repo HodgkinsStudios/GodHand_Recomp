@@ -2,6 +2,9 @@
 #define PS2_RUNTIME_H
 
 #include <cstring>
+#include <cstdio>
+#include <cstdlib>
+#include <cerrno>
 #include <cstdint>
 #include <vector>
 #include <string>
@@ -237,6 +240,23 @@ inline uint8_t ps2PathWatchExtractByteFromWrite(uint32_t writeAddr, uint32_t wat
     return static_cast<uint8_t>((valueHi >> ((byteIndex - 8u) * 8u)) & 0xFFu);
 }
 
+// Opt-in, read-only watchpoint for authentic EE memory writes. No console
+// behavior changes unless the diagnostic environment variable is supplied.
+inline uint32_t ps2GuestWatchAddress() noexcept
+{
+    static const uint32_t address = []() -> uint32_t {
+        const char *text = std::getenv("PS2X_GUEST_WATCH_ADDR");
+        if (!text || !*text) return UINT32_MAX;
+        errno = 0;
+        char *end = nullptr;
+        const unsigned long parsed = std::strtoul(text, &end, 0);
+        if (errno != 0 || end == text || *end != '\0' || parsed >= PS2_RAM_SIZE)
+            return UINT32_MAX;
+        return static_cast<uint32_t>(parsed);
+    }();
+    return address;
+}
+
 inline void ps2TraceGuestWrite(uint8_t *rdram,
                                uint32_t guestAddr,
                                uint32_t size,
@@ -245,14 +265,31 @@ inline void ps2TraceGuestWrite(uint8_t *rdram,
                                const char *op,
                                const R5900Context *ctx)
 {
-    (void)rdram;
-    (void)guestAddr;
-    (void)size;
-    (void)valueLo;
-    (void)valueHi;
-    (void)op;
-    (void)ctx;
-    // TODO we dont need this anymore so on next release it will be deleted
+    const uint32_t watch = ps2GuestWatchAddress();
+    if (watch == UINT32_MAX || !rdram || !ctx || size == 0u || size > 16u)
+        return;
+    // EE kseg aliases share this same physical RAM; compare the real bytes.
+    const uint32_t physical = guestAddr & PS2_RAM_MASK;
+    const uint64_t low = physical;
+    const uint64_t high = low + size;
+    if (uint64_t(watch) >= high || uint64_t(watch) + 8u <= low ||
+        uint64_t(watch) + 8u > PS2_RAM_SIZE)
+        return;
+    uint64_t before = 0u;
+    std::memcpy(&before, rdram + watch, sizeof(before));
+    static std::atomic<uint32_t> emitted{0u};
+    if (emitted.fetch_add(1u, std::memory_order_relaxed) >= 200u)
+        return;
+    std::fprintf(stderr,
+                 "[EE:stack-write] pc=0x%08x ra=0x%08x sp=0x%08x "
+                 "watch=0x%08x write=0x%08x width=%u old=0x%016llx "
+                 "valueLo=0x%016llx valueHi=0x%016llx op=%s\n",
+                 ctx->pc, getRegU32(ctx, 31), getRegU32(ctx, 29),
+                 watch, guestAddr, size,
+                 static_cast<unsigned long long>(before),
+                 static_cast<unsigned long long>(valueLo),
+                 static_cast<unsigned long long>(valueHi),
+                 op ? op : "<unknown>");
 }
 
 inline void ps2TraceGuestRangeWrite(uint8_t *rdram,

@@ -294,6 +294,9 @@ jobs:
           export GODHAND_GS_FRAME_PPM="$RUNNER_TEMP/godhand_first_frame.ppm"
           export LIBGL_ALWAYS_SOFTWARE=1
           export PS2X_CD_IMAGE="$RUNNER_TEMP/GodHand.iso"
+          # Runtime-only diagnostic: the previous run measured saved $ra at
+          # guest stack SP-0x20 = 0x01FFFF10 (no guest instruction patch).
+          export PS2X_GUEST_WATCH_ADDR=0x1ffff10
           # CP29/CP30 real-disc module and asset tests: use authentic ISO.
           timeout --kill-after=5s 90s xvfb-run -a -s '-screen 0 1280x720x24' \
             "$game" "$RUNNER_TEMP/game/boot.elf" \
@@ -302,7 +305,7 @@ jobs:
           tail -n 100 "$RUNNER_TEMP/godhand-execution.log" >> built/reports/link_ci_frame.txt
           {
             echo '--- last EE guest ticks, dormant cause, and IOP module activity ---'
-            grep -E '\[run:tick\]|\[run:ee-thread\]|\[EE:main-dormant|\[EE:invalid-return\]|\[IOP\] loaded IRX|\[guest-branch:missing-target\]' \
+            grep -E '\[run:tick\]|\[run:ee-thread\]|\[EE:main-dormant|\[EE:invalid-return\]|\[EE:stack-write\]|\[IOP\] loaded IRX|\[guest-branch:missing-target\]' \
               "$RUNNER_TEMP/godhand-execution.log" | tail -n 28 || true
             echo '--- first module load failures ---'
             grep -m 12 -F '[IOP] failed to open IRX' \
@@ -377,6 +380,7 @@ jobs:
             export GODHAND_GS_FRAME_PPM="$RUNNER_TEMP/godhand_first_frame.ppm"
             export LIBGL_ALWAYS_SOFTWARE=1
             export PS2X_CD_IMAGE="$RUNNER_TEMP/GodHand.iso"
+            export PS2X_GUEST_WATCH_ADDR=0x1ffff10
             timeout --kill-after=5s 20s xvfb-run -a -s '-screen 0 1280x720x24' \
               build-game/ps2xRuntime/ps2EntryRunner "$RUNNER_TEMP/game/boot.elf" \
               > "$RUNNER_TEMP/godhand-execution.log" 2>&1 || status=$?
@@ -386,7 +390,7 @@ jobs:
               echo "execution_exit_code=$status"
               tail -n 90 "$RUNNER_TEMP/godhand-execution.log"
               echo '--- guest native dispatch faults ---'
-              grep -m 5 -E '\[guest-branch:missing-target\]|\[EE:main-dormant|\[EE:invalid-return' \
+              grep -m 28 -E '\[guest-branch:missing-target\]|\[EE:main-dormant|\[EE:invalid-return|\[EE:stack-write' \
                 "$RUNNER_TEMP/godhand-execution.log" || true
             } > built/reports/link_ci_frame.txt
             if test -s "$GODHAND_GS_FRAME_PPM"; then
