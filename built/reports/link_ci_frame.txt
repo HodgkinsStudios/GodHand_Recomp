@@ -1,10 +1,5 @@
 native_executable=built
 execution_exit_code=124
-[SIF module] load-emulated id=2 ref=1 path="cdrom0:\MODULES\PADMAN.IRX;1"
-[gs:gif] idx=0 size=128 nloop=7 flg=0 nreg=1 ctx0fbp=0 ctx1fbp=0
-[gs:copy-reg] reg=0x41 value=0x8005 primCtxt=0 ctx0fbp=0 ctx1fbp=0
-[ps2xIOP] [IOP printf] yet sif hasn't been init
-
 [ps2xIOP] [IOP] loaded IRX id=3 entry=0x1acb0 base=0x1ac00 start=0
 [SIF module] load-emulated id=3 ref=1 path="cdrom0:\MODULES\LIBSD.IRX;1"
 [ps2xIOP] [IOP Kprintf] SDR driver version 4.0.1 (C) SCEI
@@ -31,102 +26,107 @@ execution_exit_code=124
 [SIF module] load-emulated id=7 ref=1 path="cdrom0:\MODULES\CRI_ADXI.IRX;1"
 [ps2xIOP] [IOP printf] CRI ADX Driver : sceSdInit(SD_INIT_COLD) call.
 
-[guest-branch:missing-target] kind=IndirectCall op=JALR source=0x330394 target=0x3329d0 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 a0=0x3302b0 a1=0x0 a2=0xffffffff a3=0x451f38 s0=0x451f38 s1=0x1fffe20 v0=0x3329d0 v1=0x755ea8 a0Readable=yes a0[0]=0x3c02003e a0[4]=0x27bdfff0 a0[8]=0x8c438404 a0[c]=0x10600004 s0Readable=yes s0[0]=0x564443 s0[4]=0x0 s0[8]=0x78383025 s0[c]=0x3830252e recordReadable=no record[0]=0x0 record[4]=0x0 record[8]=0x0 record[c]=0x0 vtableReadable=no vtbl[0]=0x0 vtbl[4]=0x0 vtbl[8]=0x0 vtbl[c]=0x0 codeRegion=yes policy=1 trace=0x335248 -> 0x333f60 -> 0x331c98 -> 0x329374 -> 0x333f80 -> 0x331ce0 -> 0x2ca268 -> 0x3a52f0 -> 0x3290b8 -> 0x3a50b4 -> 0x3a50b4 -> 0x330e70 -> 0x330318 -> 0x3303a8 -> 0x330518 -> 0x3a58dc -> 0x336318 -> 0x330480 -> 0x3a58dc -> 0x3a5bd8 -> 0x3364f8 -> 0x330e70 -> 0x330318 -> 0x3303a8 -> 0x330518 -> 0x3a58dc -> 0x3327d8 -> 0x333e88 -> 0x330480 -> 0x3a58dc -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a5bd8 -> 0x3a58dc -> 0x3a5148
-[EE:main-dormant-cause] missing_recompiled_function pc=0x3329d0
-[EE:main-dormant] previousState=0 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 eeCycles=26255999 waitReason=0 invocationDepth=0
-[run:tick] tick=120 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=449 eeCycles=668628120 runningEeThread=0 nextEeEvent=673395963 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=240 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=845 eeCycles=1258464000 runningEeThread=0 nextEeEvent=1263231843 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=360 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=1239 eeCycles=1848299880 runningEeThread=0 nextEeEvent=1853067723 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=480 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=1635 eeCycles=2438135760 runningEeThread=0 nextEeEvent=2442903603 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=600 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=2031 eeCycles=3027971640 runningEeThread=0 nextEeEvent=3032739483 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=720 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=2424 eeCycles=3617807520 runningEeThread=0 nextEeEvent=3622575363 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=840 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=2820 eeCycles=4207643400 runningEeThread=0 nextEeEvent=4212411243 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=960 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=3214 eeCycles=4797479280 runningEeThread=0 nextEeEvent=4802247123 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=1080 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=3610 eeCycles=5387315160 runningEeThread=0 nextEeEvent=5392083003 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=1200 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=4004 eeCycles=5977151040 runningEeThread=0 nextEeEvent=5981918883 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=1320 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=4400 eeCycles=6566986920 runningEeThread=0 nextEeEvent=6571754763 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=1440 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=4795 eeCycles=7156822800 runningEeThread=0 nextEeEvent=7161590643 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=1560 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=5189 eeCycles=7746658680 runningEeThread=0 nextEeEvent=7751426523 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=1680 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=5585 eeCycles=8336494560 runningEeThread=0 nextEeEvent=8341262403 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=1800 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=5979 eeCycles=8926330440 runningEeThread=0 nextEeEvent=8931098283 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=1920 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=6375 eeCycles=9516166320 runningEeThread=0 nextEeEvent=9520934163 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=2040 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=6771 eeCycles=10107683304 runningEeThread=0 nextEeEvent=10110770043 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=2160 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=7164 eeCycles=10695838080 runningEeThread=0 nextEeEvent=10700605923 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=2280 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=7560 eeCycles=11285673960 runningEeThread=0 nextEeEvent=11290441803 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=2400 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=7954 eeCycles=11875509840 runningEeThread=0 nextEeEvent=11880277683 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=2520 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=8350 eeCycles=12465345720 runningEeThread=0 nextEeEvent=12470113563 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=2640 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=8744 eeCycles=13055181600 runningEeThread=0 nextEeEvent=13059949443 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=2760 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=9139 eeCycles=13645017480 runningEeThread=0 nextEeEvent=13649785323 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=2880 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=9535 eeCycles=14234878440 runningEeThread=0 nextEeEvent=14239621203 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=3000 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=9929 eeCycles=14824689240 runningEeThread=0 nextEeEvent=14829457083 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=3120 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=10325 eeCycles=15414525120 runningEeThread=0 nextEeEvent=15419292963 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=3240 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=10719 eeCycles=16004361000 runningEeThread=0 nextEeEvent=16009128843 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=3360 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=11115 eeCycles=16594196880 runningEeThread=0 nextEeEvent=16598964723 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=3480 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=11509 eeCycles=17184032760 runningEeThread=0 nextEeEvent=17188800603 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=3600 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=11905 eeCycles=17773868640 runningEeThread=0 nextEeEvent=17778636483 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=3720 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=12301 eeCycles=18363704520 runningEeThread=0 nextEeEvent=18368472363 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=3840 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=12695 eeCycles=18953540400 runningEeThread=0 nextEeEvent=18958308243 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=3960 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=13091 eeCycles=19543376280 runningEeThread=0 nextEeEvent=19548144123 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 w--- last EE guest ticks, dormant cause, and IOP module activity ---
-[run:tick] tick=2400 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=7954 eeCycles=11875509840 runningEeThread=0 nextEeEvent=11880277683 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=2520 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=8350 eeCycles=12465345720 runningEeThread=0 nextEeEvent=12470113563 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=2640 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=8744 eeCycles=13055181600 runningEeThread=0 nextEeEvent=13059949443 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=2760 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=9139 eeCycles=13645017480 runningEeThread=0 nextEeEvent=13649785323 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=2880 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=9535 eeCycles=14234878440 runningEeThread=0 nextEeEvent=14239621203 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=3000 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=9929 eeCycles=14824689240 runningEeThread=0 nextEeEvent=14829457083 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=3120 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=10325 eeCycles=15414525120 runningEeThread=0 nextEeEvent=15419292963 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=3240 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=10719 eeCycles=16004361000 runningEeThread=0 nextEeEvent=16009128843 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=3360 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=11115 eeCycles=16594196880 runningEeThread=0 nextEeEvent=16598964723 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=3480 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=11509 eeCycles=17184032760 runningEeThread=0 nextEeEvent=17188800603 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=3600 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=11905 eeCycles=17773868640 runningEeThread=0 nextEeEvent=17778636483 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=3720 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=12301 eeCycles=18363704520 runningEeThread=0 nextEeEvent=18368472363 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=3840 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=12695 eeCycles=18953540400 runningEeThread=0 nextEeEvent=18958308243 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
-[run:tick] tick=3960 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 gp=0x468cf0 v0=0x76e910 v1=0x5 dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=13091 eeCycles=19543376280 runningEeThread=0 nextEeEvent=19548144123 dma=16385 gif=16385 gsw=0 vif=2
-[run:ee-thread] id=1 pc=0x3329d0 ra=0x33039c sp=0x1fffde0 state=5 w
+[ps2xIOP] [IOP] loaded IRX id=8 entry=0x42c98 base=0x42b00 start=2
+[SIF module] load-emulated id=8 ref=1 path="cdrom0:\MODULES\MCMAN.IRX;1"
+[ps2xIOP] [IOP] loaded IRX id=9 entry=0x6da40 base=0x6da00 start=2
+[SIF module] load-emulated id=9 ref=1 path="cdrom0:\MODULES\MCSERV.IRX;1"
+[guest-branch:missing-target] kind=DirectJump op=EE scheduler source=0xf82 target=0xf82 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 a0=0x5e8140 a1=0x0 a2=0xffffffff a3=0x1fffdb0 s0=0x0 s1=0x740000 v0=0x5e84a0 v1=0x1 a0Readable=yes a0[0]=0x0 a0[4]=0x0 a0[8]=0x0 a0[c]=0x0 s0Readable=yes s0[0]=0x0 s0[4]=0x0 s0[8]=0x0 s0[c]=0x0 recordReadable=no record[0]=0x0 record[4]=0x0 record[8]=0x0 record[c]=0x0 vtableReadable=no vtbl[0]=0x0 vtbl[4]=0x0 vtbl[8]=0x0 vtbl[c]=0x0 codeRegion=no policy=1 trace=0x3454cc -> 0x348a70 -> 0x33b810 -> 0x33b658 -> 0x33b568 -> 0x324c90 -> 0x3afb90 -> 0x3afb30 -> 0x3252f8 -> 0x3afba0 -> 0x33b83c -> 0x33b878 -> 0x33b670 -> 0x33b5c8 -> 0x324d18 -> 0x325360 -> 0x3afba0 -> 0x3afc10 -> 0x3afb90 -> 0x3afb30 -> 0x33b858 -> 0x348a94 -> 0x3454e4 -> 0x348b20 -> 0x33bf88 -> 0x33bfa0 -> 0x345468 -> 0x2b49d0 -> 0x346b78 -> 0x359f78 -> 0x34dec8 -> 0x34dec8 -> 0x34dec8 -> 0x34dec8 -> 0x34dec8 -> 0x34dec8 -> 0x34dec8 -> 0x34dec8 -> 0x344520 -> 0x3452b0 -> 0x2d3710 -> 0x2d40f8 -> 0x3a52f0 -> 0x2d3710 -> 0x2d40f8 -> 0x3a52f0 -> 0x2d3710 -> 0x2d40f8 -> 0x3a52f0 -> 0x2be1cc -> 0x2ae3f0 -> 0x2be240 -> 0x3b60a0 -> 0x3b5e78 -> 0x3a58dc -> 0x2be240 -> 0x3b60a0 -> 0x3b5e78 -> 0x31a718 -> 0x397630 -> 0x3979e0 -> 0x3979e0 -> 0x2be4e8 -> 0x2be014
+[EE:main-dormant-cause] missing_recompiled_function pc=0xf82
+[EE:main-dormant] previousState=0 pc=0xf82 ra=0xf82 sp=0x1ffff30 eeCycles=88125735 waitReason=0 invocationDepth=0
+[run:tick] tick=120 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=253 eeCycles=393371376 runningEeThread=0 nextEeEvent=398139219 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=240 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=561 eeCycles=875070678 runningEeThread=0 nextEeEvent=879838521 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=360 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=873 eeCycles=1361685279 runningEeThread=0 nextEeEvent=1366453122 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=480 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=1171 eeCycles=1828491228 runningEeThread=0 nextEeEvent=1828638684 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=600 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=1468 eeCycles=2290676790 runningEeThread=0 nextEeEvent=2295444633 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=720 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=1757 eeCycles=2742884298 runningEeThread=0 nextEeEvent=2747652141 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=840 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=2059 eeCycles=3214753002 runningEeThread=0 nextEeEvent=3219520845 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=960 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=2371 eeCycles=3701367603 runningEeThread=0 nextEeEvent=3706135446 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=1080 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=2682 eeCycles=4187982204 runningEeThread=0 nextEeEvent=4192750047 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=1200 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=2994 eeCycles=4674596805 runningEeThread=0 nextEeEvent=4679364648 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=1320 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=3299 eeCycles=5151380808 runningEeThread=0 nextEeEvent=5156148651 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=1440 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=3610 eeCycles=5637995409 runningEeThread=0 nextEeEvent=5642763252 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=1560 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=3922 eeCycles=6124610010 runningEeThread=0 nextEeEvent=6129377853 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=1680 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=4236 eeCycles=6616139910 runningEeThread=0 nextEeEvent=6620907753 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=1800 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=4551 eeCycles=7107669810 runningEeThread=0 nextEeEvent=7112437653 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=1920 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=4859 eeCycles=7589369112 runningEeThread=0 nextEeEvent=7594136955 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=2040 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=5165 eeCycles=8066153115 runningEeThread=0 nextEeEvent=8070920958 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=2160 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=5470 eeCycles=8542937118 runningEeThread=0 nextEeEvent=8547704961 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=2280 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=5778 eeCycles=9024636420 runningEeThread=0 nextEeEvent=9029404263 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=2400 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=6087 eeCycles=9506335722 runningEeThread=0 nextEeEvent=9511103565 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=2520 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=6402 eeCycles=9997865622 runningEeThread=0 nextEeEvent=10002633465 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=2640 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=6711 eeCycles=10479564924 runningEeThread=0 nextEeEvent=10484332767 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=2760 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=7022 eeCycles=10966179525 runningEeThread=0 nextEeEvent=10970947368 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=2880 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=7330 eeCycles=11447878827 runningEeThread=0 nextEeEvent=11452646670 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=3000 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=7642 eeCycles=11934493428 runningEeThread=0 nextEeEvent=11939261271 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=3120 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=7947 eeCycles=12411277431 runningEeThread=0 nextEeEvent=12416045274 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=3240 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=8256 eeCycles=12892976733 runningEeThread=0 nextEeEvent=12897744576 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=3360 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=8564 eeCycles=13374676035 runningEeThread=0 nextEeEvent=13379443878 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=3480 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=8875 eeCycles=13861290636 runningEeThread=0 nextEeEvent=13866058479 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=3600 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=9184 eeCycles=14342989938 runningEeThread=0 nextEeEvent=14347757781 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=3720 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=9492 eeCycles=14824689240 runningEeThread=0 nextEeEvent=14829457083 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=3840 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=9807 eeCycles=15316219140 runningEeThread=0 nextEeEvent=15320986983 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=3960 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=10115 eeCycles=15797918442 runningEeThread=0 nextEeEvent=15802686285 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=4080 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=10429 eeCycles=16289300886 runningEeThread=--- last EE guest ticks, dormant cause, and IOP module activity ---
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=2520 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=6402 eeCycles=9997865622 runningEeThread=0 nextEeEvent=10002633465 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=2640 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=6711 eeCycles=10479564924 runningEeThread=0 nextEeEvent=10484332767 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=2760 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=7022 eeCycles=10966179525 runningEeThread=0 nextEeEvent=10970947368 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=2880 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=7330 eeCycles=11447878827 runningEeThread=0 nextEeEvent=11452646670 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=3000 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=7642 eeCycles=11934493428 runningEeThread=0 nextEeEvent=11939261271 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=3120 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=7947 eeCycles=12411277431 runningEeThread=0 nextEeEvent=12416045274 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=3240 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=8256 eeCycles=12892976733 runningEeThread=0 nextEeEvent=12897744576 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=3360 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=8564 eeCycles=13374676035 runningEeThread=0 nextEeEvent=13379443878 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=3480 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=8875 eeCycles=13861290636 runningEeThread=0 nextEeEvent=13866058479 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=3600 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=9184 eeCycles=14342989938 runningEeThread=0 nextEeEvent=14347757781 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=3720 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=9492 eeCycles=14824689240 runningEeThread=0 nextEeEvent=14829457083 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=3840 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=9807 eeCycles=15316219140 runningEeThread=0 nextEeEvent=15320986983 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=3960 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=10115 eeCycles=15797918442 runningEeThread=0 nextEeEvent=15802686285 dma=16385 gif=16385 gsw=0 vif=2
+[run:ee-thread] id=1 pc=0xf82 ra=0xf82 sp=0x1ffff30 state=5 waitReason=0 waitId=0 wakeCount=0 invocationDepth=0
+[run:tick] tick=4080 pc=0xf82 ra=0xf82 sp=0x1ffff30 gp=0x468cf0 v0=0xb0a3 v1=0xffffffff dispfb1=0x1400 display1=0x1bf27f00000000 activeThreads=1 eeSequence=10429 eeCycles=16289300886 runningEeThread=
 --- first module load failures ---
 nonuniform_guest_gs_frame=no
