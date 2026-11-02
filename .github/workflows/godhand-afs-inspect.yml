@@ -81,6 +81,67 @@ jobs:
           fi
           # No extracted retail assets are uploaded or committed.
           rm -rf "$RUNNER_TEMP/afs-sample-extract"
+      - name: Build and test native C++ CRI AFS extractor on the full original archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y cmake g++ pkg-config libarchive-dev
+          cmake -S godhandLauncher -B "$RUNNER_TEMP/afs-native-build" \
+            -DGODHAND_BUILD_GTK_LAUNCHER=OFF -DCMAKE_BUILD_TYPE=Release
+          cmake --build "$RUNNER_TEMP/afs-native-build" --target godhand_iso_inspect --parallel 2
+          mkdir -p "$RUNNER_TEMP/native-afs-install/Extracted_Iso"
+          # Copy only the exact ISO9660 extent of _DATA.AFS to the disposable
+          # native installer tree. No retail data enters the Git repository.
+          python3 - <<'PY'
+          import os, pathlib
+          from tools.godhand_iso_pipeline import iso_entries
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])
+          iso = root / 'GodHand.iso'
+          out = root / 'native-afs-install/Extracted_Iso/_DATA.AFS'
+          with iso.open('rb') as stream:
+              extent, size, is_dir = iso_entries(stream)['_DATA.AFS']
+              assert not is_dir and size == 1541885952
+              stream.seek(extent * 2048)
+              with out.open('wb') as dst:
+                  remaining = size
+                  while remaining:
+                      block = stream.read(min(1024 * 1024, remaining))
+                      if not block:
+                          raise OSError('truncated original ISO AFS extent')
+                      dst.write(block)
+                      remaining -= len(block)
+          assert out.stat().st_size == size
+          PY
+          native="$RUNNER_TEMP/afs-native-build/godhand_iso_inspect"
+          if "$native" --verify-afs "$RUNNER_TEMP/native-afs-install"; then
+            echo "AFS unexpectedly marked complete before extraction" >&2
+            exit 1
+          fi
+          "$native" --ensure-afs "$RUNNER_TEMP/native-afs-install"
+          "$native" --verify-afs "$RUNNER_TEMP/native-afs-install"
+          count="$(find "$RUNNER_TEMP/native-afs-install/Extracted_AFS" \
+            -maxdepth 1 -type f -name '[0-9]*_*' | wc -l)"
+          test "$count" -eq 1445
+          # A real archive entry is deleted then automatically restored.
+          rm "$RUNNER_TEMP/native-afs-install/Extracted_AFS/000000_core.bin"
+          if "$native" --verify-afs "$RUNNER_TEMP/native-afs-install"; then
+            echo 'Native AFS verification failed to identify missing entry' >&2
+            exit 1
+          fi
+          "$native" --ensure-afs "$RUNNER_TEMP/native-afs-install"
+          "$native" --verify-afs "$RUNNER_TEMP/native-afs-install"
+          test "$(stat -c %s "$RUNNER_TEMP/native-afs-install/Extracted_AFS/000000_core.bin")" -eq 29024
+          {
+            echo "--- Real ISO native C++ full AFS verification ---"
+            echo "native_afs_real_iso_pass=yes"
+            echo "native_afs_entry_count=$count"
+            echo "native_afs_missing_entry_repair_pass=yes"
+            echo "native_afs_source_archive_bytes=1541885952"
+          } >> built/reports/afs_analysis_summary.txt
+          # Do not store, upload or commit extracted original retail assets.
+          rm -rf "$RUNNER_TEMP/native-afs-install"
+
       - name: Publish inventory and extraction diagnostics only
         shell: bash
         run: |
