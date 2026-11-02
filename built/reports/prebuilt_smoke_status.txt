@@ -1,4 +1,4 @@
-source_commit=df6abfe2621dcc1c2212ae38671e36e5d0d50088
+source_commit=de61b566db75b89c08be8c7ff07b02dc6d801220
 used_prebuilt_game=yes
 native_recompilation=no
 execution_exit_code=124
@@ -28,6 +28,7 @@ nonuniform_guest_gs_frame=no
 [EE:stack-write] pc=0x002b485c ra=0x002b4894 sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000003fc92c valueLo=0x00000000002b4894 valueHi=0x0000000000000000 op=WRITE64
 [EE:stack-write] pc=0x002ae94c ra=0x002ae984 sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000002b4894 valueLo=0x00000000002ae984 valueHi=0x0000000000000000 op=WRITE64
 [EE:stack-write] pc=0x002ad1b8 ra=0x002ad22c sp=0x01fffee0 watch=0x01ffff10 write=0x01ffff10 width=16 old=0x00000000002ae984 valueLo=0x00000000003fc920 valueHi=0x0000000000000000 op=WRITE128
+[EE:stack-dispatch-delta] dispatched=0x31db34 next=0x3a5388 sp=0x1fffea0 ra=0x309044 watch=0x1ffff10 before=0x0 after=0x3fc920 eeCycles=9830608
 [EE:stack-write] pc=0x002acbf4 ra=0x002acc64 sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000003fc920 valueLo=0x00000000002acc64 valueHi=0x0000000000000000 op=WRITE64
 [EE:stack-write] pc=0x002a9d3c ra=0x002a9db4 sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000002acc64 valueLo=0x00000000002a9db4 valueHi=0x0000000000000000 op=WRITE64
 [EE:stack-write] pc=0x002a72d4 ra=0x002a732c sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000002a9db4 valueLo=0x00000000002a732c valueHi=0x0000000000000000 op=WRITE64
@@ -44,6 +45,7 @@ nonuniform_guest_gs_frame=no
 [EE:stack-write] pc=0x001ffdbc ra=0x001ffdf4 sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000200aa4 valueLo=0x00000000001ffdf4 valueHi=0x0000000000000000 op=WRITE64
 [EE:stack-write] pc=0x001ff78c ra=0x001ff7f4 sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000001ffdf4 valueLo=0x00000000001ff7f4 valueHi=0x0000000000000000 op=WRITE64
 [EE:stack-write] pc=0x001fe430 ra=0x001fe6ac sp=0x01fffee0 watch=0x01ffff10 write=0x01ffff10 width=16 old=0x00000000001ff7f4 valueLo=0x00000000003fc8d0 valueHi=0x0000000000000000 op=WRITE128
+[EE:stack-dispatch-delta] dispatched=0x31db34 next=0x1fd97c sp=0x1fffe00 ra=0x1fd9a0 watch=0x1ffff10 before=0x3fc920 after=0x3fc8d0 eeCycles=19486784
 [EE:stack-write] pc=0x001f7a38 ra=0x001f7d34 sp=0x01fffec0 watch=0x01ffff10 write=0x01ffff10 width=16 old=0x00000000003fc8d0 valueLo=0x00000000003fc8c8 valueHi=0x0000000000000000 op=WRITE128
 [EE:stack-write] pc=0x001f6e24 ra=0x001f6e5c sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000003fc8c8 valueLo=0x00000000001f6e5c valueHi=0x0000000000000000 op=WRITE64
 [EE:stack-write] pc=0x0016148c ra=0x001614c4 sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x00000000001f6e5c valueLo=0x00000000001614c4 valueHi=0x0000000000000000 op=WRITE64
@@ -55,20 +57,21 @@ nonuniform_guest_gs_frame=no
 [EE:stack-write] pc=0x0013901c ra=0x00139054 sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000141b0c valueLo=0x0000000000139054 valueHi=0x0000000000000000 op=WRITE64
 [EE:stack-write] pc=0x00135304 ra=0x0013533c sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000139054 valueLo=0x000000000013533c valueHi=0x0000000000000000 op=WRITE64
 [EE:stack-write] pc=0x00100fec ra=0x00101eac sp=0x01fffe20 watch=0x01ffff10 write=0x01ffff10 width=4 old=0x000000000013533c valueLo=0x0000000000000000 valueHi=0x0000000000000000 op=WRITE32
+[EE:stack-dispatch-delta] dispatched=0x31db34 next=0x101240 sp=0x1fffe20 ra=0x101228 watch=0x1ffff10 before=0x3fc8d0 after=0x0 eeCycles=19607432
 [EE:stack-write] pc=0x0030d268 ra=0x0030b2b4 sp=0x01fffe50 watch=0x01ffff10 write=0x01ffff10 width=16 old=0x0000000000000000 valueLo=0x0000000000740000 valueHi=0x0000000000000000 op=WRITE128
-[gs:reg] idx=101 reg=0x51 value=0[EE:stack-write] pc=0x0030ed04 ra=0x0030b2c0 sp=0x01ffff00 watch=0x01ffff10 write=0x01ffff10 width=16 old=0x0000000000740000 valueLo=0x0000000000740000 valueHi=0x0000000000000000 op=WRITE128
+[EE:stack-dispatch-delta] dispatched=0x30ac78 next=0x30d2d8 sp=0x1fffe50 ra=0x30d324 watch=0x1ffff10 before=0x0 after=0x740000 eeCycles=19661216
+[EE:stack-write] pc=0x0030ed04 ra=0x0030b2c0 sp=0x01ffff00 watch=0x01ffff10 write=0x01ffff10 width=16 old=0x0000000000740000 valueLo=0x0000000000740000 valueHi=0x0000000000000000 op=WRITE128
 [EE:stack-write] pc=0x002be000 ra=0x0030b38c sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000740000 valueLo=0x000000000030b38c valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-dispatch-delta] dispatched=0x30b2b4 next=0x2be1a8 sp=0x1fffed0 ra=0x2be1a8 watch=0x1ffff10 before=0x740000 after=0x30b38c eeCycles=20713984
 [EE:stack-write] pc=0x003b6c44 ra=0x003b70ac sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x000000000030b38c valueLo=0x0000000000000782 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-dispatch-delta] dispatched=0x3b6e78 next=0x0 sp=0x1fffff0 ra=0x0 watch=0x1ffff10 before=0x30b38c after=0x782 eeCycles=41353207
 [EE:stack-write] pc=0x003b6c44 ra=0x003b70ac sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000000782 valueLo=0x0000000000000f82 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-dispatch-delta] dispatched=0x3b6e78 next=0x0 sp=0x1fffff0 ra=0x0 watch=0x1ffff10 before=0x782 after=0xf82 eeCycles=41353727
 [EE:stack-write] pc=0x003b6c44 ra=0x003b70ac sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000000f82 valueLo=0x0000000000000f82 valueHi=0x0000000000000000 op=WRITE64
 [EE:invalid-return] dispatched=0x2be014 target=0xf82 ra=0xf82 sp=0x1ffff30 stack0=0x0 stack1=0x0 stack2=0x0 stack3=0x0 eeCycles=88125735
 [EE:main-dormant-cause] missing_recompiled_function pc=0xf82
 --- recent guest ticks ---
 --- execution log tail ---
-[gs:reg] idx=85 reg=0x51 value=0x0
-[gs:reg] idx=86 reg=0x52 value=0x1000000010
-[gs:reg] idx=87 reg=0x53 value=0x0
-[gs:reg] idx=88 reg=0x50 value=0x402c000010000
 [gs:reg] idx=89 reg=0x51 value=0x0
 [gs:reg] idx=90 reg=0x52 value=0x1000000010
 [gs:reg] idx=91 reg=0x53 value=0x0
@@ -81,9 +84,7 @@ nonuniform_guest_gs_frame=no
 [gs:reg] idx=98 reg=0x52 value=0x1000000010
 [gs:reg] idx=99 reg=0x53 value=0x0
 [gs:reg] idx=100 reg=0x50 value=0x4032000010000
-[gs:reg] idx=101 reg=0x51 value=0[EE:stack-write] pc=0x0030ed04 ra=0x0030b2c0 sp=0x01ffff00 watch=0x01ffff10 write=0x01ffff10 width=16 old=0x0000000000740000 valueLo=0x0000000000740000 valueHi=0x0000000000000000 op=WRITE128
-[EE:stack-write] pc=0x002be000 ra=0x0030b38c sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000740000 valueLo=0x000000000030b38c valueHi=0x0000000000000000 op=WRITE64
-x0
+[gs:reg] idx=101 reg=0x51 value=0x0
 [gs:reg] idx=102 reg=0x52 value=0x1000000010
 [gs:reg] idx=103 reg=0x53 value=0x0
 [gs:reg] idx=104 reg=0x50 value=0x4034000010000
@@ -110,12 +111,16 @@ x0
 [gs:reg] idx=125 reg=0x51 value=0x0
 [gs:reg] idx=126 reg=0x52 value=0x1000000010
 [gs:reg] idx=127 reg=0x53 value=0x0
+[EE:stack-dispatch-delta] dispatched=0x30ac78 next=0x30d2d8 sp=0x1fffe50 ra=0x30d324 watch=0x1ffff10 before=0x0 after=0x740000 eeCycles=19661216
+[EE:stack-write] pc=0x0030ed04 ra=0x0030b2c0 sp=0x01ffff00 watch=0x01ffff10 write=0x01ffff10 width=16 old=0x0000000000740000 valueLo=0x0000000000740000 valueHi=0x0000000000000000 op=WRITE128
+[EE:stack-write] pc=0x002be000 ra=0x0030b38c sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000740000 valueLo=0x000000000030b38c valueHi=0x0000000000000000 op=WRITE64
 [SifInitRpc] Initialized[ps2xIOP] [IOP] loaded IRX id=1 entry=0x103c4 base=0x10000 start=0
 [SIF module] load-emulated id=1 ref=1 path="cdrom0:\MODULES\SIO2MAN.IRX;1"
 [ps2xIOP] [IOP] loaded IRX id=2 entry=0x14148 base=0x10d00 start=0
 [SIF module] load-emulated id=2 ref=1 path="cdrom0:\MODULES\PADMAN.IRX;1"
 [gs:gif] idx=0 size=128 nloop=7 flg=0 nreg=1 ctx0fbp=0 ctx1fbp=0
 [gs:copy-reg] reg=0x41 value=0x8005 primCtxt=0 ctx0fbp=0 ctx1fbp=0
+[EE:stack-dispatch-delta] dispatched=0x30b2b4 next=0x2be1a8 sp=0x1fffed0 ra=0x2be1a8 watch=0x1ffff10 before=0x740000 after=0x30b38c eeCycles=20713984
 [ps2xIOP] [IOP printf] yet sif hasn't been init
 
 [ps2xIOP] [IOP] loaded IRX id=3 entry=0x1acb0 base=0x1ac00 start=0
@@ -145,7 +150,9 @@ x0
 [ps2xIOP] [IOP printf] CRI ADX Driver : sceSdInit(SD_INIT_COLD) call.
 
 [EE:stack-write] pc=0x003b6c44 ra=0x003b70ac sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x000000000030b38c valueLo=0x0000000000000782 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-dispatch-delta] dispatched=0x3b6e78 next=0x0 sp=0x1fffff0 ra=0x0 watch=0x1ffff10 before=0x30b38c after=0x782 eeCycles=41353207
 [EE:stack-write] pc=0x003b6c44 ra=0x003b70ac sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000000782 valueLo=0x0000000000000f82 valueHi=0x0000000000000000 op=WRITE64
+[EE:stack-dispatch-delta] dispatched=0x3b6e78 next=0x0 sp=0x1fffff0 ra=0x0 watch=0x1ffff10 before=0x782 after=0xf82 eeCycles=41353727
 [EE:stack-write] pc=0x003b6c44 ra=0x003b70ac sp=0x01ffff10 watch=0x01ffff10 write=0x01ffff10 width=8 old=0x0000000000000f82 valueLo=0x0000000000000f82 valueHi=0x0000000000000000 op=WRITE64
 [ps2xIOP] [IOP] loaded IRX id=8 entry=0x42c98 base=0x42b00 start=2
 [SIF module] load-emulated id=8 ref=1 path="cdrom0:\MODULES\MCMAN.IRX;1"
