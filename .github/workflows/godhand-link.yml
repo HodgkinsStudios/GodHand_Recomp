@@ -302,7 +302,7 @@ jobs:
           tail -n 100 "$RUNNER_TEMP/godhand-execution.log" >> built/reports/link_ci_frame.txt
           {
             echo '--- last EE guest ticks, dormant cause, and IOP module activity ---'
-            grep -E '\[run:tick\]|\[run:ee-thread\]|\[EE:main-dormant|\[IOP\] loaded IRX|\[guest-branch:missing-target\]' \
+            grep -E '\[run:tick\]|\[run:ee-thread\]|\[EE:main-dormant|\[EE:invalid-return\]|\[IOP\] loaded IRX|\[guest-branch:missing-target\]' \
               "$RUNNER_TEMP/godhand-execution.log" | tail -n 28 || true
             echo '--- first module load failures ---'
             grep -m 12 -F '[IOP] failed to open IRX' \
@@ -386,7 +386,7 @@ jobs:
               echo "execution_exit_code=$status"
               tail -n 90 "$RUNNER_TEMP/godhand-execution.log"
               echo '--- guest native dispatch faults ---'
-              grep -m 4 -E '\[guest-branch:missing-target\]|\[EE:main-dormant' \
+              grep -m 5 -E '\[guest-branch:missing-target\]|\[EE:main-dormant|\[EE:invalid-return' \
                 "$RUNNER_TEMP/godhand-execution.log" || true
             } > built/reports/link_ci_frame.txt
             if test -s "$GODHAND_GS_FRAME_PPM"; then

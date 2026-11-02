@@ -292,6 +292,8 @@ void EeScheduler::run()
             continue;
         }
         PS2Runtime::RecompiledFunction function = m_runtime.lookupFunction(context.pc);
+        // Read-only provenance for invalid original EE branch/return targets.
+        const uint32_t dispatchedPc = context.pc;
 
         if (checkpointDue(kGuestDispatchCycles))
         {
@@ -319,6 +321,22 @@ void EeScheduler::run()
             throw;
         }
 
+        if (context.pc != 0u && (context.pc & 3u) != 0u)
+        {
+            const uint32_t currentSp = getRegU32(&context, 29);
+            uint32_t stackWords[4]{};
+            if (m_rdram && currentSp <= PS2_RAM_SIZE - sizeof(stackWords))
+                std::memcpy(stackWords, m_rdram + currentSp, sizeof(stackWords));
+            std::cerr << "[EE:invalid-return] dispatched=0x" << std::hex << dispatchedPc
+                      << " target=0x" << context.pc
+                      << " ra=0x" << getRegU32(&context, 31)
+                      << " sp=0x" << currentSp
+                      << " stack0=0x" << stackWords[0]
+                      << " stack1=0x" << stackWords[1]
+                      << " stack2=0x" << stackWords[2]
+                      << " stack3=0x" << stackWords[3]
+                      << std::dec << " eeCycles=" << m_eeCycle << std::endl;
+        }
         processPendingEvents();
         if (m_rescheduleRequested && m_currentThreadId != 0)
         {
