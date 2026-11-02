@@ -1,14 +1,17 @@
 # GodHand:Recomp — GTK3 launcher (Ubuntu)
 
-This launcher is a **new GodHand_Recomp-specific component** by HodgkinsStudios, alongside the upstream-derived [PS2Recomp](https://github.com/ran-j/PS2Recomp) source. It does **not** include a game recompiler output or playable binary.
+This GTK3 launcher is a GodHand_Recomp-specific component by HodgkinsStudios, alongside the upstream-derived [PS2Recomp](https://github.com/ran-j/PS2Recomp) source. The repository contains an experimental native AOT game executable built in GitHub Actions; actual in-game graphics and gameplay have **not** yet been verified.
 
 ## Current functionality
 
 - Native GTK3 ISO chooser (Linux desktop portal integration where available).
 - On first installation, copies the chosen disc image into `~/.local/share/HodgkinsStudios/GodHand_Recomp/GodHand.iso`.
 - Extracts the ISO9660 file system into `~/.local/share/HodgkinsStudios/GodHand_Recomp/Extracted_Iso` using libarchive, with directory traversal protection and no symlink materialization.
-- Runs copy/extraction in a worker thread with responsive progress UI; only marks installation complete after both steps finish.
-- On later launches, displays **Play**. Attempts to run `~/.local/share/HodgkinsStudios/GodHand_Recomp/bin/GodHand_Recomp_Game`. The executable does not currently exist; a clear dialog explains this until an AOT native game build is produced.
+- After extracting the ISO filesystem, also unpacks the real CRI `_DATA.AFS` into `Extracted_AFS/` using a native C++17 streaming extractor with safe index-prefixed filenames, bounded read checks, and atomic files.
+- On later launcher startups, checks the AFS completion marker and every entry's expected file size, then automatically repairs missing or incomplete entries in a worker thread.
+- The Play button also checks AFS readiness and blocks game launch until the repair finishes.
+- Runs ISO copying and both extraction stages in a worker thread with responsive progress UI; only marks installation complete after all stages finish.
+- On later launches, displays **Play**, searches for the native `GodHand_Recomp_Game`, sets the real-ISO runtime environment, and captures the native process exit and crash log in `logs/last_launch.log`. A genuine rendered game screen remains unverified.
 - Preserves all game data **locally**, outside the source repo.
 
 This is an **ISO selection and installation** mechanism, not a legal validation of ownership. No data is uploaded to GitHub by the launcher.
@@ -29,7 +32,7 @@ ctest --test-dir build-godhand-launcher --output-on-failure
 
 The launcher can also be enabled in the root build with `-DGODHAND_BUILD_LAUNCHER=ON`. On machines without GTK3 development files, its native GUI is skipped and the non-GUI installer tests still build if libarchive is present.
 
-**Free disk space:** allow approximately twice the ISO size for its copied image and extracted assets. The file chooser accepts a user-supplied ISO; the backend currently expects ISO9660. A game using other formats may need extraction support added.
+**Free disk space:** allow approximately **three times the ISO size** for the local ISO copy, ISO9660 extraction, and top-level AFS expansion, plus some working space. The file chooser accepts a user-supplied ISO; the backend currently expects ISO9660. A game using other formats may need extraction support added.
 
 **Do not commit the local `GodHand.iso`, extracted files, generated game code, or any retail assets.**
 
@@ -47,4 +50,10 @@ The GTK3 launcher includes a Settings dialog with remappable keyboard and SDL2 c
 
 ## Install from prebuilt development binary (no compilation)
 
-After pulling the latest `main`, run `bash godhandLauncher/install_prebuilt.sh`. This verifies `built/linux-x86_64/SHA256SUMS.txt`, copies the GitHub-hosted Actions-built launcher to `~/.local/bin/` and creates a desktop launcher. It also installs a native game binary automatically if a verified executable is later added to `built/linux-x86_64/GodHand_Recomp_Game` (not available yet). GTK3, SDL2 and libarchive runtime libraries must be present on Ubuntu.
+After pulling the latest `main`, run `bash godhandLauncher/install_prebuilt.sh`. This verifies `built/linux-x86_64/SHA256SUMS.txt`, copies the GitHub-hosted Actions-built launcher to `~/.local/bin/` and creates a desktop launcher. It also installs the experimental native game binary when a verified executable is available in `built/linux-x86_64/GodHand_Recomp_Game`; successful compilation does not guarantee that the game draws graphics. GTK3, SDL2 and libarchive runtime libraries must be present on Ubuntu.
+
+## Automatically extracted CRI AFS assets
+
+The original `_DATA.AFS` is contained inside the extracted ISO directory. It is **not** already extracted just because the `Extracted_Iso` directory exists. The native launcher now checks and unpacks this additional container into the independent `Extracted_AFS` directory, preserving index-prefixed filenames so duplicates do not collide. On the next launch, it checks for the `.complete` marker and verifies all expected entry sizes. It repairs only entries that are missing or incorrectly sized. If interrupted, temporary `.partial` files are discarded on retry.
+
+For existing installs, just open the updated launcher and let it prepare the assets. No manual command is required. The game still reads from your local ISO as needed; extracted AFS files are diagnostic/asset resources, not an alternative to the console's CD/DVD filesystem calls.

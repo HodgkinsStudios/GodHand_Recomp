@@ -315,6 +315,89 @@ jobs:
             echo 'nonuniform_guest_gs_frame=no' >> built/reports/link_ci_frame.txt
           fi
 
+      - name: Continue genuine AOT indirect-call repair with incremental rebuilds
+        if: steps.batch4.outcome == 'success'
+        shell: bash
+        run: |
+          set -uo pipefail
+          if test -s built/frames/first_real_gs_frame.ppm; then
+            echo 'Actual guest GS frame is already captured.'
+            exit 0
+          fi
+          if ! test -s "$RUNNER_TEMP/godhand-execution.log"; then
+            echo 'No prior native guest boot trace to refine.'
+            exit 0
+          fi
+          # The initial native pass has already compiled the entire guest AOT.
+          # Each discovered original MIPS entry now requires only recompiling
+          # its owning generated C++ TU, registering the original address,
+          # linking, and repeating a real boot from the unmodified disc.
+          for iteration in 1 2 3 4; do
+            if ! grep -Fq '[guest-branch:missing-target]' "$RUNNER_TEMP/godhand-execution.log"; then
+              echo "No further missing native guest function in iteration $iteration."
+              break
+            fi
+            echo "=== Native guest AOT entry repair iteration $iteration ==="
+            python3 tools/promote_aot_entry.py \
+              --source-dir "$RUNNER_TEMP/godhand_aot" \
+              --diagnostic "$RUNNER_TEMP/godhand-execution.log" \
+              --report "$RUNNER_TEMP/aot_iteration.json"
+            new_entries="$(python3 -c 'import json,sys; print(len(json.load(open(sys.argv[1]))["promoted"]))' "$RUNNER_TEMP/aot_iteration.json")"
+            if test "$new_entries" -eq 0; then
+              echo 'No validated new original AOT instruction boundary; preserving diagnostics.'
+              cat "$RUNNER_TEMP/aot_iteration.json"
+              break
+            fi
+            python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          prior_path = Path('built/reports/aot_promoted_entries.json')
+          next_path = Path(os.environ['RUNNER_TEMP']) / 'aot_iteration.json'
+          prior = json.loads(prior_path.read_text()) if prior_path.exists() else {}
+          nxt = json.loads(next_path.read_text())
+          promoted = {r['pc']:r for r in prior.get('promoted', [])}
+          for row in nxt.get('promoted', []):
+              promoted[row['pc']] = row
+          requested = sorted(set(prior.get('requested', [])) | set(nxt.get('requested', [])))
+          merged = {'requested': requested, 'promoted': list(promoted.values()),
+                    'rejected': nxt.get('rejected', [])}
+          prior_path.write_text(json.dumps(merged, indent=2) + '\n')
+          print('Cumulative exact original AOT entries:', len(promoted))
+          PY
+            if ! timeout --kill-after=5s 480s cmake --build build-game \
+                --target ps2EntryRunner --parallel 4 > "$RUNNER_TEMP/godhand-relink-$iteration.log" 2>&1; then
+              echo "Incremental AOT link failure in iteration $iteration"
+              tail -n 40 "$RUNNER_TEMP/godhand-relink-$iteration.log"
+              break
+            fi
+            cp build-game/ps2xRuntime/ps2EntryRunner built/linux-x86_64/GodHand_Recomp_Game
+            chmod +x built/linux-x86_64/GodHand_Recomp_Game
+            (cd built/linux-x86_64 && sha256sum GodHand_Recomp_Game > GodHand_Recomp_Game.sha256)
+            status=0
+            export GODHAND_GS_FRAME_PPM="$RUNNER_TEMP/godhand_first_frame.ppm"
+            export LIBGL_ALWAYS_SOFTWARE=1
+            export PS2X_CD_IMAGE="$RUNNER_TEMP/GodHand.iso"
+            timeout --kill-after=5s 20s xvfb-run -a -s '-screen 0 1280x720x24' \
+              build-game/ps2xRuntime/ps2EntryRunner "$RUNNER_TEMP/game/boot.elf" \
+              > "$RUNNER_TEMP/godhand-execution.log" 2>&1 || status=$?
+            {
+              echo "native_executable=built"
+              echo "aot_repair_iterations=$iteration"
+              echo "execution_exit_code=$status"
+              tail -n 90 "$RUNNER_TEMP/godhand-execution.log"
+              echo '--- guest native dispatch faults ---'
+              grep -m 4 -E '\[guest-branch:missing-target\]|\[EE:main-dormant' \
+                "$RUNNER_TEMP/godhand-execution.log" || true
+            } > built/reports/link_ci_frame.txt
+            if test -s "$GODHAND_GS_FRAME_PPM"; then
+              cp "$GODHAND_GS_FRAME_PPM" built/frames/first_real_gs_frame.ppm
+              echo 'nonuniform_guest_gs_frame=yes' >> built/reports/link_ci_frame.txt
+              echo 'A genuine guest GS framebuffer was captured.'
+              break
+            fi
+            echo 'nonuniform_guest_gs_frame=no' >> built/reports/link_ci_frame.txt
+          done
+
       - name: Publish compiler reports and genuine game binary to main
         if: always() && github.ref == 'refs/heads/main'
         shell: bash
