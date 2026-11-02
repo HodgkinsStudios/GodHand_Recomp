@@ -101,3 +101,8 @@ selected_ids=0,9,10,11
 /home/runner/work/_temp/afs-sample-extract/000009_effcorepad.d: ASCII text, with very long lines (65536), with no line terminators
 /home/runner/work/_temp/afs-sample-extract/000010_face_:        data
 /home/runner/work/_temp/afs-sample-extract/000011_face_:        data
+--- Real ISO native C++ full AFS verification ---
+native_afs_real_iso_pass=yes
+native_afs_entry_count=1445
+native_afs_missing_entry_repair_pass=yes
+native_afs_source_archive_bytes=1541885952
