@@ -232,9 +232,13 @@ InstallResult install_iso(const fs::path& source, const fs::path& root,
         fs::create_directories(root);
         if (fs::is_symlink(root)) throw std::runtime_error("Install directory cannot be a symlink");
         const auto free_bytes = fs::space(root).available;
-        // Conservative: raw image plus extracted data typically fits within twice image size.
-        if (file_size > (std::numeric_limits<std::uintmax_t>::max() / 2) || free_bytes < file_size * 2)
-            throw std::runtime_error("Not enough free space: allow at least twice the ISO size");
+        // First-run installation retains the ISO, extracted ISO9660 files,
+        // and an additional extraction of all top-level CRI AFS entries.
+        // Budget three complete disc images plus a small safety reserve.
+        constexpr std::uintmax_t reserve = 64ull * 1024 * 1024;
+        if (file_size > (std::numeric_limits<std::uintmax_t>::max() - reserve) / 3 ||
+            free_bytes < file_size * 3 + reserve)
+            throw std::runtime_error("Not enough free space: allow at least three times the ISO size, plus 64 MiB, for ISO + AFS extraction");
 
         fs::remove_all(copy_temp, ec);
         ec.clear();
