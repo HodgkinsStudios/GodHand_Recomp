@@ -4,7 +4,7 @@ project(GodHandLauncher LANGUAGES CXX)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(LIBARCHIVE REQUIRED IMPORTED_TARGET libarchive)
 
-add_library(godhand_installer STATIC src/installer.cpp)
+add_library(godhand_installer STATIC src/installer.cpp src/afs_installer.cpp)
 target_compile_features(godhand_installer PUBLIC cxx_std_17)
 target_include_directories(godhand_installer PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src")
 target_link_libraries(godhand_installer PUBLIC PkgConfig::LIBARCHIVE)

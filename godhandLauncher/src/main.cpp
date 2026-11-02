@@ -1,4 +1,5 @@
 #include "installer.hpp"
+#include "afs_installer.hpp"
 #include "settings.hpp"
 #include "input.hpp"
 #include "game_locator.hpp"
@@ -33,6 +34,7 @@ struct Launcher {
     std::unique_ptr<godhand::InputManager> input;
 
     bool installing = false;
+    std::thread install_worker;
     bool game_running = false;
     bool installed = false;
     fs::path data_dir;
@@ -63,8 +65,10 @@ void set_install_state(Launcher& app) {
             godhand::launcher_executable_directory(), fs::current_path(ec), app.data_dir);
         gtk_label_set_text(GTK_LABEL(app.status), !app.installed
             ? "Select your own God Hand PS2 ISO to install locally."
-            : exe ? "ISO installed. Native AOT binary found (gameplay not yet verified)."
-                  : "ISO installed. Native AOT game build is not available yet.");
+            : !godhand::afs_extraction_complete(app.data_dir)
+                  ? "AFS assets need extraction or repair; preparing them automatically."
+                  : exe ? "ISO and AFS assets ready. Native AOT binary found (gameplay unverified)."
+                        : "ISO and AFS assets ready. Native AOT game build is unavailable.");
     }
 }
 
@@ -95,14 +99,34 @@ void install_selected(Launcher& app, std::string selected) {
     gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(app.progress), 0);
     gtk_label_set_text(GTK_LABEL(app.status), "Preparing local installation...");
 
-    std::thread([&app, selected = std::move(selected)] {
+    if (app.install_worker.joinable()) app.install_worker.join();
+    app.install_worker = std::thread([&app, selected = std::move(selected)] {
         const auto result = godhand::install_iso(selected, app.data_dir,
             [&app](const std::string& message, double percentage) {
                 post_update(app, message, percentage);
             });
-        post_update(app, result.ok ? "Installation complete" : result.message,
+        post_update(app, result.ok ? "ISO and AFS assets installed" : result.message,
                     result.ok ? 1.0 : 0.0, true, result.ok);
-    }).detach();
+    });
+}
+
+void prepare_existing_assets(Launcher& app) {
+    if (app.installing || !app.installed) return;
+    if (godhand::afs_extraction_complete(app.data_dir)) return;
+    if (app.install_worker.joinable()) app.install_worker.join();
+    app.installing = true;
+    gtk_widget_set_sensitive(app.button, FALSE);
+    gtk_widget_show(app.progress);
+    gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(app.progress), 0.0);
+    gtk_label_set_text(GTK_LABEL(app.status), "Checking and extracting genuine AFS game assets...");
+    app.install_worker = std::thread([&app] {
+        const auto result = godhand::ensure_afs_extracted(app.data_dir,
+            [&app](const std::string& label, double percentage) {
+                post_update(app, label, percentage);
+            });
+        post_update(app, result.ok ? result.message : result.message,
+                    result.ok ? 1.0 : 0.0, true, result.ok);
+    });
 }
 
 void choose_iso(Launcher& app) {
@@ -157,7 +181,11 @@ void game_child_exited(GPid pid, gint wait_status, gpointer user_data) {
 }
 
 void play(Launcher& app) {
-    if (app.game_running) return;
+    if (app.game_running || app.installing) return;
+    if (!godhand::afs_extraction_complete(app.data_dir)) {
+        prepare_existing_assets(app);
+        return;
+    }
     std::error_code ec;
     const auto found = godhand::find_game_executable(
         godhand::launcher_executable_directory(), fs::current_path(ec), app.data_dir);
@@ -531,6 +559,14 @@ int main(int argc, char** argv) {
     gtk_widget_show_all(app.window);
     gtk_widget_hide(app.progress);
     g_timeout_add(50, input_tick, &app);
+    // Upgrade older ISO-only installs without making the GTK interface block.
+    if (app.installed)
+        g_idle_add([](gpointer user) -> gboolean {
+            prepare_existing_assets(*static_cast<Launcher*>(user));
+            return G_SOURCE_REMOVE;
+        }, &app);
     gtk_main();
+    // Keep the worker's referenced Launcher alive until it finishes.
+    if (app.install_worker.joinable()) app.install_worker.join();
     return 0;
 }

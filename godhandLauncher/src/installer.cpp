@@ -1,4 +1,5 @@
 #include "installer.hpp"
+#include "afs_installer.hpp"
 
 #include <archive.h>
 #include <archive_entry.h>
@@ -252,6 +253,12 @@ InstallResult install_iso(const fs::path& source, const fs::path& root,
         fs::remove(root / "GodHand.iso", ec);
         fs::rename(copy_temp, root / "GodHand.iso");
         fs::rename(extract_temp, root / "Extracted_Iso");
+        // The ISO9660 extraction only yields the large CRI _DATA.AFS container.
+        // Unpack its authentic contents as part of first-run installation.
+        const InstallResult afs = ensure_afs_extracted(root, [&](const std::string& label, double f) {
+            report(progress, label, 0.90 + 0.09 * f);
+        });
+        if (!afs.ok) throw std::runtime_error(afs.message);
         std::ofstream marker(root / "install.complete", std::ios::trunc);
         marker << "GodHand_Recomp installation v1\nISO bytes=" << file_size << "\n";
         marker.close();
