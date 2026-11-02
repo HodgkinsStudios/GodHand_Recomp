@@ -6,6 +6,9 @@ on:
     paths:
       - '.github/workflows/godhand-prebuilt-smoke.yml'
   workflow_dispatch:
+  workflow_run:
+    workflows: ['GodHand - Link AOT and test first frame']
+    types: [completed]
 
 permissions:
   contents: write
@@ -16,6 +19,7 @@ concurrency:
 
 jobs:
   smoke:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-24.04
     timeout-minutes: 12
     steps:
@@ -79,6 +83,8 @@ jobs:
           rm -f "$frame" built/frames/first_real_gs_frame.ppm
           code=0
           GODHAND_GS_FRAME_PPM="$frame" LIBGL_ALWAYS_SOFTWARE=1 \
+            PS2X_CD_IMAGE="$RUNNER_TEMP/GodHand.iso" \
+            PS2X_GUEST_WATCH_ADDR=0x1ffff10 \
             timeout --kill-after=3s 20s xvfb-run -a -s '-screen 0 1280x720x24' \
             "$game" "$RUNNER_TEMP/godhand_boot/boot.elf" \
             > "$logfile" 2>&1 || code=$?
@@ -95,6 +101,8 @@ jobs:
             fi
             echo '--- first missing guest target ---'
             grep -m 1 -F '[guest-branch:missing-target]' "$logfile" || true
+            echo '--- first stack writes and original EE return diagnostics ---'
+            grep -m 95 -E '\[EE:stack-write\]|\[EE:stack-dispatch-delta\]|\[EE:invalid-return\]|\[EE:main-dormant-cause\]' "$logfile" || true
             echo '--- recent guest ticks ---'
             grep -F '[run:tick]' "$logfile" | tail -n 3 || true
             echo '--- execution log tail ---'
