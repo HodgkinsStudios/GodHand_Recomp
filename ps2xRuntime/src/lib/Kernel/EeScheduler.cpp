@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cstring>
+#include <iostream>
 #include <limits>
 #include <stdexcept>
 
@@ -246,6 +247,8 @@ void EeScheduler::run()
                 }
                 continue;
             }
+            if (running->id == kMainThreadId)
+                std::cerr << "[EE:main-dormant-cause] normal_run_pc_zero" << std::endl;
             makeDormant(*running);
             m_currentThreadId = 0;
             copyMainContextToRuntime();
@@ -280,6 +283,9 @@ void EeScheduler::run()
                                                 context.pc,
                                                 PS2Runtime::GuestBranchKind::DirectJump,
                                                 "EE scheduler");
+                if (running->id == kMainThreadId)
+                    std::cerr << "[EE:main-dormant-cause] missing_recompiled_function pc=0x"
+                              << std::hex << context.pc << std::dec << std::endl;
                 makeDormant(*running);
                 m_currentThreadId = 0;
             }
@@ -515,6 +521,8 @@ int EeScheduler::startThread(int id, uint32_t arg, const R5900Context &caller, b
     assert(exiting != nullptr);
     const int id = exiting->id;
     const uint32_t ownedStack = deleteThreadRecord && exiting->ownsStack ? exiting->stack : 0u;
+    if (id == kMainThreadId)
+        std::cerr << "[EE:main-dormant-cause] explicit_exit_thread" << std::endl;
     makeDormant(*exiting);
     m_currentThreadId = 0;
     if (deleteThreadRecord && id != kMainThreadId)
@@ -551,6 +559,8 @@ int EeScheduler::terminateThread(int id, uint32_t &ownedStack, bool interruptSaf
         ownedStack = target->stack;
         target->ownsStack = false;
     }
+    if (target->id == kMainThreadId)
+        std::cerr << "[EE:main-dormant-cause] terminated_by_other_thread" << std::endl;
     makeDormant(*target);
     (void)interruptSafe;
     publishSnapshot();
@@ -1640,6 +1650,17 @@ void EeScheduler::makeRunning(GuestThread &item)
 
 void EeScheduler::makeDormant(GuestThread &item)
 {
+    if (item.id == kMainThreadId && item.status != EeThreadStatus::Dormant)
+    {
+        const R5900Context &last = item.activeContext();
+        std::cerr << "[EE:main-dormant] previousState=" << static_cast<unsigned>(item.status)
+                  << " pc=0x" << std::hex << last.pc
+                  << " ra=0x" << getRegU32(&last, 31)
+                  << " sp=0x" << getRegU32(&last, 29)
+                  << std::dec << " eeCycles=" << m_eeCycle
+                  << " waitReason=" << static_cast<unsigned>(item.wait.reason)
+                  << " invocationDepth=" << item.invocations.size() << std::endl;
+    }
     removeReady(item);
     removeFromWaitObject(item);
     item.status = EeThreadStatus::Dormant;

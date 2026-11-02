@@ -281,8 +281,8 @@ jobs:
           printf 'native_executable=built\nexecution_exit_code=%s\n' "$status" > built/reports/link_ci_frame.txt
           tail -n 100 "$RUNNER_TEMP/godhand-execution.log" >> built/reports/link_ci_frame.txt
           {
-            echo '--- last EE guest ticks and IOP module activity ---'
-            grep -E '\[run:tick\]|\[run:ee-thread\]|\[IOP\] loaded IRX|\[guest-branch:missing-target\]' \
+            echo '--- last EE guest ticks, dormant cause, and IOP module activity ---'
+            grep -E '\[run:tick\]|\[run:ee-thread\]|\[EE:main-dormant|\[IOP\] loaded IRX|\[guest-branch:missing-target\]' \
               "$RUNNER_TEMP/godhand-execution.log" | tail -n 28 || true
             echo '--- first module load failures ---'
             grep -m 12 -F '[IOP] failed to open IRX' \
