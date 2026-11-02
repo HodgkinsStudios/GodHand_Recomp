@@ -1,0 +1,75 @@
+CP45 static AOT source cross-reference
+callee=0x002BDFF8
+bad_restored_ra=0x00000F82
+last_guest_dispatch=0x002BE014
+generated_cpp_files=9362
+caller_references=11
+This file records callsite metadata only; no guest instruction bytes, binaries or assets.
+
+file=sub_002BDFD8_0x2bdfd8.cpp line=15
+exact_reference=// Address: 0x2bdfd8 - 0x2bdff8
+nearby_guest_pcs=0x2bdfd8,0x2BDFD8
+nearby_ra_assignments=
+nearest_original_branch=// 0x2bdfd8: 0x3e00008  jr          $ra
+
+file=sub_002BDFD8_0x2bdfd8.cpp line=61
+exact_reference=ctx->pc = 0x2bdff8u;
+nearby_guest_pcs=0x2bdfec,0x2bdff0,0x2bdff4,0x2bdff8
+nearby_ra_assignments=
+nearest_original_branch=
+
+file=sub_002BDFF8_0x2bdff8.cpp line=15
+exact_reference=// Address: 0x2bdff8 - 0x2be028
+nearby_guest_pcs=
+nearby_ra_assignments=
+nearest_original_branch=
+
+file=sub_002BDFF8_0x2bdff8.cpp line=16
+exact_reference=void sub_002BDFF8_0x2bdff8(uint8_t* rdram, R5900Context* ctx, PS2Runtime *runtime) {
+nearby_guest_pcs=
+nearby_ra_assignments=
+nearest_original_branch=
+
+file=sub_002BDFF8_0x2bdff8.cpp line=18
+exact_reference=PS_LOG_ENTRY("sub_002BDFF8_0x2bdff8");
+nearby_guest_pcs=0x2bdff8
+nearby_ra_assignments=
+nearest_original_branch=
+
+file=sub_002BDFF8_0x2bdff8.cpp line=27
+exact_reference=ctx->pc = 0x2bdff8u;
+nearby_guest_pcs=0x2bdff8,0x2bdff8,0x2bdffc,0x2be000
+nearby_ra_assignments=
+nearest_original_branch=
+
+file=sub_002BDFF8_0x2bdff8.cpp line=29
+exact_reference=// 0x2bdff8: 0x27bdffe0  addiu       $sp, $sp, -0x20
+nearby_guest_pcs=0x2bdff8,0x2bdff8,0x2bdffc,0x2be000
+nearby_ra_assignments=
+nearest_original_branch=// 0x2be004: 0xc0af80a  jal         func_2BE028
+
+file=sub_002BDFF8_0x2bdff8.cpp line=30
+exact_reference=ctx->pc = 0x2bdff8u;
+nearby_guest_pcs=0x2bdff8,0x2bdffc,0x2be000,0x2BE004
+nearby_ra_assignments=
+nearest_original_branch=// 0x2be004: 0xc0af80a  jal         func_2BE028
+
+file=sub_0030B298_0x30b298.cpp line=316
+exact_reference=// 0x30b384: 0xc0af7fe  jal         func_2BDFF8
+nearby_guest_pcs=0x30b380,0x30B384,0x30B388,0x2BDFF8
+nearby_ra_assignments=0x30B38C
+nearest_original_branch=// 0x30b384: 0xc0af7fe  jal         func_2BDFF8
+
+file=sub_0030B298_0x30b298.cpp line=325
+exact_reference=ctx->pc = 0x2BDFF8u;
+nearby_guest_pcs=0x2BDFF8,0x30B38C,0x30B38C,0x30CB30
+nearby_ra_assignments=0x30B38C,0x30B394
+nearest_original_branch=// 0x30b384: 0xc0af7fe  jal         func_2BDFF8
+
+file=sub_0030B298_0x30b298.cpp line=326
+exact_reference=if (!runtime->dispatchGuestBranch(rdram, ctx, 0x2BDFF8u, 0x30B384u, 0x30B38Cu, PS2Runtime::GuestBranchKind::DirectCall, "JAL")) {
+nearby_guest_pcs=0x2BDFF8,0x30B38C,0x30B38C,0x30CB30
+nearby_ra_assignments=0x30B38C,0x30B394
+nearest_original_branch=// 0x30b38c: 0xc0c32cc  jal         func_30CB30
+
+literal_f82_occurrences=0
