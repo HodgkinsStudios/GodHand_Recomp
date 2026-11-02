@@ -1,0 +1,99 @@
+name: GodHand - Audit original AOT callers before invalid EE return
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/godhand-static-return.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  inspect-return:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - name: Restore original generated guest C++ without retail ISO
+        shell: bash
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='built/aot/generated_cpp.tar.gz' --exclude=''
+          mkdir -p "$RUNNER_TEMP/original_aot" built/reports
+          tar -xzf built/aot/generated_cpp.tar.gz -C "$RUNNER_TEMP/original_aot"
+      - name: Trace authentic generated calls and RA saves for 0x002BDFF8
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - "$RUNNER_TEMP/original_aot" built/reports/ee_return_callers_2bdff8.txt <<'PY'
+          from pathlib import Path
+          import re
+          import sys
+          root, out = Path(sys.argv[1]), Path(sys.argv[2])
+          files = sorted(root.glob('*.cpp'))
+          # No game instructions or assets are modified.
+          # Static metadata only: guest source PC, native owner, target and
+          # exact original return-address assignment.
+          ref = re.compile(r'\b(?:0x0*2bdff8u?\b|func_2BDFF8\b|sub_002BDFF8_0x2bdff8\b)', re.I)
+          pc = re.compile(r'ctx->pc\s*=\s*(0x[0-9a-fA-F]+)u?\s*;', re.I)
+          ra = re.compile(r'(?:SET_GPR_U32|SET_GPR_S32)\(ctx,\s*31,\s*(0x[0-9a-fA-F]+)u?\)', re.I)
+          entries = []
+          for path in files:
+              if path.name == 'register_functions.cpp':
+                  continue
+              lines = path.read_text(errors='replace').splitlines()
+              for n, line in enumerate(lines):
+                  if not ref.search(line):
+                      continue
+                  nearby = lines[max(0,n-9):n+10]
+                  pcs = [p.group(1) for l in nearby if (p:=pc.search(l))]
+                  ras = [p.group(1) for l in nearby if (p:=ra.search(l))]
+                  opcode = next((l.strip()[:155] for l in nearby if re.search(r'// 0x[0-9a-f]+: .*\b(?:jal|jalr|jr)\b',l,re.I)), '')
+                  entries.append((path.name,n+1,line.strip()[:135],pcs[-4:],ras[-4:],opcode))
+          diagnostics = [
+              'CP45 static AOT source cross-reference',
+              'callee=0x002BDFF8',
+              'bad_restored_ra=0x00000F82',
+              'last_guest_dispatch=0x002BE014',
+              f'generated_cpp_files={len(files)}',
+              f'caller_references={len(entries)}',
+              'This file records callsite metadata only; no guest instruction bytes, binaries or assets.'
+          ]
+          for f,n,line,pcs,ras,opcode in entries[:120]:
+              diagnostics.extend(['',f'file={f} line={n}',f'exact_reference={line}',
+                                  'nearby_guest_pcs=' + ','.join(pcs),
+                                  'nearby_ra_assignments=' + ','.join(ras),
+                                  'nearest_original_branch=' + opcode])
+          # A corrupted RA may be a written immediate or a scalar result.
+          # Record bounded references to the literal for investigation only.
+          rawhits=[]
+          needle=re.compile(r'\b0x0*f82u?\b',re.I)
+          for path in files:
+              for n,line in enumerate(path.read_text(errors='replace').splitlines()):
+                  if needle.search(line):
+                      rawhits.append((path.name,n+1,line.strip()[:160]))
+          diagnostics += ['',f'literal_f82_occurrences={len(rawhits)}']
+          for f,n,line in rawhits[:45]:
+              diagnostics.append(f'{f}:{n}: {line}')
+          out.write_text('\n'.join(diagnostics)+'\n')
+          print('\n'.join(diagnostics[:45]))
+          PY
+      - name: Publish bounded static caller metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          staging="$(mktemp)"
+          cp built/reports/ee_return_callers_2bdff8.txt "$staging"
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp "$staging" built/reports/ee_return_callers_2bdff8.txt
+            git add -f built/reports/ee_return_callers_2bdff8.txt
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m 'test: record original AOT callers and return addresses before EE corruption [skip ci]'
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1
