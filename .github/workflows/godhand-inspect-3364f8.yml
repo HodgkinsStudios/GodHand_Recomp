@@ -1,0 +1,104 @@
+name: GodHand - Inspect new native EE stall 0x3364F8
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/godhand-inspect-3364f8.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+          persist-credentials: true
+      - name: Extract original AOT source without retail disc
+        shell: bash
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='built/aot/generated_cpp.tar.gz' --exclude=''
+          mkdir -p "$RUNNER_TEMP/godhand_aot" built/reports
+          tar -xzf built/aot/generated_cpp.tar.gz -C "$RUNNER_TEMP/godhand_aot"
+      - name: Inspect original loop and return-address functions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - "$RUNNER_TEMP/godhand_aot" built/reports/guest_stall_3364f8.txt <<'PY'
+          import pathlib, re, sys
+          root = pathlib.Path(sys.argv[1])
+          out = pathlib.Path(sys.argv[2])
+          filenames = list(root.rglob('*.cpp'))
+          targets = (0x3364f8, 0x33039c, 0x3364f0, 0x3364fc)
+          addresses = []
+          for f in filenames:
+              m = re.match(r'sub_([0-9a-fA-F]+)_0x([0-9a-fA-F]+)\.cpp', f.name)
+              if m:
+                  addresses.append((int(m.group(2),16), f))
+          addresses.sort(key=lambda row: row[0])
+          selected = []
+          for target in targets:
+              prior = [row for row in addresses if row[0] <= target]
+              if prior:
+                  selected.extend(prior[-2:])
+              selected += [row for row in addresses if target <= row[0] <= target+0x100][:4]
+          selected = list(dict.fromkeys(f for _,f in selected))
+          # Find direct constant references to the stopped PC and return address.
+          hits = []
+          tokens = re.compile(r'(?i)(?:0x0*(?:3364f8|33039c|3364f0|3364fc))\b')
+          for f in filenames:
+              if f.name in ('register_functions.cpp',):
+                  continue
+              lines = f.read_text(errors='replace').splitlines()
+              for i, line in enumerate(lines):
+                  if tokens.search(line):
+                      hits.append((f, i))
+                      if len(hits) >= 100: break
+              if len(hits) >= 100: break
+          selected.extend(f for f,_ in hits)
+          selected = list(dict.fromkeys(selected))
+          report = [
+              'CP31 generated guest-code investigation',
+              'stable_pc=0x003364F8',
+              'observed_return_address=0x0033039C',
+              'last_r0x2=0x0076E910',
+              'last_v1=0x5',
+              'AOT files=' + str(len(filenames)),
+              'address-prefixed-files=' + str(len(addresses)),
+              'matching_references=' + str(len(hits)),
+              'No original retail assets or program bytes published.',
+          ]
+          for f in selected[:16]:
+              lines = f.read_text(errors='replace').splitlines()
+              report += ['', f'=== {f.name} line_count={len(lines)} ===']
+              positions = [i for g,i in hits if g==f]
+              windows = [(0, min(360, len(lines)))]
+              for i in positions[:10]:
+                  windows.append((max(0, i-25), min(len(lines),i+35)))
+              used = set()
+              for a,b in windows:
+                  for i in range(a,b):
+                      if i not in used:
+                          used.add(i)
+                          report.append(f'{i+1:5d}: {lines[i]}')
+          out.write_text('\n'.join(report)+'\n')
+          print('\n'.join(report[:30]))
+          PY
+      - name: Publish bounded analysis report
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f built/reports/guest_stall_3364f8.txt
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'test: preserve original generated guest code for PC 0x3364F8 [skip ci]'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git rebase origin/main
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1
