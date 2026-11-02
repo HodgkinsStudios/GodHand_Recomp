@@ -1,4 +1,4 @@
-name: GodHand - Inspect new native EE stall 0x3364F8
+name: GodHand - Inspect authentic AOT control-flow faults
 on:
   push:
     branches: [main]
@@ -23,16 +23,16 @@ jobs:
           git lfs pull --include='built/aot/generated_cpp.tar.gz' --exclude=''
           mkdir -p "$RUNNER_TEMP/godhand_aot" built/reports
           tar -xzf built/aot/generated_cpp.tar.gz -C "$RUNNER_TEMP/godhand_aot"
-      - name: Inspect original loop and return-address functions
+      - name: Inspect original MIPS code preceding malformed PC 0xF82
         shell: bash
         run: |
           set -euo pipefail
-          python3 - "$RUNNER_TEMP/godhand_aot" built/reports/guest_stall_3364f8.txt <<'PY'
+          python3 - "$RUNNER_TEMP/godhand_aot" built/reports/guest_invalid_0xf82_aot_inspection.txt <<'PY'
           import pathlib, re, sys
           root = pathlib.Path(sys.argv[1])
           out = pathlib.Path(sys.argv[2])
           filenames = list(root.rglob('*.cpp'))
-          targets = (0x3364f8, 0x33039c, 0x3364f0, 0x3364fc)
+          targets = (0x2be014, 0x2be4e8, 0x3979e0, 0x397630, 0x31a718, 0x3b5e78, 0x3a52f0)
           addresses = []
           for f in filenames:
               m = re.match(r'sub_([0-9a-fA-F]+)_0x([0-9a-fA-F]+)\.cpp', f.name)
@@ -48,7 +48,7 @@ jobs:
           selected = list(dict.fromkeys(f for _,f in selected))
           # Find direct constant references to the stopped PC and return address.
           hits = []
-          tokens = re.compile(r'(?i)(?:0x0*(?:3364f8|33039c|3364f0|3364fc))\b')
+          tokens = re.compile(r'(?i)(?:0x0*(?:2be014|2be4e8|3979e0|397630|31a718|3b5e78|3a52f0))\b')
           for f in filenames:
               if f.name in ('register_functions.cpp',):
                   continue
@@ -61,17 +61,17 @@ jobs:
           selected.extend(f for f,_ in hits)
           selected = list(dict.fromkeys(selected))
           report = [
-              'CP31 generated guest-code investigation',
-              'stable_pc=0x003364F8',
-              'observed_return_address=0x0033039C',
-              'last_r0x2=0x0076E910',
-              'last_v1=0x5',
+              'CP40 native EE control-flow inspection',
+              'invalid_pc=0x00000F82 (unaligned; outside original ELF code)',
+              'runtime_source=EE scheduler (preceding return origin unknown)',
+              'last_guest_dispatch=0x002BE014',
+              'previous_guest_trace=0x002BE4E8 and 0x003979E0',
               'AOT files=' + str(len(filenames)),
               'address-prefixed-files=' + str(len(addresses)),
               'matching_references=' + str(len(hits)),
               'No original retail assets or program bytes published.',
           ]
-          for f in selected[:16]:
+          for f in selected[:18]:
               lines = f.read_text(errors='replace').splitlines()
               report += ['', f'=== {f.name} line_count={len(lines)} ===']
               positions = [i for g,i in hits if g==f]
@@ -93,9 +93,9 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -f built/reports/guest_stall_3364f8.txt
+          git add -f built/reports/guest_invalid_0xf82_aot_inspection.txt
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'test: preserve original generated guest code for PC 0x3364F8 [skip ci]'
+          git commit -m 'test: inspect original AOT code preceding invalid EE PC 0xF82 [skip ci]'
           for attempt in 1 2 3; do
             git fetch origin main
             git rebase origin/main
