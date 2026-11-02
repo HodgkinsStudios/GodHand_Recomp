@@ -6,8 +6,8 @@ batch_4=success
 --- batch 1 first errors ---
 --- batch 1 last progress ---
 [2338/2342] Building CXX object ps2xRuntime/CMakeFiles/ps2EntryRunner.dir/home/runner/work/_temp/godhand_aot/sub_001D5360_0x1d5360.cpp.o
-[2339/2342] Building CXX object ps2xRuntime/CMakeFiles/ps2EntryRunner.dir/home/runner/work/_temp/godhand_aot/sub_001D5430_0x1d5430.cpp.o
-[2340/2342] Building CXX object ps2xRuntime/CMakeFiles/ps2EntryRunner.dir/home/runner/work/_temp/godhand_aot/sub_001D5500_0x1d5500.cpp.o
+[2339/2342] Building CXX object ps2xRuntime/CMakeFiles/ps2EntryRunner.dir/home/runner/work/_temp/godhand_aot/sub_001D5500_0x1d5500.cpp.o
+[2340/2342] Building CXX object ps2xRuntime/CMakeFiles/ps2EntryRunner.dir/home/runner/work/_temp/godhand_aot/sub_001D5430_0x1d5430.cpp.o
 [2341/2342] Building CXX object ps2xRuntime/CMakeFiles/ps2EntryRunner.dir/home/runner/work/_temp/godhand_aot/sub_001D55D0_0x1d55d0.cpp.o
 --- batch 2 first errors ---
 --- batch 2 last progress ---
@@ -24,17 +24,17 @@ batch_4=success
 --- batch 4 first errors ---
 --- batch 4 last progress ---
 [2337/2341] Building CXX object ps2xRuntime/CMakeFiles/ps2EntryRunner.dir/home/runner/work/_temp/godhand_aot/sub_003FC7B8_0x3fc7b8.cpp.o
-[2338/2341] Building CXX object ps2xRuntime/CMakeFiles/ps2EntryRunner.dir/home/runner/work/_temp/godhand_aot/sub_003FD280_0x3fd280.cpp.o
-[2339/2341] Building CXX object ps2xRuntime/CMakeFiles/ps2EntryRunner.dir/home/runner/work/_temp/godhand_aot/sub_003FDD40_0x3fdd40.cpp.o
-[2340/2341] Building CXX object ps2xRuntime/CMakeFiles/ps2EntryRunner.dir/home/runner/work/_temp/godhand_aot/sub_003C01D8_0x3c01d8.cpp.o
+[2338/2341] Building CXX object ps2xRuntime/CMakeFiles/ps2EntryRunner.dir/home/runner/work/_temp/godhand_aot/sub_003FB6E8_0x3fb6e8.cpp.o
+[2339/2341] Building CXX object ps2xRuntime/CMakeFiles/ps2EntryRunner.dir/home/runner/work/_temp/godhand_aot/sub_003FD280_0x3fd280.cpp.o
+[2340/2341] Building CXX object ps2xRuntime/CMakeFiles/ps2EntryRunner.dir/home/runner/work/_temp/godhand_aot/sub_003FDD40_0x3fdd40.cpp.o
 --- ccache summary ---
 Cacheable calls:   9464 / 9464 (100.0%)
-  Hits:               0 / 9464 ( 0.00%)
-    Direct:           0
-    Preprocessed:     0
-  Misses:          9464 / 9464 (100.0%)
+  Hits:            9362 / 9464 (98.92%)
+    Direct:        9362 / 9362 (100.0%)
+    Preprocessed:     0 / 9362 ( 0.00%)
+  Misses:           102 / 9464 ( 1.08%)
 Local storage:
   Cache size (GB):  1.2 /  1.2 (99.98%)
-  Cleanups:         219
-  Hits:               0 / 9464 ( 0.00%)
-  Misses:          9464 / 9464 (100.0%)
+  Cleanups:          14
+  Hits:            9362 / 9464 (98.92%)
+  Misses:           102 / 9464 ( 1.08%)
