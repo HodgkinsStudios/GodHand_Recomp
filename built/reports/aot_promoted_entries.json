@@ -1,5 +1,6 @@
 {
   "requested": [
+    "0xf82",
     "0x3329d0",
     "0x334230",
     "0x3364f8"
@@ -21,5 +22,10 @@
       "native_symbol": "sub_00336498_0x336498"
     }
   ],
-  "rejected": []
+  "rejected": [
+    {
+      "pc": "0xf82",
+      "reason": "no exact AOT owner"
+    }
+  ]
 }
