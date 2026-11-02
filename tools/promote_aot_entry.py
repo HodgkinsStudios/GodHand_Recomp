@@ -89,12 +89,17 @@ def promote_table(source, addr, function):
     pos = source.index('\n', assignments[-1].end()) + 1
     return source[:pos] + addition + source[pos:]
 
-def run(folder, diagnostic, report=None):
+def run(folder, diagnostic, report=None, previous_report=None):
     folder = Path(folder)
     reg = next(folder.rglob('register_functions.cpp'), None)
     if reg is None:
         raise InvalidPromotion('register_functions.cpp missing')
-    requested = targets(Path(diagnostic).read_text(encoding='utf-8', errors='replace'))
+    requested = set(targets(Path(diagnostic).read_text(encoding='utf-8', errors='replace')))
+    if previous_report and Path(previous_report).is_file():
+        previous = json.loads(Path(previous_report).read_text(encoding='utf-8'))
+        for entry in previous.get('promoted', []):
+            requested.add(int(entry['pc'], 0))
+    requested = sorted(requested)
     owners = candidates(folder)
     starts = [entry[0] for entry in owners]
     registration = reg.read_text(encoding='utf-8', errors='replace')
@@ -131,10 +136,12 @@ def main():
     parser.add_argument('--source-dir', required=True, type=Path)
     parser.add_argument('--diagnostic', required=True, type=Path)
     parser.add_argument('--report', type=Path)
+    parser.add_argument('--previous-report', type=Path,
+                        help='verified entries promoted on an earlier native run')
     parser.add_argument('--require-promoted', action='store_true')
     args = parser.parse_args()
     try:
-        result = run(args.source_dir, args.diagnostic, args.report)
+        result = run(args.source_dir, args.diagnostic, args.report, args.previous_report)
         print(json.dumps(result, indent=2))
         return 1 if args.require_promoted and not result['promoted'] else 0
     except (OSError, InvalidPromotion) as exc:

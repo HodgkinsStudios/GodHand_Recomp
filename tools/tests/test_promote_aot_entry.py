@@ -64,6 +64,25 @@ class TestPromote(unittest.TestCase):
         with self.assertRaises(mod.InvalidPromotion):
             mod.promote_one(code, 0x3364f8)
 
+    def test_retains_all_prior_promoted_entries(self):
+        import json
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / 'sub_00336498_0x336498.cpp').write_text(FUNC)
+            (root / 'register_functions.cpp').write_text(REG)
+            (root / 'diag.txt').write_text(
+                '[EE:main-dormant-cause] missing_recompiled_function pc=0x3364fc')
+            (root / 'previous.json').write_text(json.dumps({
+                'promoted': [{'pc':'0x3364f8', 'owner':'sub_00336498_0x336498.cpp'}]}))
+            result = mod.run(root, root / 'diag.txt', previous_report=root / 'previous.json')
+            self.assertEqual(len(result['promoted']), 2)
+            code = (root / 'sub_00336498_0x336498.cpp').read_text()
+            table = (root / 'register_functions.cpp').read_text()
+            self.assertIn('case 0x3364f8u:', code)
+            self.assertIn('case 0x3364fcu:', code)
+            self.assertIn('// 0x3364f8 promoted original entry', table)
+            self.assertIn('// 0x3364fc promoted original entry', table)
+
     def test_no_missing_diagnostic_no_mutation(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
