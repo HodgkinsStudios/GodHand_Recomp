@@ -30,7 +30,7 @@ namespace ps2x::iop
 
         bool serviceActive(const detail::IopService &service) const
         {
-            return moduleManager.isLoaded(service.moduleAliases());
+            return service.romResident() || moduleManager.isLoaded(service.moduleAliases());
         }
 
         void refreshServiceModuleKeys()

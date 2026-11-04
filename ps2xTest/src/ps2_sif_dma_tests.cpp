@@ -177,7 +177,10 @@ void register_ps2_sif_dma_tests()
 
             setRegU32(env.ctx, 4, static_cast<uint32_t>(dmaId));
             ps2_stubs::sceSifDmaStat(env.rdram.data(), &env.ctx, &env.runtime);
-            t.IsTrue(getRegS32(env.ctx, 2) < 0, "sceSifDmaStat should be negative when transfer is complete");
+            // Transfers are applied before sceSifSetDma returns. God Hand polls
+            // sceSifDmaStat until the result is non-negative, so an id the runtime
+            // issued reports 0 (no pending work) and only an unknown id reports -1.
+            t.Equals(getRegS32(env.ctx, 2), 0, "sceSifDmaStat should report no pending work for an issued transfer");
         });
 
         tc.Run("IOP heap DMA uses private backing instead of aliasing EE RDRAM", [](TestCase &t)

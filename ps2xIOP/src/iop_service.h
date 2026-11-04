@@ -23,6 +23,12 @@ namespace ps2x::iop::detail
         {
             return {};
         }
+        // Services that live in the IOP kernel ROM are present from reset on
+        // real hardware, so a game can use them without ever loading an IRX.
+        [[nodiscard]] virtual bool romResident() const
+        {
+            return false;
+        }
         virtual void reset() = 0;
 
         [[nodiscard]] virtual RpcAbi selectRpcAbi(const RpcAbiRequest &request) const

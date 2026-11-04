@@ -2,6 +2,8 @@
 #include "RPC.h"
 #include "../../ps2_iop_transport.h"
 
+#include <set>
+
 namespace ps2_syscalls
 {
     namespace
@@ -216,12 +218,18 @@ namespace ps2_syscalls
         const auto loaded = runtime->loadIopModule(modulePath, arguments.empty() ? nullptr : arguments.data(), static_cast<uint32_t>(arguments.size()));
         if (!loaded.handled || loaded.moduleId <= 0)
         {
+            // A refused load is silent on the guest side, so record the request
+            // and its caller: a missing module otherwise looks like a hang later.
+            RUNTIME_LOG("[SIF module] load-failed path=\"" << modulePath << "\" ra=0x"
+                        << std::hex << getRegU32(ctx, 31) << std::dec << std::endl);
             setReturnS32(ctx, -1);
             return;
         }
 
         trackSifModuleLoadExternal(modulePath, loaded.moduleId);
         logSifModuleAction("load-emulated", loaded.moduleId, modulePath, 1u);
+        RUNTIME_LOG("[SIF module] loaded-from ra=0x" << std::hex << getRegU32(ctx, 31) << std::dec
+                    << " path=\"" << modulePath << "\"" << std::endl);
         setReturnS32(ctx, loaded.moduleId);
     }
 
@@ -295,7 +303,13 @@ namespace ps2_syscalls
             g_rpc_clients[clientPtr].sid = rpcId;
         }
 
-        if (!serverPtr && PS2IopTransport::canBindRpc(runtime, rpcId))
+        // PS2X_BIND_ANY is a diagnostic switch, never a default: it publishes a
+        // client descriptor for every SID so a bind can complete without the IOP
+        // having registered a server. God Hand needs it to get past its CRI ADXI
+        // init (see the comment on the refusal log below); leaving it off keeps
+        // the SDK behaviour that cd->server stays null until the IRX registers.
+        const bool allowAnyBind = std::getenv("PS2X_BIND_ANY") != nullptr;
+        if (!serverPtr && (allowAnyBind || PS2IopTransport::canBindRpc(runtime, rpcId)))
         {
             // EE-side servers and HLE routes need a descriptor in guest RAM.
             // With an emulated IOP, only publish it after the IRX has actually
@@ -327,6 +341,21 @@ namespace ps2_syscalls
             client->server = 0;
             client->buf = 0;
             client->cbuf = 0;
+            // God Hand spells this wait as an unbounded retry: its CRI ADXI init
+            // (0x00375860) rebinds SID 0x19720317 while cd->server stays null
+            // (client 0x76A95C, server at +0x24 = 0x76A980) and only loads
+            // cri_adxi.irx afterwards at 0x002C9E38, so an unserved bind parks
+            // the boot on 0x003758B8. Log the refusal once per SID: a silent
+            // null here costs a whole boot.
+            static std::mutex refusedBindMutex;
+            static std::set<uint32_t> refusedBindSids;
+            std::lock_guard<std::mutex> lock(refusedBindMutex);
+            if (refusedBindSids.insert(rpcId).second)
+            {
+                RUNTIME_LOG("[BindRpc] no server for sid=0x" << std::hex << rpcId
+                            << " client=0x" << clientPtr << " ra=0x" << getRegU32(ctx, 31)
+                            << std::dec << std::endl);
+            }
         }
 
         SifRpcDebugEvent event = makeRpcDebugEvent("BindRpc", ctx, runtime);

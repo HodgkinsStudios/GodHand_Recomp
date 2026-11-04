@@ -1,3 +1,4 @@
+#include <cstdio>
 #include "Common.h"
 #include "SIF.h"
 #include "../Syscalls/RPC.h"
@@ -126,6 +127,12 @@ namespace ps2_stubs
                 seedDefaultSifRegsLocked();
             }
         } g_sifStateInitializer;
+
+        bool isIssuedSifDmaTransferId(uint32_t trid)
+        {
+            std::lock_guard<std::mutex> lock(g_sifDmaTransferMutex);
+            return trid != 0u && trid < g_nextSifDmaTransferId;
+        }
 
         uint32_t allocateSifDmaTransferId()
         {
@@ -303,7 +310,8 @@ namespace ps2_stubs
     {
         (void)rdram;
         const uint32_t reqSize = getRegU32(ctx, 4);
-        setReturnU32(ctx, runtime ? runtime->allocateIopMemory(reqSize, 64u) : 0u);
+        const uint32_t allocated = runtime ? runtime->allocateIopMemory(reqSize, 64u) : 0u;
+        setReturnU32(ctx, allocated);
     }
 
     void sceSifAllocSysMemory(uint8_t *rdram, R5900Context *ctx, PS2Runtime *runtime)
@@ -327,10 +335,16 @@ namespace ps2_stubs
     {
         (void)rdram;
         (void)runtime;
-        (void)getRegU32(ctx, 4); // trid
+        const uint32_t trid = getRegU32(ctx, 4); // trid
 
-        // Transfers are applied immediately by sceSifSetDma in this runtime.
-        setReturnS32(ctx, -1);
+        // sceSifSetDma applies every transfer before it returns, so an id this
+        // runtime handed out has no pending work left. Guests disagree on how
+        // completion is spelled: the SDK convention treats -1 as "completed",
+        // while God Hand polls `sceSifDmaStat` until the result is non-negative
+        // (measured at 0x002BE3D8). Report 0 for an id we issued and -1 for an
+        // id that was never issued, so the two states stay distinguishable and
+        // a completion wait terminates instead of spinning forever.
+        setReturnS32(ctx, isIssuedSifDmaTransferId(trid) ? 0 : -1);
     }
 
     void sceSifExecRequest(uint8_t *rdram, R5900Context *ctx, PS2Runtime *runtime)
@@ -557,6 +571,8 @@ namespace ps2_stubs
         ps2_syscalls::sceSifLoadModuleBuffer(rdram, ctx, runtime);
     }
 
+    // A reboot image is not modelled: the emulated IOP is already running and the
+    // runtime has no IOPRP loader, so report success and keep the current IOP.
     void sceSifRebootIop(uint8_t *rdram, R5900Context *ctx, PS2Runtime *runtime)
     {
         PS2IopTransport::reset(runtime);

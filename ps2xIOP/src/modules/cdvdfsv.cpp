@@ -127,6 +127,9 @@ public:
     std::string_view name() const override { return "cdvdfsv"; }
     std::span<const uint32_t> sids() const override { return kSids; }
     std::span<const std::string_view> moduleAliases() const override { return kAliases; }
+    // CDVDFSV ships in the IOP kernel ROM; libcdvd binds its SIDs without
+    // loading an IRX, so it must be routable from reset.
+    bool romResident() const override { return true; }
     void reset() override {}
     RpcResult handleRpc(const RpcRequest& req) override {
         RpcResult reply{};
@@ -144,13 +147,19 @@ public:
                 (void)m_host.writeGuest(req.receive.address, result.data(), bytes);
             return reply;
         }
-        // SearchFilePkt: 32-byte sceCdlFILE, name[256], pointer to output.
+        // SearchFilePkt: a 36-byte header (sceCdlFILE plus one word) followed by
+        // the NUL-terminated path, with the output pointer at offset 288. The
+        // header size is measured from the real EE libcdvd packet (the name
+        // begins at byte 36), so skip any leading zero padding instead of
+        // assuming a fixed offset.
         // Never claim a file exists without reading a real ISO9660 entry.
         std::array<uint8_t, 292> packet{};
         bool found = false;
         if (req.function == 0u && req.send.size >= packet.size() && req.send.address &&
             m_host.readGuest(req.send.address, packet.data(), packet.size())) {
-            const auto begin = packet.begin() + 32u;
+            auto begin = packet.begin() + 32u;
+            while (begin < packet.begin() + 288u && *begin == 0u)
+                ++begin;
             const auto end = std::find(begin, packet.begin() + 288u, uint8_t(0));
             if (end != packet.begin() + 288u) {
                 const std::string path(begin, end);

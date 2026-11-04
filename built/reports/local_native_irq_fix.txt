@@ -1,0 +1,27 @@
+local_native_build=ps2EntryRunner (211,920,552 bytes)
+build_config=Release, -msse4.1, PS2X_AOT_FAST_COMPILE=ON, FFmpeg/DEBUG_UI off, 9362 generated TUs
+runtime_fix=CP48 nested EE invocation stack
+host_display=Xvfb :99 + Mesa 25.2.8 llvmpipe (GL 4.5)
+first_run_before_aot_recovery:
+  [EE:main-dormant-cause] missing_recompiled_function pc=0x3364f8
+  [EE:main-dormant] pc=0x3364f8 ra=0x33039c sp=0x1fffde0 eeCycles=26250711
+  IOP modules loaded=7
+after_seeding_0x3364F8:
+  [EE:main-dormant-cause] missing_recompiled_function pc=0x334230
+  eeCycles=26252543
+after_978_validated_entry_seeds:
+  missing_recompiled_function=none
+  main_dormant=none
+  invalid_return=none
+  IOP modules loaded=9 (SIO2MAN PADMAN LIBSD SDRDRV SDHD SNDDRV CRI_ADXI MCMAN MCSERV)
+  [sceGsSyncVCallback:set] new=0x30B148 old=0x0
+  thread_loop_pc=0x001FFCD0 (waitReason=4 VSync, status poll until byte==3)
+  gif_dma_submissions_after_boot=0
+  nonuniform_guest_gs_frame=no
+final_scoped_fix=IRQ invocations only nest below a running interrupted frame; host-driven GS/async callbacks keep the reserved pool
+ps2xTest=447/447 passed (includes new IRQ nesting test and GS callback stack isolation test)
+final_run_after_scoping:
+  IOP modules loaded=9
+  return_address_corruption_0xf82=none
+  main_dormant=none
+  nonuniform_guest_gs_frame=no

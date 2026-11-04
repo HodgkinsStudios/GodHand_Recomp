@@ -320,6 +320,12 @@ public:
     [[noreturn]] void invokeCurrentSequence(std::vector<GuestInvocation> invocations);
     [[nodiscard]] bool hasInvocation(GuestInvocationKind kind, uint64_t tag) const;
     [[nodiscard]] uint32_t invocationStackTop();
+    // Guest interrupt/callback handlers have no hardware stack of their own:
+    // the real EE exception handler pushes them below the interrupted $sp.
+    // Returns 0 when no live guest stack is available, so callers fall back
+    // to a reserved invocation stack.
+    [[nodiscard]] uint32_t nestedInvocationSp(R5900Context *interrupted);
+    [[nodiscard]] R5900Context *liveGuestContext();
 
     int addIrqHandler(bool dmac,
                       uint32_t cause,

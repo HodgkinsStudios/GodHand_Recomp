@@ -129,3 +129,31 @@
 - Inspected exact AOT host function `sub_00398890_0x398890.cpp` after preserved boot was stuck at 0x00398930: guest loops while decrementing `$v0` until it reaches `$v1=-1`, loaded from original guest global at 0x003F868C.
 - Added prebuilt-only AOT source inspection and bounded original ELF boot PC inspection workflows; preserved reports without guest patching.
 - Added thread-safe `$v0/$v1` debug snapshots on scheduler checkpoints and log output; triggers an explicit native link with cached 9k+ compilation results, no gameplay modification.
+
+## CP48 — EE interrupt handlers nest on the interrupted stack (2026-11-04)
+- Measured the unaligned `0x00000F82` return to a live-frame overwrite: original `sd $s0,($sp)` at `0x003B6C44` stores a DMA byte count at `0x01FFFF10`, where the interrupted frame's saved `$ra` (`0x0030B38C`) still lived.
+- Reserved invocation stacks started at `PS2_RAM_SIZE - 0x10`, which is also the EE main thread's initial `$sp`, so interrupt frames were guaranteed to overlap live main-thread frames.
+- The EE scheduler now seeds interrupt and async invocations that have no explicit stack from the interrupted guest `$sp`, so handler frames nest below live frames like the real EE exception handler; the reserved-stack fallback is retained for invocations with no live guest context.
+- Added the `IRQ handler nests below the interrupted EE stack pointer` regression test; the existing isolated-stack and sequential-callback expectations are preserved.
+- `EeScheduler.cpp` and the interrupt tests compile in this environment; no native rebuild, guest boot or GS frame has been verified yet.
+
+## CP49 — Native build verifies the interrupt-stack fix (2026-11-04)
+- Reproduced the project's native build without root (PyPI cmake/ninja, Ubuntu `.deb` X11/GL sysroot, Xvfb from the same sysroot) and compiled all 9,362 generated guest TUs into a 211 MB `ps2EntryRunner`.
+- Confirmed the CP48 repair on a real disc boot: the `0x00000F82` return-address corruption and the resulting Dormant main thread are gone, nine IOP modules load, and the guest registers `sceGsSyncVCallback`.
+- Recovered 978 ELF-validated AOT entries (observed indirect targets plus pointer-table function starts) with the existing tools; the run no longer reports missing recompiled functions.
+- Scoped the repair to guest interrupt invocations only after `ps2xTest` showed host-driven GS/async callbacks must keep their reserved pool; the full suite passes 447/447.
+- Remaining blocker measured: the main thread loops at `0x001FFCD0` polling a status byte until 3, with no GIF/DMA submission, so no GS frame exists yet.
+
+## CP50 — AOT audit, ROM-resident CDVDFSV, and the CRI ADXI blocker (2026-11-04)
+- Audited AOT coverage independently of the generator: a Capstone sweep of the real `.text` (`0x00100000`–`0x003BBF20`, 716,744 instructions) found 6,774 distinct `jal` targets, **all** of them registered; no direct call is missing. 1,662 unregistered stack prologues are indirect/alias entries, and the real boot logs zero unresolved dispatches.
+- Diagnosed the CP49 hang: `adxf_Init` ran `adxf_CreateAdxFs`, failed the file-open state machine with `E02110501 adxstmf_stat_exec: can't open`, and destroyed the FS, leaving a NULL handle for `adxf_GetStat` to poll forever.
+- CDVDFSV is an IOP-kernel ROM service, so libcdvd binds SID `0x80000597` without loading an IRX; the runtime only routed core services after an IRX load. Added `IopService::romResident()` and marked `cdvdfsv` ROM-resident, exposing its genuine ISO9660 search (still returns "not found" for absent files).
+- Fixed the search packet layout: the EE libcdvd header is 36 bytes, not 32, so the service had always searched for an empty name. Both observed searches now resolve real entries (`\MODULES\IRX.IMS;1`, `\0FLISTDV.DIR;1`).
+- `sceSifDmaStat` returned `-1` unconditionally, so the guest wait at `0x002BE3D8` (`bltz` on the result) could never end. It now reports `0` for a transfer id this runtime issued (transfers are applied inside `sceSifSetDma`) and `-1` only for ids never issued; the DMA test records the new contract and the reasoning.
+- Boot now leaves the `0x001FFCD0` poll, loads six IOP modules (`sio2man`, `padman`, `libsd`, `sdrdrv`, `sdhd`, `snddrv`) and stops at `0x003758B8`, rebinding CRI ADXI SID `0x19720317` while `client->server` stays NULL because `cri_adxi.irx` is never loaded on this path. Full suite: 447/447 passing. No GS frame yet.
+- Follow-up on the ADXI stall: the bind loop waits on global `0x76A980`, not a client field, and the only writer in a 40 s boot is the `memset` at `0x003A533C`/`0x003A5388` (from `0x00377C50`) that clears it — nothing ever sets it. The `cri_adxi.irx` loader sits immediately *after* that wait (`0x002C9E38`). Disc inventory corrected: the ISO has a real `\MODULES\` directory with `IOPRP310.IMG` (16 embedded ELFs, no ADXI) and `IRX.IMS` (nine entries); `sceSifRebootIop` is never called, and the module loader now records the guest `ra`, the requested path and every refused load.
+
+## CP51 - CRI ADXI bind semantics and the IOP heap blocker
+- `0x003758B8` is `client->server` (client `0x76A95C`, field at `+0x24`, i.e. `0x76A980`), not a separate flag: ps2sdk's bind always replies and reports a miss as `sd = NULL`, so the ADXI loop can only finish once the IOP has registered SID `0x19720317`. Refused binds are now logged once per SID (`[BindRpc] no server for sid=...`) instead of silently parking a boot.
+- Added the diagnostic switch `PS2X_BIND_ANY` (off by default, never a fix) which publishes a client descriptor for every SID. With it the boot loads a 7th module (`cri_adxi.irx`) and reaches a new, precisely identified blocker at `0x0033B2B0`: `E0100301: SJX_Init can't allocate IOP Heap`, because the IOP heap is exhausted by 163 leaked `0x1480` staging allocations from the guest's archive loader.
+- Recorded that emulated IRX modules perform zero `sceSifRegisterRpc` and zero `CreateThread`, so no IOP RPC server can ever be bound; `docs/CP51_ADXI_BIND_AND_IOP_HEAP.md` has the full analysis, the reproduction commands and the rootless toolchain restore recipe. 447/447 tests still pass; no GS frame yet.

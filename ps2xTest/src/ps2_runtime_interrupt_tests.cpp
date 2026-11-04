@@ -226,6 +226,48 @@ namespace
         runtime->requestStop();
     }
 
+    constexpr uint32_t kIrqNestedWaitPc = 0x00160560u;
+    constexpr uint32_t kIrqNestedResumePc = 0x00160570u;
+    constexpr uint32_t kIrqNestedHandlerPc = 0x00160580u;
+    // The live $sp measured in God Hand's interrupted EE boot frame. Reserved
+    // invocation stacks started at the top of RDRAM (0x01FFFFF0), which is the
+    // exact address the EE main thread starts on, so handler frames overlapped
+    // the interrupted frame and destroyed its saved $ra.
+    constexpr uint32_t kIrqNestedInterruptedSp = 0x01FFFF10u;
+    constexpr uint64_t kIrqNestedLiveReturnAddress = 0x0030B38Cull;
+    uint32_t g_nestedIrqSp = 0u;
+
+    void schedulerNestedIrqWait(uint8_t *rdram, R5900Context *ctx, PS2Runtime *runtime)
+    {
+        // The interrupted frame's saved return address lives at $sp, exactly as
+        // measured at 0x01FFFF10 during the real God Hand boot.
+        std::memcpy(rdram + kIrqNestedInterruptedSp,
+                    &kIrqNestedLiveReturnAddress,
+                    sizeof(kIrqNestedLiveReturnAddress));
+        EeScheduler &scheduler = runtime->eeScheduler();
+        scheduler.addIrqHandler(false, 2u, kIrqNestedHandlerPc, true, 0u, 0u, 0u);
+        // Queue the interrupt while this frame is still the live guest context,
+        // which is how the original boot received its interrupt traffic.
+        scheduler.dispatchIrq(false, 2u);
+        ctx->pc = kIrqNestedResumePc;
+    }
+
+    void schedulerNestedIrqHandler(uint8_t *rdram, R5900Context *ctx, PS2Runtime *)
+    {
+        g_nestedIrqSp = getRegU32(ctx, 29);
+        // An interrupt handler prologue stores below $sp, like the measured
+        // original routine that wrote a DMA byte count where a live frame sat.
+        const uint64_t stored = 0x782u;
+        std::memcpy(rdram + getRegU32(ctx, 29) - sizeof(stored), &stored, sizeof(stored));
+        ctx->pc = 0u;
+    }
+
+    void schedulerNestedIrqResume(uint8_t *, R5900Context *ctx, PS2Runtime *runtime)
+    {
+        ctx->pc = 0u;
+        runtime->requestStop();
+    }
+
     void schedulerISemaHandler(uint8_t *, R5900Context *ctx, PS2Runtime *runtime)
     {
         g_dispatchTrace.push_back(3);
@@ -570,6 +612,30 @@ void register_ps2_runtime_interrupt_tests()
                      "IRQ handler must not reuse the transient stack captured at registration");
             t.Equals(guardAfter, guard,
                      "IRQ handler stack writes must not clobber the registering thread's live frame");
+        });
+
+        tc.Run("IRQ handler nests below the interrupted EE stack pointer", [](TestCase &t)
+        {
+            TestEnv env;
+            env.runtime.registerFunction(kIrqNestedWaitPc, schedulerNestedIrqWait);
+            env.runtime.registerFunction(kIrqNestedResumePc, schedulerNestedIrqResume);
+            env.runtime.registerFunction(kIrqNestedHandlerPc, schedulerNestedIrqHandler);
+
+            g_nestedIrqSp = 0u;
+            R5900Context mainContext{};
+            mainContext.pc = kIrqNestedWaitPc;
+            setRegU32(mainContext, 29, kIrqNestedInterruptedSp);
+            env.runtime.eeScheduler().reset(env.rdram.data(), mainContext);
+            env.runtime.eeScheduler().run();
+
+            uint64_t liveReturnAddress = 0u;
+            std::memcpy(&liveReturnAddress,
+                        env.rdram.data() + kIrqNestedInterruptedSp,
+                        sizeof(liveReturnAddress));
+            t.Equals(g_nestedIrqSp, kIrqNestedInterruptedSp,
+                     "the IRQ handler must start at the interrupted $sp instead of a reserved top-of-RAM stack");
+            t.Equals(liveReturnAddress, kIrqNestedLiveReturnAddress,
+                     "handler stack writes must not overwrite the interrupted frame's saved return address");
         });
 
         tc.Run("pending async callbacks execute sequentially on a reusable invocation stack", [](TestCase &t)

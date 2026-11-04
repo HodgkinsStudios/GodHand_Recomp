@@ -1233,6 +1233,34 @@ uint32_t EeScheduler::invocationStackTop()
     return top;
 }
 
+R5900Context *EeScheduler::liveGuestContext()
+{
+    // Only a thread that is actually executing guest code has a live frame to
+    // nest below. A thread that is blocked (for example on a VSync wait when a
+    // GS callback is dispatched) has a stack image, not a live frame, and its
+    // callbacks keep using the reserved async invocation stack.
+    GuestThread *running = currentThread();
+    if (running == nullptr || running->status != EeThreadStatus::Running)
+    {
+        return nullptr;
+    }
+    return &running->activeContext();
+}
+
+uint32_t EeScheduler::nestedInvocationSp(R5900Context *interrupted)
+{
+    if (interrupted == nullptr)
+    {
+        return 0u;
+    }
+    const uint32_t sp = getRegU32(interrupted, 29);
+    if (sp < 0x1000u || sp > PS2_RAM_SIZE || (sp & 3u) != 0u)
+    {
+        return 0u;
+    }
+    return sp;
+}
+
 int EeScheduler::addIrqHandler(bool dmac,
                                uint32_t cause,
                                uint32_t handler,
@@ -1334,7 +1362,14 @@ void EeScheduler::dispatchIrq(bool dmac, uint32_t cause)
         SET_GPR_U32(&invocation.context, 4, cause);
         SET_GPR_U32(&invocation.context, 5, handler.argument);
         SET_GPR_U32(&invocation.context, 28, handler.gp);
-        SET_GPR_U32(&invocation.context, 29, 0u);
+        // Nest the handler on the interrupted guest $sp, as the real EE
+        // exception handler does. Seeding it from a reserved top-of-RAM stack
+        // instead writes over the saved return address of the live frame whose
+        // caller is still on the stack (measured: 0x01FFFF10 clobbered by a
+        // DMA byte count while the interrupted frame lived there). The stack
+        // captured at registration is deliberately not used: it is usually a
+        // live caller frame at registration time.
+        SET_GPR_U32(&invocation.context, 29, nestedInvocationSp(liveGuestContext()));
         SET_GPR_U32(&invocation.context, 31, 0u);
         queueInvocation(std::move(invocation));
     }
