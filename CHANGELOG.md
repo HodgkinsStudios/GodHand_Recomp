@@ -157,3 +157,20 @@
 - `0x003758B8` is `client->server` (client `0x76A95C`, field at `+0x24`, i.e. `0x76A980`), not a separate flag: ps2sdk's bind always replies and reports a miss as `sd = NULL`, so the ADXI loop can only finish once the IOP has registered SID `0x19720317`. Refused binds are now logged once per SID (`[BindRpc] no server for sid=...`) instead of silently parking a boot.
 - Added the diagnostic switch `PS2X_BIND_ANY` (off by default, never a fix) which publishes a client descriptor for every SID. With it the boot loads a 7th module (`cri_adxi.irx`) and reaches a new, precisely identified blocker at `0x0033B2B0`: `E0100301: SJX_Init can't allocate IOP Heap`, because the IOP heap is exhausted by 163 leaked `0x1480` staging allocations from the guest's archive loader.
 - Recorded that emulated IRX modules perform zero `sceSifRegisterRpc` and zero `CreateThread`, so no IOP RPC server can ever be bound; `docs/CP51_ADXI_BIND_AND_IOP_HEAP.md` has the full analysis, the reproduction commands and the rootless toolchain restore recipe. 447/447 tests still pass; no GS frame yet.
+## CP52 - The IOP-heap leak mechanism fully identified
+
+- Added temporary `PS2X_SYSCALL_TRACE`, `PS2X_IOPHEAP_TRACE` and `PS2X_MMIO_TRACE` traces
+  (all removed again; the tracked tree is clean), which pinned the 163x module-load retry:
+  each attempt allocates 0x1480 IOP bytes, SifSetDma's it into IOP RAM, then runs the game's
+  own libk SIF send wrapper (pure guest code, no syscalls) whose ack gate is an IOP-written
+  word that never updates. The load only completes via the alloc-failure fallback at
+  `0x2BE420 -> sceSifLoadModule` syscall, so every success costs 163 leaked
+  blocks and the whole 0x120000-0x1F0000 IOP heap.
+- Captured the unhandled SIF traffic precisely: 16385 CHCR=0x101 writes to DMA channel
+  `0x1000A000` (MADR 0x7867C0, QWC 0x46) during boot - SIF cmd batch transfers our DMAC
+  model never delivers to the IOP; the in-lib bind gate binds SID `0x80000006` at `0x3B5A80`.
+- Recorded the fix plan in `docs/CP52_SIF_CMD_LEAK.md`: implement EE->IOP SIF cmd delivery
+  plus a rom-resident IOP SIF cmd dispatcher service that executes the genuine module-load
+  semantics and acks into EE RAM; expected to let all 9 modules load leak-free so
+  `cri_adxi.irx` can reach `sceSifRegisterRpc`/`CreateThread` and clear the ADXI bind stall.
+  Tests: 447/447 ps2x_tests; no GS frame yet.
