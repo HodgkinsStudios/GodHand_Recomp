@@ -174,3 +174,17 @@
   semantics and acks into EE RAM; expected to let all 9 modules load leak-free so
   `cri_adxi.irx` can reach `sceSifRegisterRpc`/`CreateThread` and clear the ADXI bind stall.
   Tests: 447/447 ps2x_tests; no GS frame yet.
+## CP53 - Correcting the CP52 SIF diagnosis
+
+- A dumped DMA payload proves the 16385 `CHCR=0x101` writes to channel `0x1000A000` are
+  ordinary GIF (D2) transfers of a small GS register list (regs `0x50`-`0x53` plus a
+  per-frame counter at `+0x14`) - the game's loading-spinner redraw loop - not SIF command
+  batches. GIF completion is correct (`CHCR` reads back `0x00000001`) and the 16387
+  `FlushCache` syscalls belong to the same loop, so the CP52 "unimplemented SIF send" story
+  must not be implemented against that channel.
+- Read the module-load decision path end to end: `0x3B5C48` prepares via `0x3B5A80` /
+  `0x3B5B80`, then issues RPC function 6 on the `SID 0x80000006` client at `0x781B80`
+  through `0x3B3128`, whose kick is `sceSifSetDma` (syscall `0x77`). A full boot issues
+  **zero** `0x77` syscalls, so the retry loop is rejected in the prepare prologue, not by a
+  missing DMA acknowledgement - that is the next thing to instrument.
+- Verified tree state: temporary probes removed, 447/447 `ps2x_tests` pass, no frame yet.
